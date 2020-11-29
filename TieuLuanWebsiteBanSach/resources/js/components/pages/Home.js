@@ -23,22 +23,22 @@ class Home extends Component {
           
           var mybutton = document.getElementById("toTop");
           var menutop = document.querySelector('#menu');
-          //var banner = document.querySelector('.mainWeb');
-          //var origOffsetY = banner.offsetTop;
+          var banner = document.querySelector('.boxbanner');
+          var origOffsetY = banner.offsetTop;
           
           function scrollFunction() {
-            // Hiện menu sticky
+            // Ẩn back to top
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
               mybutton.style.display = "block";
             } else {
               mybutton.style.display = "none";
             }
-            // Hiện menu sticky
-            // if (window.scrollY >= origOffsetY) {
-            //   menutop.classList.add('sticky')
-            // } else {
-            //   menutop.classList.remove('sticky');
-            // }
+            //Hiện menu sticky
+            if (window.scrollY >= origOffsetY) {
+              menutop.classList.add('sticky')
+            } else {
+              menutop.classList.remove('sticky');
+            }
           }
       }
       buyItem=(value)=>{

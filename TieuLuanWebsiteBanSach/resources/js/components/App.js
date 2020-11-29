@@ -41,63 +41,40 @@ class App extends Component {
     }
     componentDidMount() {
         console.log("cart",this.state.cart);
-        // window.onscroll = function () {
-        //     scrollFunction();
-        // };
+        // Accordion 
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+            });
+        }
+        
+        // Function  Back to top
+        $("a").on('click', function (event) {
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+            // Prevent default anchor click behavior
+            event.preventDefault();
+            // Store hash
+            var hash = this.hash;
+            // Using jQuery's animate() method to add smooth page scroll
+            // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+            $('html, body').animate({
+                scrollTop: $(hash).offset().top
+            }, 800, function () {
+                // Add hash (#) to URL when done scrolling (default click behavior)
+                window.location.hash = hash;
+            });
+            } // End if
+        });
 
-        // var mybutton = document.getElementById("toTop");
-        // var menutop = document.querySelector('#menu');
-        // var banner = document.querySelector('.mainWeb');
-        // var origOffsetY = banner.offsetTop;
-
-        // function scrollFunction() {
-        //     // Hiện menu sticky
-        //     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        //         mybutton.style.display = "block";
-        //     } else {
-        //         mybutton.style.display = "none";
-        //     }
-        //     // Hiện menu sticky
-        //     if (window.scrollY >= origOffsetY) {
-        //         menutop.classList.add('sticky')
-        //     } else {
-        //         menutop.classList.remove('sticky');
-        //     }
-        // }
-        // // Function  Back to top
-        // $("a").on('click', function (event) {
-        //     // Make sure this.hash has a value before overriding default behavior
-        //     if (this.hash !== "") {
-        //         // Prevent default anchor click behavior
-        //         event.preventDefault();
-
-        //         // Store hash
-        //         var hash = this.hash;
-        //         // Using jQuery's animate() method to add smooth page scroll
-        //         // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-        //         $('html, body').animate({
-        //             scrollTop: $(hash).offset().top
-        //         }, 800, function () {
-        //             // Add hash (#) to URL when done scrolling (default click behavior)
-        //             window.location.hash = hash;
-        //         });
-        //     } // End if
-        // });
-
-        // // Accordion 
-        // var acc = document.getElementsByClassName("accordion");
-        // var i;
-        // for (i = 0; i < acc.length; i++) {
-        //     acc[i].addEventListener("click", function () {
-        //         this.classList.toggle("active");
-        //         var panel = this.nextElementSibling;
-        //         if (panel.style.maxHeight) {
-        //             panel.style.maxHeight = null;
-        //         } else {
-        //             panel.style.maxHeight = panel.scrollHeight + "px";
-        //         }
-        //     });
-        // }
         if (checkIfAuthenticated()) {
             this.setState({
                 user: checkIfAuthenticated(),
@@ -120,13 +97,13 @@ class App extends Component {
         return (
             <div>
                 <Router>
-                    <Header
+                    <Header id="top"
                         authData={this.state}
                         authCusData={this.state}
                         cart={this.state.cart}
                     />
                     <div>
-                        <Container className="p-4">
+                        <div>
                             <Switch>
                                 <Route path={`${PUBLIC_URL}about`}
                                     exact={true}
@@ -201,10 +178,10 @@ class App extends Component {
                                 />
                             </Switch>
                             <Footer></Footer>
-                        </Container>
+                        </div>
                     </div>
                 </Router>
-                <a href="#mainTop">
+                <a href="#top">
                     <div id="toTop" className="back-to-top"><i className="fas fa-angle-double-up"></i></div>
                 </a>
             </div>
