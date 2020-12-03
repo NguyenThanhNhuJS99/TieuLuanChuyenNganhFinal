@@ -216,7 +216,9 @@ ul li a:hover {
 .slick-dots li.slick-active button {
     background-color: #00AFF0;
 }
-
+.boxbanner{
+    overflow: hidden;
+}
 .boxbanner .items {
     outline: none;
 }
