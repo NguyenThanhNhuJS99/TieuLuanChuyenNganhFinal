@@ -4,7 +4,7 @@ export const checkIfAuthenticated = () => {
   const getLoginData = localStorage.getItem("loginData");
   console.log("getLoginData",getLoginData);
   if (getLoginData != null) {
-    const data = JSON.parse(getLoginData);
+    const data = getLoginData;
     if (data.success && data.access_token !== null) {
       return data.user;
     }

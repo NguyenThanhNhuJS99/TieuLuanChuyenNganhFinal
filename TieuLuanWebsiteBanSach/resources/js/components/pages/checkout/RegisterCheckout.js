@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Button, Badge, Spinner, Form, ListGroup } from 'react-bootstrap';
 import { Link, withRouter } from "react-router-dom";
 import { registerUser } from "../../../services/AuthService";
+import { registerCustomer } from "../../../services/CustomerAuthService";
 class RegisterCheckout extends React.Component {
 
   state = {
@@ -46,7 +47,7 @@ class RegisterCheckout extends React.Component {
     if (form.checkValidity() !== false) {
       e.preventDefault();
       this.setState({ isLoading: true });
-      const response = await registerUser(postBody);
+      const response = await registerCustomer(postBody);
       console.log("response register", response);
       if (response.success) {
         this.setState({

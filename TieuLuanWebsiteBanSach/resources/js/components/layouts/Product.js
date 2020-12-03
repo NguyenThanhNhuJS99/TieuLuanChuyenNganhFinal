@@ -6,10 +6,10 @@ class Product extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            qty: '',
+            qty:0,
             id: '',
             totalCart: '',
-            totalQuantity: '',
+            totalQuantity: 0,
             cartlist: [],
             setcartlist: [],
             booklist: [],
