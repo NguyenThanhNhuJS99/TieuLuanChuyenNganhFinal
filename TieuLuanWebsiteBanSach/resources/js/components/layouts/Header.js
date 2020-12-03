@@ -34,17 +34,17 @@ var itemsMenu = [
   },
   {
     lable: 'Tin Tức',
-    to: '/news',
+    to: '/shopbansach/news',
     exact: false
   },
   {
     lable: 'Giới Thiệu',
-    to: '/about',
+    to: '/shopbansach/about',
     exact: false
   },
   {
     lable: 'Liên Hệ',
-    to: '/contact',
+    to: '/shopbansach/contact',
     exact: false
   },
   {
@@ -163,15 +163,7 @@ class Header extends Component {
               <div className="menumobi mainmenu d-lg-none d-md-block"> <a href="#my-menu" id="open"
                 className="icon-menu">☰</a>
               </div>
-              <div className="col-3 col-sm-4 col-md-4 col-lg-4">
-                <div className="box-contact d-md-none d-sm-none d-none d-lg-block">
-                  <div className="hotline">
-                    <i className="fas fa-phone-square-alt"></i>
-                    <p className="animated pulse">HOTLINE: 0123 456 789</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-6 col-sm-4 col-md-4 col-lg-4">
+              <div className="col-6 col-sm-4 col-md-6 col-lg-6">
                 <div className="box-logoTop">
                   <img src="/images/logo1.png" alt="" className="imgLogoTop"></img>
                 </div>
@@ -182,35 +174,7 @@ class Header extends Component {
                 </Link>
               )
               }
-              {!this.props.authCusData.isCusLoggedIn && (
-                <>
-                  <Link to={`${PUBLIC_URL}login-checkout`}>
-                    <Nav.Item className="text-white mr-2 ">Đăng nhập</Nav.Item>
-                  </Link>
-                  <Link to={`${PUBLIC_URL}register-checkout`}>
-                    <Nav.Item className="text-white mr-2 ">Đăng ký</Nav.Item>
-                  </Link>
-                </>
-              )}
-              <Nav className="ml-auto">
-                {this.props.authData.isLoggedIn && (
-                  <>
-                    <Nav.Link>Xin chào Admin {this.props.authData.user.name}</Nav.Link>
-                    <Nav.Link onClick={() => logout()}>
-                      <Nav.Item className="text-dark mr-2 ">Đăng xuất</Nav.Item>
-                    </Nav.Link>
-                  </>
-                )}
-                {this.props.authCusData.isCusLoggedIn && (
-                  <>
-                    <Nav.Link>Xin chào {this.props.authCusData.customer.name}</Nav.Link>
-                    <Nav.Link onClick={() => logoutCus()}>
-                      <Nav.Item className="text-dark mr-2 ">Đăng xuất</Nav.Item>
-                    </Nav.Link>
-                  </>
-                )}
-              </Nav>
-              <div className="col-3 col-sm-4 col-md-4 col-lg-4">
+              <div className="col-3 col-sm-4 col-md-3 col-lg-3">
                 <div className="box-search-cart">
                   <div className="row">
                     <div className="col-lg-10">
@@ -230,6 +194,36 @@ class Header extends Component {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="col-3 col-sm-4 col-md-3 col-lg-3">
+                {!this.props.authCusData.isCusLoggedIn && (
+                  <>
+                    <Link to={`${PUBLIC_URL}login-checkout`}>
+                      <Nav.Item className="text-white mr-1 ">Đăng nhập</Nav.Item>
+                    </Link>
+                    <Link to={`${PUBLIC_URL}register-checkout`}>
+                      <Nav.Item className="text-white mr-1 ">Đăng ký</Nav.Item>
+                    </Link>
+                  </>
+                )}
+                <Nav className="ml-auto">
+                  {this.props.authData.isLoggedIn && (
+                    <>
+                      <Nav.Link>Xin chào Admin {this.props.authData.user.name}</Nav.Link>
+                      <Nav.Link onClick={() => logout()}>
+                        <Nav.Item className="text-dark mr-2 ">Đăng xuất</Nav.Item>
+                      </Nav.Link>
+                    </>
+                  )}
+                  {this.props.authCusData.isCusLoggedIn && (
+                    <>
+                      <Nav.Link>Xin chào {this.props.authCusData.customer.name}</Nav.Link>
+                      <Nav.Link onClick={() => logoutCus()}>
+                        <Nav.Item className="text-dark mr-2 ">Đăng xuất</Nav.Item>
+                      </Nav.Link>
+                    </>
+                  )}
+                </Nav>
               </div>
             </div>
           </div>

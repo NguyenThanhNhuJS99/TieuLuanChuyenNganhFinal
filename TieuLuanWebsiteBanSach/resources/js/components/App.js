@@ -4,12 +4,10 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
-import { Container } from 'react-bootstrap';
-import $ from 'jquery';
 // Pages
 import Home from './pages/Home';
-import About from './pages/About';
-import Contact from './pages/Contact';
+import About from './pages/about/About';
+import Contact from './pages/contact/Contact';
 import CategoryList from './pages/categories/CategoryList';
 import CategoryCreate from './pages/categories/CategoryCreate';
 import CategoryView from './pages/categories/CategoryView';
@@ -28,6 +26,8 @@ import CheckoutItem from './pages/checkout/CheckoutItem';
 import CheckoutInformation from './pages/checkout/CheckoutInformation';
 import ShowCheckout from './pages/checkout/ShowCheckout';
 import NoCheckoutItems from './pages/checkout/NoCheckoutItems';
+import Detail from './pages/books/Detail';
+import News from './pages/news/News';
 class App extends Component {
     state = {
         user: {},
@@ -105,17 +105,13 @@ class App extends Component {
                     <div>
                         <div>
                             <Switch>
-                                <Route path={`${PUBLIC_URL}about`}
-                                    exact={true}
-                                    component={About}
-                                />
                                 <Route path={`${PUBLIC_URL}contact`}
                                     exact={true}
                                     component={Contact}
                                 />
                                 <Route path={`${PUBLIC_URL}books/view/:id`}
                                     exact={true}
-                                    component={BookView}
+                                    component={Detail}
                                 />
                                 <Route path={`${PUBLIC_URL}books/update/:id`}
                                     exact={true}
@@ -152,10 +148,6 @@ class App extends Component {
                                     exact={true}
                                     component={LoginCheckout}
                                 />
-                                {/* <Route path={`${PUBLIC_URL}show-checkout`}
-                                        exact={true}
-                                        component={ShowCheckout}
-                                    /> */}
                                 <Route path={`${PUBLIC_URL}checkoutitem`}
                                     exact={true}
                                     component={CheckoutItem}
@@ -171,6 +163,18 @@ class App extends Component {
                                 <Route path={`${PUBLIC_URL}checkout`}
                                     exact={true}
                                     component={ShowCheckout}
+                                />
+                                <Route path={`${PUBLIC_URL}news`}
+                                    exact={true}
+                                    component={News}
+                                />
+                                <Route path={`${PUBLIC_URL}about`}
+                                    exact={true}
+                                    component={About}
+                                />
+                                <Route path={`${PUBLIC_URL}contact`}
+                                    exact={true}
+                                    component={Contact}
                                 />
                                 <Route path={`${PUBLIC_URL}`}
                                     exact={true}

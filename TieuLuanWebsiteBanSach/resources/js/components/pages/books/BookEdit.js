@@ -9,6 +9,7 @@ class BookEdit extends React.Component {
   state = {
     book: {},
     name: '',
+    author: '',
     description: '',
     status: '',
     price: '',

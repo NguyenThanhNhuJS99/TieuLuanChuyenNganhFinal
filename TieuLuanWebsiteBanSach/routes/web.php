@@ -33,6 +33,12 @@ Route::get('/shopbansach/noitem', function(){
 Route::get('/shopbansach/checkout', function(){
     return view('layouts.app');
 });
+Route::get('/shopbansach/news', function(){
+    return view('layouts.app');
+});
+Route::get('/shopbansach/about', function(){
+    return view('layouts.app');
+});
 //Route::post('/shipping/store', '')
 
 // Shopping Cart

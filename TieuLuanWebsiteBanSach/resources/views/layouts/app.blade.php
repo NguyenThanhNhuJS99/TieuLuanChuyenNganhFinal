@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="{{ asset('css/slick.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="{{ asset('css/imagehover.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/hover.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/magiczoomplus.css') }}">  
     <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" /> 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -46,6 +46,7 @@
     <script type="text/javascript"
         src='https://cdnjs.cloudflare.com/ajax/libs/jQuery.mmenu/5.3.4/js/jquery.mmenu.min.all.min.js'></script>
     <script type="text/javascript" src="{{ asset('js/slick.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/magiczoomplus.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
     <script>
         AOS.init();
