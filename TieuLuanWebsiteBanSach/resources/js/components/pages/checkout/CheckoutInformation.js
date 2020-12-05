@@ -27,6 +27,7 @@ class CheckoutInformation extends React.Component {
         this.state = {
             finished: false,
             stepIndex: 0,
+            cus_id: '',
             name: '',
             nameValidation: null,
             email: '',
@@ -36,6 +37,8 @@ class CheckoutInformation extends React.Component {
             address1: '',
             province: '',
             phone: '',
+            customer: {},
+            isCusLoggedIn: false,
             loadedAddress: null,
             isLoading: false,
             totalCart: '',
@@ -51,12 +54,12 @@ class CheckoutInformation extends React.Component {
     }
     componentDidMount() {
         this.getTotalCart();
-        console.log("abc", this.state.address1)
         const getLoginCustomerData = localStorage.getItem("loginCustomerData");
         if (getLoginCustomerData != null) {
             const customerdata = JSON.parse(getLoginCustomerData);
             if (customerdata.success && customerdata.access_token !== null) {
                 this.setState({
+                    cus_id: customerdata.customer.id,
                     name: customerdata.customer.name,
                     email: customerdata.customer.email,
                     nameValidation: s,
@@ -67,6 +70,14 @@ class CheckoutInformation extends React.Component {
                 console.log("Khách hàng chưa đăng nhập!");
             }
         }
+    }
+    deleteAllCart = async () => {
+        Axios.delete('http://127.0.0.1:8000/clear')
+          .then((res) => {
+            this.getTotalQuantity();
+            this.getCartDetails();
+            this.getTotalCart();
+          });
     }
     handleNext = async (address) => {
         const { stepIndex } = this.state;
@@ -85,6 +96,7 @@ class CheckoutInformation extends React.Component {
             //const paymentMethod = this.state.creditCardChecked ? 'Credit Card' : 'Debit Card';
             const { history } = this.props;
             const postBody = {
+                customer_id: this.state.cus_id,
                 name: this.state.name,
                 email: this.state.email,
                 note: this.state.note,
@@ -98,12 +110,14 @@ class CheckoutInformation extends React.Component {
                     // this.props.history.push({
                     //     pathname: '/shopbansach',
                     // });
+                    this.deleteAllCart();
                 })
                 .catch((error) => {
                     console.log(error.res);
                 });
             if (response.success) {
                 this.setState({
+                    cus_id: "",
                     name: "",
                     email: "",
                     note: "",
@@ -112,6 +126,7 @@ class CheckoutInformation extends React.Component {
                     phone: "",
                     isLoading: false,
                 });
+                
             } else {
                 this.setState({
                     errors: response.errors,

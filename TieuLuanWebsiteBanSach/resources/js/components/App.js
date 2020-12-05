@@ -28,6 +28,7 @@ import ShowCheckout from './pages/checkout/ShowCheckout';
 import NoCheckoutItems from './pages/checkout/NoCheckoutItems';
 import Detail from './pages/books/Detail';
 import News from './pages/news/News';
+import Shipping from './pages/checkout/Shipping';
 class App extends Component {
     state = {
         user: {},
@@ -175,6 +176,10 @@ class App extends Component {
                                 <Route path={`${PUBLIC_URL}contact`}
                                     exact={true}
                                     component={Contact}
+                                />
+                                <Route path={`${PUBLIC_URL}shipping`}
+                                    exact={true}
+                                    component={Shipping}
                                 />
                                 <Route path={`${PUBLIC_URL}`}
                                     exact={true}

@@ -24,7 +24,9 @@ class BookRepository implements CrudInterface{
         $books->price=$request->price;
         $books->quantity=$request->quantity;
         $books->ratings=$request->ratings;
-        $books->image=$request->image;
+        $books->image1=$request->image1;
+        $books->image2=$request->image2;
+        $books->image3=$request->image3;
         $books->status=$request->status;
         $books->new=$request->new;
         $books->bestsale=$request->bestsale;
@@ -42,7 +44,9 @@ class BookRepository implements CrudInterface{
         $books->price=$request->price;
         $books->quantity=$request->quantity;
         $books->ratings=$request->ratings;
-        $books->image=$request->image;
+        $books->image1=$request->image1;
+        $books->image2=$request->image2;
+        $books->image3=$request->image3;
         $books->status=$request->status;
         $books->new=$request->new;
         $books->bestsale=$request->bestsale;

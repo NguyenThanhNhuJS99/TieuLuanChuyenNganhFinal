@@ -19,7 +19,9 @@ class BookCreate extends React.Component {
     new: "",
     bestsale: "",
     toprating: "",
-    image: "",
+    image1: "",
+    image2: "",
+    image3: "",
     errors: {},
   };
 
@@ -45,7 +47,9 @@ class BookCreate extends React.Component {
       new: this.state.new,
       bestsale: this.state.bestsale,
       toprating: this.state.toprating,
-      image: this.state.image,
+      image1: this.state.image1,
+      image2: this.state.image2,
+      image3: this.state.image3,
       category_id: this.props.category_id,
     };
     const response = await storeNewBook(postBody);
@@ -62,7 +66,9 @@ class BookCreate extends React.Component {
         new: "",
         bestsale: "",
         toprating: "",
-        image: "",
+        image1: "",
+        image2: "",
+        image3: "",
         isloading: false,
       });
       this.props.onCompleteBookCreate(response.data);
@@ -114,7 +120,7 @@ class BookCreate extends React.Component {
               </div>
 
               <div className="row">
-                <div className="col-6">
+                <div className="col-4">
                   <Form.Group controlId="originalPrice">
                     <Form.Label>Giá tiền gốc sách</Form.Label>
                     <Form.Control
@@ -129,7 +135,7 @@ class BookCreate extends React.Component {
                     <p className="text-danger">{this.state.errors.name[0]}</p>
                   )}
                 </div>
-                <div className="col-6">
+                <div className="col-4">
                   <Form.Group controlId="price">
                     <Form.Label>Giá tiền sách</Form.Label>
                     <Form.Control
@@ -143,6 +149,20 @@ class BookCreate extends React.Component {
                   {this.state.errors && this.state.errors.name && (
                     <p className="text-danger">{this.state.errors.name[0]}</p>
                   )}
+                </div>
+                <div className="col-4">
+                  <Form.Group controlId="status">
+                    <Form.Label>Tình trạng</Form.Label>
+                    <Form.Control as="select"
+                      value={this.state.status}
+                      name="status"
+                      onChange={(e) => this.changeInput(e)}
+                    >
+                      <option>Chọn</option>
+                      <option value="1">Hiện có</option>
+                      <option value="0">Hết hàng</option>
+                    </Form.Control>
+                  </Form.Group>
                 </div>
               </div>
               <div className="row">
@@ -191,30 +211,40 @@ class BookCreate extends React.Component {
 
               </div>
               <div className="row">
-                <div className="col-6">
-                  <Form.Group controlId="image">
-                    <Form.Label>Hình sách</Form.Label>
+                <div className="col-4">
+                  <Form.Group controlId="image1">
+                    <Form.Label>Hình sách 1</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Link hình ảnh"
-                      value={this.state.image}
-                      name="image"
+                      value={this.state.image1}
+                      name="image1"
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
                 </div>
-                <div className="col-6">
-                  <Form.Group controlId="status">
-                    <Form.Label>Tình trạng</Form.Label>
-                    <Form.Control as="select"
-                      value={this.state.status}
-                      name="status"
+                <div className="col-4">
+                  <Form.Group controlId="image2">
+                    <Form.Label>Hình sách 2</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Link hình ảnh"
+                      value={this.state.image2}
+                      name="image2"
                       onChange={(e) => this.changeInput(e)}
-                    >
-                      <option>Chọn</option>
-                      <option value="1">Hiện có</option>
-                      <option value="0">Hết hàng</option>
-                    </Form.Control>
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-4">
+                  <Form.Group controlId="image3">
+                    <Form.Label>Hình sách 3</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Link hình ảnh"
+                      value={this.state.image3}
+                      name="image3"
+                      onChange={(e) => this.changeInput(e)}
+                    />
                   </Form.Group>
                 </div>
               </div>

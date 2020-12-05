@@ -69,7 +69,6 @@ class CustomerAPIController extends Controller
             'name' => 'required|min:2|max:30',
             'email' => 'required|email|max:100|unique:customers',
             'password' => 'required|confirmed|min:6',
-            'phone' => 'required',
         ], [
             'name.required' => 'Hãy điền tên.',
             'name.min' => 'Tên người dùng phải có 2-30 ký tự.',
@@ -81,7 +80,6 @@ class CustomerAPIController extends Controller
             'password.required' => 'Hãy điền mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'password.confirmed' => 'Mật khẩu không trùng khớp.',
-            'phone.required' => 'Hãy điền số điện thoại',
         ]);
         if ($validator->fails()) {
             return response()->json([

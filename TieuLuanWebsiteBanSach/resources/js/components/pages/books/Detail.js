@@ -10,7 +10,8 @@ export default class Detail extends Component {
         super();
         this.state = {
             book: {},
-            qty: 1,
+            imageBook: '',
+            qty: '',
             img: '',
             id: '',
             isloading: false,
@@ -23,6 +24,7 @@ export default class Detail extends Component {
         };
         this.qty = this.qty.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changeActive = this.changeActive.bind(this)
     }
     componentWillReceiveProps(nextProps) {
         if (this.props.match.params.id !== nextProps.match.params.id) {
@@ -30,10 +32,20 @@ export default class Detail extends Component {
             this.getBookDetails(bookID);
         }
     }
-
+    changeActive = (value) => {
+        this.setState({
+            imageBook: value
+        })
+        console.log("value", value)
+        console.log("state", this.state.img.value)
+    }
+    componentWillMount() {
+        this.changeActive(this.state.book.image1)
+    };
     componentDidMount() {
         let bookID = this.props.match.params.id;
         this.getBookDetails();
+        this.changeActive(this.state.book.image1)
     };
 
     getBookDetails = () => {
@@ -42,6 +54,7 @@ export default class Detail extends Component {
         ).then((res) => {
             this.setState({
                 book: res.data.data,
+                imageBook: res.data.data.image1,
                 isloading: false,
             });
         });
@@ -74,95 +87,66 @@ export default class Detail extends Component {
     render() {
         return (
             <>
-                <Container>
-                    <form onSubmit={this.handleSubmit}>
-                        <Row>
-                            <Col lg={4} md={4}>
-                                <div className={"margin-div-five"}>
-                                    <ReactImageZoom {...{
-                                        width: 220,
-                                        height: 300,
-                                        zoomWidth: 200,
-                                        img: this.state.book.image ? this.state.book.image : image,
-                                        zoomStyle: 'z-index: 999;',
-                                        zoomPosition: 'right: 10px'
-                                    }} />
-                                </div>
-                                <p className={"margin-div-five"}>Scroll over the image to zoom</p>
-                            </Col>
-
-                            <Col lg={6} md={6}>
-                                <div className={"margin-div-five"}>
-                                    <h2>{this.state.book.name}</h2>
-                                    <div className={"product-info-star-rating"}>
-                                        {(this.state.book.ratings && this.state.book.ratings > 0) ?
-                                            <div>
-                                                <StarRatingComponent
-                                                    rating={this.state.book.ratings}
-                                                    starDimension={"20px"}
-                                                    starSpacing={"0px"}
-                                                    starRatedColor={"rgb(247, 202, 37)"}
-                                                />
-                                                {this.state.book.numberOfRatings &&
-                                                    <span className={"product-info-number-of-ratings"}>
-                                                        {this.state.book.numberOfRatings} ratings
-                                            </span>
-                                                }
-                                            </div>
-                                            :
-                                            <span className={"not-enough-ratings-span"}>Not enough ratings</span>
-                                        }
+                <div className="detail">
+                    <div className="container">
+                        <form onSubmit={this.handleSubmit}>
+                            <Row>
+                                <Col lg={4} md={4}>
+                                    <div className={"margin-div-five"}>
+                                        <ReactImageZoom {...{
+                                            width: 240,
+                                            height: 300,
+                                            zoomWidth: 200,
+                                            img: this.state.imageBook ? this.state.imageBook : image,
+                                            zoomStyle: 'z-index: 999;',
+                                            zoomPosition: 'right: 10px'
+                                        }} />
                                     </div>
-                                    <hr />
-                                </div>
+                                    {/* <p className={"margin-div-five"}>Scroll over the image to zoom</p> */}
+                                    <a onClick={() => { this.changeActive(this.state.book.image1) }} className={this.state.imageBook === this.state.book.image1 ? 'imgDetailMini active' : 'imgDetailMini'}>
+                                        <img src={this.state.book.image1}></img>
+                                    </a>
+                                    <a onClick={() => { this.changeActive(this.state.book.image2) }} className={this.state.imageBook === this.state.book.image2 ? 'imgDetailMini active' : 'imgDetailMini'}>
+                                        <img src={this.state.book.image2}></img>
+                                    </a>
+                                </Col>
 
-                                <div className={"product-info-price"}>
-                                    {this.state.book.originalPrice &&
-                                        <span className={"product-deal-price-st"}>${this.state.book.originalPrice} </span>}
-                                    <span className={"product-deal-price"}>${this.state.book.price}</span>
-                                    {this.state.book.originalPrice &&
-                                        <p className={"product-info-savings"}>
-                                            You save - ${(this.state.book.originalPrice - this.state.book.price).toFixed(2)}
+                                <Col lg={6} md={6}>
+                                    <div className="contentPreview">
+                                        <h3>{this.state.book.name}</h3>
+                                        <p><b>Tác giả: {this.state.book.author}</b></p>
+                                        <p><b>Nhà xuất bản: NXB Trẻ</b></p>
+                                        <h4 className="price"><span>{this.state.book.originalPrice}đ</span> - {this.state.book.price}đ</h4>
+                                        <h5 className="save">Tiết kiệm được: {(this.state.book.originalPrice - this.state.book.price)}đ</h5>
+                                        <p>
+                                            {this.state.book.description}
                                         </p>
-                                    }
-                                </div>
-
-                                <div className={"product-info-left-margin"}>
-                                    <FormGroup controlId="formQuantitySelect" className={"quantity-select"}>
-                                        <FormLabel>Quantity</FormLabel>
-                                        <FormControl
-                                            type="number"
-                                            name="quantity"
-                                            value={this.state.qty}
-                                            onChange={(e) => this.qty(this.props.match.params.id, e)}
-                                            onBlur={this.onQuantityBlur}
-                                        />
-                                    </FormGroup>
-                                </div>
-                                <div className={"product-info-left-margin"}>
-                                    <span>
-                                        <Button
-                                            type="submit"
-                                            bsstyle={"primary"}
-                                            className={"btn add-to-cart-product"}
-                                        >Add to Cart
-                                        </Button>
-                                    </span>
-                                </div>
-                            </Col>
-                        </Row>
-                        <br />
-                        <Row>
-                            <Col lgoffset={12} mdoffset={12} lg={12} md={12}>
-                                <div className={"product-info-left-margin"}>
-                                    <h2 className={"product-description-heading"}>Product Description:</h2>
-                                    <hr />
-                                    <p className={"product-description"}>{this.state.book.description}</p>
-                                </div>
-                            </Col>
-                        </Row>
-                    </form>
-                </Container>
+                                        <FormGroup controlId="formQuantitySelect" className={"quantity-select"}>
+                                            <FormLabel>Số lượng sách</FormLabel>
+                                            <FormControl
+                                                type="number"
+                                                name="quantity"
+                                                value={this.state.qty}
+                                                onChange={(e) => this.qty(this.props.match.params.id, e)}
+                                                onBlur={this.onQuantityBlur}
+                                            />
+                                        </FormGroup>
+                                        <div>
+                                            <span>
+                                                <Button
+                                                    type="submit"
+                                                    bsstyle={"primary"}
+                                                    className={"btn add-to-cart-product"}
+                                                >Thêm vào giỏ
+                                                </Button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </form>
+                    </div>
+                </div>
             </>
         );
     }

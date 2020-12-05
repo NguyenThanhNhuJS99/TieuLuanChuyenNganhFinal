@@ -24,7 +24,6 @@ class CustomerRepository implements AuthInterface{
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->password = Hash::make($request->password);
-        $customer->phone = $request->phone;
 
         $customer->save();
         return $customer;
