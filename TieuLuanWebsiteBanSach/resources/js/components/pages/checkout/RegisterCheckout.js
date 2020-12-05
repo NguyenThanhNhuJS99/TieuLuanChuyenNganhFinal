@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, Button, Badge, Spinner, Form, ListGroup } from 'react-bootstrap';
 import { Link, withRouter } from "react-router-dom";
-import { registerUser } from "../../../services/AuthService";
 import { registerCustomer } from "../../../services/CustomerAuthService";
 class RegisterCheckout extends React.Component {
 
@@ -58,7 +57,7 @@ class RegisterCheckout extends React.Component {
           isLoading: false,
           errors: {},
         });
-        localStorage.setItem("loginData", JSON.stringify(response));
+        localStorage.setItem("loginCustomerData", JSON.stringify(response));
         // history.push(`${PUBLIC_URL}projects`);
       } else {
         console.log("response.errors", response.errors);
@@ -66,7 +65,7 @@ class RegisterCheckout extends React.Component {
           errors: response.errors,
           isLoading: false,
         });
-        localStorage.setItem("loginData", null);
+        localStorage.setItem("loginCustomerData", null);
       }
     }
   };
@@ -169,6 +168,7 @@ class RegisterCheckout extends React.Component {
                   </Form.Group>
                 </div>
               </div>
+              
 
               {
                 this.state.isloading && (

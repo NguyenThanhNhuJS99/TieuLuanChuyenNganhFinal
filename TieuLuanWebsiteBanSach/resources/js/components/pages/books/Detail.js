@@ -10,7 +10,8 @@ export default class Detail extends Component {
         super();
         this.state = {
             book: {},
-            qty: 1,
+            imageBook: '',
+            qty: '',
             img: '',
             id: '',
             isloading: false,
@@ -31,22 +32,20 @@ export default class Detail extends Component {
             this.getBookDetails(bookID);
         }
     }
-    changeActive=(value)=>{
+    changeActive = (value) => {
         this.setState({
-            book: {
-                image: value
-            }
+            imageBook: value
         })
-        console.log("value",value)
-        console.log("state",this.state.img.value)
+        console.log("value", value)
+        console.log("state", this.state.img.value)
     }
     componentWillMount() {
-        this.changeActive('https://sachvui.com/cover/2015/toi-thay-hoa-vang-tren-co-xanh-nguyen-nhat-anh.jpg')
+        this.changeActive(this.state.book.image1)
     };
     componentDidMount() {
         let bookID = this.props.match.params.id;
         this.getBookDetails();
-        this.changeActive('https://sachvui.com/cover/2015/toi-thay-hoa-vang-tren-co-xanh-nguyen-nhat-anh.jpg')
+        this.changeActive(this.state.book.image1)
     };
 
     getBookDetails = () => {
@@ -55,6 +54,7 @@ export default class Detail extends Component {
         ).then((res) => {
             this.setState({
                 book: res.data.data,
+                imageBook: res.data.data.image1,
                 isloading: false,
             });
         });
@@ -86,9 +86,9 @@ export default class Detail extends Component {
 
     render() {
         return (
-        <>
-            <div className="detail">
-                <div className="container">
+            <>
+                <div className="detail">
+                    <div className="container">
                         <form onSubmit={this.handleSubmit}>
                             <Row>
                                 <Col lg={4} md={4}>
@@ -97,48 +97,54 @@ export default class Detail extends Component {
                                             width: 240,
                                             height: 300,
                                             zoomWidth: 200,
-                                            img: this.state.book.image ? this.state.book.image : image,
+                                            img: this.state.imageBook ? this.state.imageBook : image,
                                             zoomStyle: 'z-index: 999;',
                                             zoomPosition: 'right: 10px'
                                         }} />
                                     </div>
                                     {/* <p className={"margin-div-five"}>Scroll over the image to zoom</p> */}
-                                    <a onClick={()=>{this.changeActive('https://sachvui.com/cover/2015/toi-thay-hoa-vang-tren-co-xanh-nguyen-nhat-anh.jpg')}} className={this.state.book.image === 'https://sachvui.com/cover/2015/toi-thay-hoa-vang-tren-co-xanh-nguyen-nhat-anh.jpg' ? 'imgDetailMini active' : 'imgDetailMini'}>
-                                        <img src='https://sachvui.com/cover/2015/toi-thay-hoa-vang-tren-co-xanh-nguyen-nhat-anh.jpg'></img>
+                                    <a onClick={() => { this.changeActive(this.state.book.image1) }} className={this.state.imageBook === this.state.book.image1 ? 'imgDetailMini active' : 'imgDetailMini'}>
+                                        <img src={this.state.book.image1}></img>
                                     </a>
-                                    <a onClick={()=>{this.changeActive('https://image.voso.vn/users/vosoimage/images/975ae71b64573550f3ed65ec6e7e5666?t%5B0%5D=compress%3Alevel%3D100&accessToken=a9d3eae7bd432980538df4485c8085f403e1a55af398aebbc8ea63b6e166896a')}} className={this.state.book.image === 'https://image.voso.vn/users/vosoimage/images/975ae71b64573550f3ed65ec6e7e5666?t%5B0%5D=compress%3Alevel%3D100&accessToken=a9d3eae7bd432980538df4485c8085f403e1a55af398aebbc8ea63b6e166896a' ? 'imgDetailMini active' : 'imgDetailMini'}>
-                                        <img src='https://image.voso.vn/users/vosoimage/images/975ae71b64573550f3ed65ec6e7e5666?t%5B0%5D=compress%3Alevel%3D100&accessToken=a9d3eae7bd432980538df4485c8085f403e1a55af398aebbc8ea63b6e166896a'></img>
+                                    <a onClick={() => { this.changeActive(this.state.book.image2) }} className={this.state.imageBook === this.state.book.image2 ? 'imgDetailMini active' : 'imgDetailMini'}>
+                                        <img src={this.state.book.image2}></img>
                                     </a>
                                 </Col>
 
                                 <Col lg={6} md={6}>
                                     <div className="contentPreview">
-                                        <h3>Muôn Kiếp Nhân Sinh</h3>
-                                        <p><b> Tác giả: Nguyên Phong</b></p>
+                                        <h3>{this.state.book.name}</h3>
+                                        <p><b>Tác giả: {this.state.book.author}</b></p>
                                         <p><b>Nhà xuất bản: NXB Trẻ</b></p>
-                                        <h4 className="price"><span>150.000 VNĐ</span> - 125.000 VND</h4>
-                                        <h5 className="save">Tiết kiệm được: 25.000 VNĐ</h5>
+                                        <h4 className="price"><span>{this.state.book.originalPrice}đ</span> - {this.state.book.price}đ</h4>
+                                        <h5 className="save">Tiết kiệm được: {(this.state.book.originalPrice - this.state.book.price)}đ</h5>
                                         <p>
-                                            “Muôn kiếp nhân sinh” là tác phẩm do Giáo sư John Vũ - Nguyên Phong viết từ
-                                            năm
-                                            2017 và hoàn tất đầu năm 2020 ghi lại những câu chuyện, trải nghiệm tiền
-                                            kiếp kỳ
-                                            lạ từ nhiều kiếp sống của người bạn tâm giao lâu năm, ông Thomas – một nhà
-                                            kinh
-                                            doanh tài chính nổi tiếng ở New York. Những câu chuyện chưa từng tiết lộ này
-                                            sẽ
-                                            giúp mọi người trên thế giới chiêm nghiệm, khám phá các quy luật về luật
-                                            Nhân
-                                            quả và Luân hồi của vũ trụ giữa lúc trái đất đang gặp nhiều tai ương, biến
-                                            động,
-                                            khủng hoảng từng ngày.
+                                            {this.state.book.description}
                                         </p>
-                                        <a href="#" data-name="Book Story 01" data-price="17" className="add-to-cart"><button
-                                                className="btnMuaNgay">MUA NGAY</button></a>
-                                    </div>                                        
+                                        <FormGroup controlId="formQuantitySelect" className={"quantity-select"}>
+                                            <FormLabel>Số lượng sách</FormLabel>
+                                            <FormControl
+                                                type="number"
+                                                name="quantity"
+                                                value={this.state.qty}
+                                                onChange={(e) => this.qty(this.props.match.params.id, e)}
+                                                onBlur={this.onQuantityBlur}
+                                            />
+                                        </FormGroup>
+                                        <div>
+                                            <span>
+                                                <Button
+                                                    type="submit"
+                                                    bsstyle={"primary"}
+                                                    className={"btn add-to-cart-product"}
+                                                >Thêm vào giỏ
+                                                </Button>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </Col>
                             </Row>
-                        </form>                        
+                        </form>
                     </div>
                 </div>
             </>

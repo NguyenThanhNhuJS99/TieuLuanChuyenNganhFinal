@@ -17,7 +17,7 @@ class cartController extends Controller
             'price' => $data->price,
             'quantity' => $qty,
             'attributes' => array(
-                'image' => $data->image
+                'image' => $data->image1
             )
         ]);
         if($add)

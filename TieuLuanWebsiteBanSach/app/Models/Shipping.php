@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Shipping extends Model
 {
     protected $table = "shippings";
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

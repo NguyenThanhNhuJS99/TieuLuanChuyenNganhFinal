@@ -32,7 +32,6 @@
     <link rel="stylesheet" href="{{ asset('css/magiczoomplus.css') }}">  
     <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" /> 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
-    <link rel="stylesheet" href="{{ asset('css/magiczoomplus.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/hover-effect.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.mmenu.all.min.css') }}">

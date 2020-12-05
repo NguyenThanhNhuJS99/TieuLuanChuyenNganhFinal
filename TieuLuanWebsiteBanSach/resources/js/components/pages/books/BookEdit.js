@@ -13,7 +13,9 @@ class BookEdit extends React.Component {
     description: '',
     status: '',
     price: '',
-    image: '',
+    image1: '',
+    image2: '',
+    image3: '',
     originalPrice: '',
     ratings: '',
     quantity: '',
@@ -53,7 +55,9 @@ class BookEdit extends React.Component {
       description: this.state.description,
       status: this.state.status,
       price: this.state.price,
-      image: this.state.image,
+      image1: this.state.image1,
+      image2: this.state.image2,
+      image3: this.state.image3,
       originalPrice: this.state.originalPrice,
       ratings: this.state.ratings,
       quantity: this.state.quantity,
@@ -74,7 +78,9 @@ class BookEdit extends React.Component {
         description: "",
         status: "",
         price: "",
-        image: "",
+        image1: "",
+        image2: "",
+        image3: "",
         originalPrice: "",
         ratings: "",
         quantity: "",
@@ -94,7 +100,7 @@ class BookEdit extends React.Component {
       <>
         <Card>
           <Card.Body>
-            <h2>Cập nhật sách</h2>
+            <h2>Sách mới</h2>
             <Form onSubmit={this.submitForm}>
               <div className="row">
                 <div className="col-6">
@@ -103,7 +109,7 @@ class BookEdit extends React.Component {
                     <Form.Control
                       type="text"
                       placeholder="Nhập tên sách"
-                      defaultValue={this.state.book.name}
+                      value={this.state.name}
                       name="name"
                       onChange={(e) => this.changeInput(e)}
                     />
@@ -120,7 +126,7 @@ class BookEdit extends React.Component {
                       placeholder="Nhập mô tả sách"
                       as="textarea"
                       rows="3"
-                      defaultValue={this.state.book.description}
+                      value={this.state.description}
                       name="description"
                       onChange={(e) => this.changeInput(e)}
                     />
@@ -129,13 +135,13 @@ class BookEdit extends React.Component {
               </div>
 
               <div className="row">
-                <div className="col-6">
+                <div className="col-4">
                   <Form.Group controlId="originalPrice">
                     <Form.Label>Giá tiền gốc sách</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Nhập giá tiền gốc sách"
-                      defaultValue={this.state.book.originalPrice}
+                      value={this.state.originalPrice}
                       name="originalPrice"
                       onChange={(e) => this.changeInput(e)}
                     />
@@ -144,13 +150,13 @@ class BookEdit extends React.Component {
                     <p className="text-danger">{this.state.errors.name[0]}</p>
                   )}
                 </div>
-                <div className="col-6">
+                <div className="col-4">
                   <Form.Group controlId="price">
                     <Form.Label>Giá tiền sách</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Nhập giá tiền sách"
-                      defaultValue={this.state.book.price}
+                      value={this.state.price}
                       name="price"
                       onChange={(e) => this.changeInput(e)}
                     />
@@ -159,57 +165,11 @@ class BookEdit extends React.Component {
                     <p className="text-danger">{this.state.errors.name[0]}</p>
                   )}
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-6">
-                  <Form.Group controlId="quantity">
-                    <Form.Label>Quantity</Form.Label>
-                    <Form.Control
-                      type="number"
-                      placeholder="Nhập số lượng sách"
-                      defaultValue={this.state.book.quantity}
-                      name="quantity"
-                      onChange={(e) => this.changeInput(e)}
-                    />
-                  </Form.Group>
-                  {this.state.errors && this.state.errors.name && (
-                    <p className="text-danger">{this.state.errors.name[0]}</p>
-                  )}
-                  <div className="col-6">
-                    <Form.Group controlId="ratings">
-                      <Form.Label>Ratings</Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Nhập số sao sách"
-                        defaultValue={this.state.book.ratings}
-                        name="ratings"
-                        onChange={(e) => this.changeInput(e)}
-                      />
-                    </Form.Group>
-                    {this.state.errors && this.state.errors.name && (
-                      <p className="text-danger">{this.state.errors.name[0]}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-6">
-                  <Form.Group controlId="image">
-                    <Form.Label>Hình sách</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Link hình ảnh"
-                      defaultValue={this.state.book.image}
-                      name="image"
-                      onChange={(e) => this.changeInput(e)}
-                    />
-                  </Form.Group>
-                </div>
-                <div className="col-6">
+                <div className="col-4">
                   <Form.Group controlId="status">
                     <Form.Label>Tình trạng</Form.Label>
                     <Form.Control as="select"
-                      defaultValue={this.state.book.status}
+                      value={this.state.status}
                       name="status"
                       onChange={(e) => this.changeInput(e)}
                     >
@@ -220,7 +180,133 @@ class BookEdit extends React.Component {
                   </Form.Group>
                 </div>
               </div>
+              <div className="row">
+                <div className="col-4">
+                  <Form.Group controlId="quantity">
+                    <Form.Label>Quantity</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="Nhập số lượng sách"
+                      value={this.state.quantity}
+                      name="quantity"
+                      onChange={(e) => this.changeInput(e)}
+                    />
+                  </Form.Group>
+                </div>
+                {this.state.errors && this.state.errors.name && (
+                  <p className="text-danger">{this.state.errors.name[0]}</p>
+                )}
+                <div className="col-4">
+                  <Form.Group controlId="ratings">
+                    <Form.Label>Ratings</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="Nhập số sao sách"
+                      value={this.state.ratings}
+                      name="ratings"
+                      onChange={(e) => this.changeInput(e)}
+                    />
+                  </Form.Group>
+                  {this.state.errors && this.state.errors.name && (
+                    <p className="text-danger">{this.state.errors.name[0]}</p>
+                  )}
+                </div>
+                <div className="col-4">
+                  <Form.Group controlId="author">
+                    <Form.Label>Tác giả</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Nhập tên tác giả"
+                      value={this.state.author}
+                      name="author"
+                      onChange={(e) => this.changeInput(e)}
+                    />
+                  </Form.Group>
+                </div>
 
+              </div>
+              <div className="row">
+                <div className="col-4">
+                  <Form.Group controlId="image1">
+                    <Form.Label>Hình sách 1</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Link hình ảnh"
+                      value={this.state.image1}
+                      name="image1"
+                      onChange={(e) => this.changeInput(e)}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-4">
+                  <Form.Group controlId="image2">
+                    <Form.Label>Hình sách 2</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Link hình ảnh"
+                      value={this.state.image2}
+                      name="image2"
+                      onChange={(e) => this.changeInput(e)}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-4">
+                  <Form.Group controlId="image3">
+                    <Form.Label>Hình sách 3</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Link hình ảnh"
+                      value={this.state.image3}
+                      name="image3"
+                      onChange={(e) => this.changeInput(e)}
+                    />
+                  </Form.Group>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-4">
+                  <Form.Group controlId="new">
+                    <Form.Label>Sách mới</Form.Label>
+                    <Form.Control as="select"
+                      value={this.state.new}
+                      name="new"
+                      onChange={(e) => this.changeInput(e)}
+                    >
+                      <option>Chọn</option>
+                      <option value="1">Đúng</option>
+                      <option value="0">Sai</option>
+                    </Form.Control>
+                  </Form.Group>
+                </div>
+                <div className="col-4">
+                  <Form.Group controlId="bestsale">
+                    <Form.Label>Sách bán chạy</Form.Label>
+                    <Form.Control as="select"
+                      value={this.state.bestsale}
+                      name="bestsale"
+                      onChange={(e) => this.changeInput(e)}
+                    >
+                      <option>Chọn</option>
+                      <option value="1">Đúng</option>
+                      <option value="0">Sai</option>
+                    </Form.Control>
+                  </Form.Group>
+                </div>
+                <div className="col-4">
+                  <Form.Group controlId="toprating">
+                    <Form.Label>Sách top đánh giá</Form.Label>
+                    <Form.Control as="select"
+                      value={this.state.toprating}
+                      name="toprating"
+                      onChange={(e) => this.changeInput(e)}
+                    >
+                      <option>Chọn</option>
+                      <option value="1">Đúng</option>
+                      <option value="0">Sai</option>
+                    </Form.Control>
+                  </Form.Group>
+                </div>
+              </div>
               {this.state.errors && this.state.errors.description && (
                 <p className="text-danger">{this.state.errors.description[0]}</p>
               )}
@@ -237,7 +323,7 @@ class BookEdit extends React.Component {
               {
                 !this.state.isloading && (
                   <Button variant="primary" type="submit">
-                    Cập nhật
+                    Lưu
                   </Button>
                 )
               }

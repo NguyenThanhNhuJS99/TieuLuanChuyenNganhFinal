@@ -20,7 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('categories', 'API\CategoriesController');
 Route::apiResource('books', 'API\BooksController');
+
+Route::get('shipping', 'API\ShippingsController@index');
 Route::post('shipping/store', 'API\ShippingsController@store');
+Route::delete('shipping/delete/{id}', 'API\ShippingsController@destroy');
+
+Route::get('order', 'API\OrderController@index');
+Route::post('order/store', 'API\OrderController@store');
+Route::delete('order/delete/{id}', 'API\OrderController@destroy');
 
 Route::get('auth/create-token', 'API\Auth\AuthAPIController@createToken');
 

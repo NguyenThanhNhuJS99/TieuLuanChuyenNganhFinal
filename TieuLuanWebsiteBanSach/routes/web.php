@@ -39,6 +39,12 @@ Route::get('/shopbansach/news', function(){
 Route::get('/shopbansach/about', function(){
     return view('layouts.app');
 });
+Route::get('/shopbansach/shipping', function(){
+    return view('layouts.app');
+});
+Route::get('/shopbansach/books/view/{id}', function(){
+    return view('layouts.app');
+});
 //Route::post('/shipping/store', '')
 
 // Shopping Cart
@@ -61,6 +67,23 @@ Route::get('totalQuantity', function(){
 
 Route::put('tang-so-luong/{id}', 'cartController@tangsoluong');
 Route::put('giam-so-luong/{id}', 'cartController@giamsoluong');
+
+Route::get('thue', function(){
+    $condition = new \Darryldecode\Cart\CartCondition(array(
+        'name' => 'VAT 12.5%',
+        'type' => 'tax',
+        'target' => 'subtotal', // this condition will be applied to cart's subtotal when getSubTotal() is called.
+        'value' => '12.5%',
+        'attributes' => array( // attributes field is optional
+            'description' => 'Value added tax',
+            'more_data' => 'more data here'
+        )
+    ));
+    
+    Cart::condition($condition);
+    $cartSubTotal = Cart::getSubTotal();
+    return $cartSubTotal;
+});
 
 Route::delete('clear', function(){
     $clear = Cart::clear();
