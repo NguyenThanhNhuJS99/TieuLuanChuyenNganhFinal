@@ -2,14 +2,16 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { PUBLIC_URL } from "../../constants";
+import { connect } from 'react-redux'
+import * as actions from './../actions/index'
 class Product extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            qty: '',
+            qty:0,
             id: '',
             totalCart: '',
-            totalQuantity: '',
+            totalQuantity: 0,
             cartlist: [],
             setcartlist: [],
             booklist: [],
@@ -22,7 +24,10 @@ class Product extends Component {
         this.getTotalCart();
         this.getTotalQuantity();
     }
-
+    onAddItem = (value)=>{
+        this.props.onAddProduct(value);
+        console.log("test: ",value)
+    }
     handleSubmit(e) {
         e.preventDefault();
         Axios.post('http://127.0.0.1:8000/add', {
@@ -59,6 +64,8 @@ class Product extends Component {
                 totalQuantity: res.data,
             });
             console.log(this.state.totalQuantity);
+            console.log("aaa: ",this.state.totalQuantity);
+            this.props.onAddProduct(this.state.totalQuantity);
         });
     }
     getCartDetails = () => {
@@ -114,5 +121,16 @@ class Product extends Component {
         );
     }
 }
+const mapStateToProps = state =>{
+    return {
 
-export default Product;
+    }
+}
+const mapDispatchToProps = (dispatch, props) =>{
+    return {
+        onAddProduct : (product) =>{
+            dispatch(actions.addProduct(product));
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Product);

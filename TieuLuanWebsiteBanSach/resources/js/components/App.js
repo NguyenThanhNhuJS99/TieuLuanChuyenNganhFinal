@@ -28,7 +28,13 @@ import ShowCheckout from './pages/checkout/ShowCheckout';
 import NoCheckoutItems from './pages/checkout/NoCheckoutItems';
 import Detail from './pages/books/Detail';
 import News from './pages/news/News';
+import {createStore} from 'redux'
+import { Provider } from 'react-redux'
+import myReducer from './reducers/index'
+import { reduce } from 'lodash';
+import { MapsLocalShipping } from 'material-ui/svg-icons';
 import Shipping from './pages/checkout/Shipping';
+const store = createStore(myReducer)
 class App extends Component {
     state = {
         user: {},
@@ -56,25 +62,6 @@ class App extends Component {
             }
             });
         }
-
-        // // Function  Back to top
-        // $("a").on('click', function (event) {
-        //     // Make sure this.hash has a value before overriding default behavior
-        //     if (this.hash !== "") {
-        //     // Prevent default anchor click behavior
-        //     event.preventDefault();
-        //     // Store hash
-        //     var hash = this.hash;
-        //     // Using jQuery's animate() method to add smooth page scroll
-        //     // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-        //     $('html, body').animate({
-        //         scrollTop: $(hash).offset().top
-        //     }, 800, function () {
-        //         // Add hash (#) to URL when done scrolling (default click behavior)
-        //         window.location.hash = hash;
-        //     });
-        //     } // End if
-        // });
 
         if (checkIfAuthenticated()) {
             this.setState({
@@ -202,5 +189,9 @@ class App extends Component {
 export default App;
 
 if (document.getElementById('app')) {
-    ReactDOM.render(<App />, document.getElementById('app'));
+    ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+    , document.getElementById('app'));
 }

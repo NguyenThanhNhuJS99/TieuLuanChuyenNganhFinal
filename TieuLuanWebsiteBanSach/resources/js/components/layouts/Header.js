@@ -8,6 +8,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { connect } from 'react-redux'
 
 const CustomLink = ({ lable, to, activeOnlyOnExact }) => {
   return (
@@ -146,6 +147,7 @@ class Header extends Component {
     });
   };
   render() {
+    console.log('check: ',this.props.products.product)
     const logout = () => {
       localStorage.removeItem("loginData");
       window.location.href = PUBLIC_URL + "login";
@@ -189,7 +191,7 @@ class Header extends Component {
                     <div className="col-lg-2">
                       <div className="box-cart" data-toggle="modal" data-target="#cart">
                         <i className="fas fa-shopping-cart"></i>
-                        <span className="total-count"> ({this.state.totalQuantity})</span>
+                        <span className="total-count"> ({this.props.products.product})</span>
                       </div>
                     </div>
                   </div>
@@ -343,4 +345,10 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state =>{
+  return {
+      products: state.products
+  }
+}
+
+export default connect(mapStateToProps,null)(Header);

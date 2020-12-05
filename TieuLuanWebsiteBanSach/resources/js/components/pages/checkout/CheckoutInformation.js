@@ -41,6 +41,7 @@ class CheckoutInformation extends React.Component {
             isCusLoggedIn: false,
             loadedAddress: null,
             isLoading: false,
+            url_one_pay: '',
             totalCart: '',
         };
     }
@@ -103,6 +104,26 @@ class CheckoutInformation extends React.Component {
                 address1: this.state.address1,
                 province: this.state.province,
                 phone: this.state.phone,
+                vpc_Merchant: 'ONEPAY',
+                vpc_AccessCode: 'D67342C2',
+                vpc_MerchTxnRef: '202012051903352146282783',
+                vpc_OrderInfo: 'JSECURETEST01',
+                vpc_Amount: '100',
+                vpc_ReturnURL: 'http://127.0.0.1:8000/shopbansach/onepay',
+                vpc_Version: '2',
+                vpc_Locale: 'vn',
+                vpc_Currency: 'VND',
+                vpc_TicketNo: '::1',
+                vpc_SHIP_Street01: '39A Ngo Quyen',
+                vpc_SHIP_Provice: 'Hoan Kiem',
+                vpc_SHIP_City: 'Ha Noi',
+                vpc_SHIP_Country: 'Viet Nam',
+                vpc_Customer_Phone: '840904280949',
+                vpc_Customer_Email: 'support@onepay.vn',
+                vpc_Customer_Id: 'thanhvt',
+                virtualPaymentClientURL: 'https://mtf.onepay.vn/onecomm-pay/vpc.op',
+                vpc_Command: 'pay',
+                Title: 'VPC 3-Party'
             };
 
             const response = Axios.post("http://127.0.0.1:8000/api/shipping/store", postBody)
@@ -110,6 +131,10 @@ class CheckoutInformation extends React.Component {
                     // this.props.history.push({
                     //     pathname: '/shopbansach',
                     // });
+                    window.location.href = res.data.url_one_pay;
+                    console.log("onepay res", res);
+                    //console.log("onepay success", res.success);
+                    //console.log("onepay", res.success.url_one_pay);
                     this.deleteAllCart();
                 })
                 .catch((error) => {
@@ -124,8 +149,12 @@ class CheckoutInformation extends React.Component {
                     address1: "",
                     province: "",
                     phone: "",
+                    paymentMethod: "",
                     isLoading: false,
+
                 });
+
+                
                 
             } else {
                 this.setState({
@@ -326,13 +355,9 @@ class CheckoutInformation extends React.Component {
                                             <p>Discount applied: ${discount.toFixed(2)}</p>} */}
                                             {/* <p>Amount Due: ${amountDue}</p> */}
                                             <hr />
-                                            <Form.Check name="radioGroup" value="1"
-                                                onClick={this.handlePaymentMethod}
-                                                checked={this.state.creditCardChecked}
-                                                onChange={this.handlePaymentChange}
-                                            >
-                                                Credit Card
-                                        </Form.Check>
+                                            <Button>
+                                                Thanh toán trả trước
+                                            </Button>
                                             <Form.Check name="radioGroup" value="2"
                                                 onClick={this.handlePaymentMethod}
                                                 checked={this.state.debitCardChecked}

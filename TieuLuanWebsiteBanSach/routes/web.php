@@ -45,6 +45,10 @@ Route::get('/shopbansach/shipping', function(){
 Route::get('/shopbansach/books/view/{id}', function(){
     return view('layouts.app');
 });
+
+
+Route::get('/shopbansach/onepay', 'API\ShippingsController@callbackOnePay');
+
 //Route::post('/shipping/store', '')
 
 // Shopping Cart
