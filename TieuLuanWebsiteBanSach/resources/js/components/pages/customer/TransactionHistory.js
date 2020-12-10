@@ -2,7 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import Product from './Product';
 
-class Products extends Component {
+class TransactionHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -115,4 +115,4 @@ class Products extends Component {
     }
 }
 
-export default Products;
+export default TransactionHistory;

@@ -53,7 +53,9 @@ class Products extends Component {
         var listProducts = this.state.booklist.map((product, index) => {
             if (this.state.listState.value === '1') {
                 if (product.new) {
-                    return <Product key={index} bookId={product.bookId} img={product.image1} name={product.name} author={product.author} price={product.price} temp={(value)=>{this.buyItem(value)}}></Product>
+                    return <Product key={index} bookId={product.bookId}
+                    img={product.image1} name={product.name} author={product.author}
+                    price={product.price} temp={(value)=>{this.buyItem(value)}}></Product>
                 }
             }
             else if (this.state.listState.value === '2') {

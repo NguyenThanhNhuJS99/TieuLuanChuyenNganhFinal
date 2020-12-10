@@ -40,15 +40,6 @@ class CheckoutItem extends React.Component {
                 <div className={"total-cart-label-div"}>
                     <Row>
                         <Col lg={9} md={9}>
-                            <span className={"total-cart-label"}>Thuế :</span>
-                        </Col>
-
-                        <Col lg={3} md={3}>
-                            <span className={"total-cart-amount"}>{this.state.thue}đ</span>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col lg={9} md={9}>
                             <span className={"total-cart-label"}>Thành tiền:</span>
                         </Col>
 

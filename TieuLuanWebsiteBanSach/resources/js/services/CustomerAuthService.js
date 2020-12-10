@@ -5,7 +5,7 @@ export const checkCusIfAuthenticated = () => {
   console.log("getLoginCustomerData",getLoginCustomerData);
   if (getLoginCustomerData != null) {
     const customerdata = JSON.parse(getLoginCustomerData);
-    if (customerdata.success && customerdata.access_token !== null) {
+    if (customerdata.access_token !== null) {
       return customerdata.customer;
     }
     return false;

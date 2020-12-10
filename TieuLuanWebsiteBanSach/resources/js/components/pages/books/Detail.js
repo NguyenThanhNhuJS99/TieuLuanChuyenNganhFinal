@@ -4,7 +4,6 @@ import ReactImageZoom from 'react-image-zoom';
 import StarRatingComponent from 'react-star-ratings';
 import { image } from "../../image";
 import Axios from 'axios';
-
 export default class Detail extends Component {
     constructor() {
         super();
@@ -121,6 +120,26 @@ export default class Detail extends Component {
                                         <p>
                                             {this.state.book.description}
                                         </p>
+                                        <div className={"product-info-star-rating"}>
+                                            {(this.state.book.ratings && this.state.book.ratings > 0) ?
+                                                <div>
+                                                    <StarRatingComponent
+                                                        rating={this.state.book.ratings}
+                                                        starDimension={"20px"}
+                                                        starSpacing={"0px"}
+                                                        starRatedColor={"rgb(247, 202, 37)"}
+                                                    />
+                                                    {/* {this.state.book.numberOfRatings &&
+                                                        <span className={"product-info-number-of-ratings"}>
+                                                            {this.state.book.numberOfRatings} ratings
+                                                        </span>
+                                                    } */}
+                                                </div>
+                                                :
+                                                <span className={"not-enough-ratings-span"}>Not enough ratings</span>
+                                            }
+                                        </div>
+                                        <br></br>
                                         <FormGroup controlId="formQuantitySelect" className={"quantity-select"}>
                                             <FormLabel>Số lượng sách</FormLabel>
                                             <FormControl

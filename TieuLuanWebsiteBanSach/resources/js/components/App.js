@@ -34,6 +34,7 @@ import myReducer from './reducers/index'
 import { reduce } from 'lodash';
 import { MapsLocalShipping } from 'material-ui/svg-icons';
 import Shipping from './pages/checkout/Shipping';
+import AddDelivery from './pages/delivery/AddDelivery';
 const store = createStore(myReducer)
 class App extends Component {
     state = {
@@ -167,6 +168,10 @@ class App extends Component {
                                 <Route path={`${PUBLIC_URL}shipping`}
                                     exact={true}
                                     component={Shipping}
+                                />
+                                <Route path={`${PUBLIC_URL}delivery`}
+                                    exact={true}
+                                    component={AddDelivery}
                                 />
                                 <Route path={`${PUBLIC_URL}`}
                                     exact={true}

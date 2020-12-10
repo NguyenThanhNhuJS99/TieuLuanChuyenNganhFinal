@@ -25,6 +25,9 @@ class CheckoutInformation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            cartlist: [],
+            order_id: '',
+            totalCart: '',
             finished: false,
             stepIndex: 0,
             cus_id: '',
@@ -34,13 +37,16 @@ class CheckoutInformation extends React.Component {
             emailValidation: null,
             note: '',
             noteValidation: null,
-            address1: '',
+            city: '',
             province: '',
+            wards: '',
             phone: '',
+            item_name: '',
             customer: {},
             isCusLoggedIn: false,
             loadedAddress: null,
             isLoading: false,
+            url_one_pay: '',
             totalCart: '',
         };
     }
@@ -54,10 +60,11 @@ class CheckoutInformation extends React.Component {
     }
     componentDidMount() {
         this.getTotalCart();
+        this.getCartDetails();
         const getLoginCustomerData = localStorage.getItem("loginCustomerData");
         if (getLoginCustomerData != null) {
             const customerdata = JSON.parse(getLoginCustomerData);
-            if (customerdata.success && customerdata.access_token !== null) {
+            if (customerdata.access_token !== null) {
                 this.setState({
                     cus_id: customerdata.customer.id,
                     name: customerdata.customer.name,
@@ -73,11 +80,28 @@ class CheckoutInformation extends React.Component {
     }
     deleteAllCart = async () => {
         Axios.delete('http://127.0.0.1:8000/clear')
-          .then((res) => {
-            this.getTotalQuantity();
-            this.getCartDetails();
-            this.getTotalCart();
-          });
+            .then((res) => {
+                this.getTotalQuantity();
+                this.getCartDetails();
+                this.getTotalCart();
+            });
+    }
+    getCartDetails = () => {
+        Axios.get('http://127.0.0.1:8000/cart').then((res) => {
+            this.setState({
+                cartlist: res.data,
+            });
+            console.log("cartlist", this.state.cartlist);
+            console.log("item_name", this.state.item_name);
+        });
+    };
+    getTotalCart = () => {
+        Axios.get('http://127.0.0.1:8000/totalCart').then((res) => {
+            this.setState({
+                totalCart: res.data,
+            });
+            console.log(this.state.totalCart);
+        });
     }
     handleNext = async (address) => {
         const { stepIndex } = this.state;
@@ -94,63 +118,85 @@ class CheckoutInformation extends React.Component {
             const totalAmount = this.state.totalCart;
 
             //const paymentMethod = this.state.creditCardChecked ? 'Credit Card' : 'Debit Card';
-            const { history } = this.props;
+
             const postBody = {
                 customer_id: this.state.cus_id,
                 name: this.state.name,
                 email: this.state.email,
                 note: this.state.note,
-                address1: this.state.address1,
                 province: this.state.province,
+               
                 phone: this.state.phone,
+                status: 0,
+                paymentMethod: 'Thanh toán trả trước',
+                /*vpc_Merchant: 'ONEPAY',
+                vpc_AccessCode: 'D67342C2',
+                vpc_MerchTxnRef: '202012051903352146282783',
+                vpc_OrderInfo: 'JSECURETEST01',
+                vpc_Amount: '100',
+                vpc_ReturnURL: 'http://127.0.0.1:8000/shopbansach/onepay',
+                vpc_Version: '2',
+                vpc_Locale: 'vn',
+                vpc_Currency: 'VND',
+                vpc_TicketNo: '::1',
+                vpc_SHIP_Street01: '39A Ngo Quyen',
+                vpc_SHIP_Provice: 'Hoan Kiem',
+                vpc_SHIP_City: 'Ha Noi',
+                vpc_SHIP_Country: 'Viet Nam',
+                vpc_Customer_Phone: '840904280949',
+                vpc_Customer_Email: 'support@onepay.vn',
+                vpc_Customer_Id: 'thanhvt',
+                virtualPaymentClientURL: 'https://mtf.onepay.vn/onecomm-pay/vpc.op',
+                vpc_Command: 'pay',
+                Title: 'VPC 3-Party'
+                */
             };
 
-            const response = Axios.post("http://127.0.0.1:8000/api/shipping/store", postBody)
+            const response = Axios.post("http://127.0.0.1:8000/api/order/store", postBody)
                 .then((res) => {
-                    // this.props.history.push({
-                    //     pathname: '/shopbansach',
-                    // });
-                    this.deleteAllCart();
-                })
-                .catch((error) => {
-                    console.log(error.res);
-                });
-            if (response.success) {
-                this.setState({
-                    cus_id: "",
-                    name: "",
-                    email: "",
-                    note: "",
-                    address1: "",
-                    province: "",
-                    phone: "",
-                    isLoading: false,
-                });
-                
-            } else {
-                this.setState({
-                    errors: response.errors,
-                    isLoading: false,
-                });
+                        window.location.href = res.data.url_one_pay;
+                        console.log("onepay res", res);
+                        //this.deleteAllCart();
+                    })
+                        .catch((error) => {
+                            console.log(error.res);
+                        });
+                    if (response.success) {
+                        this.setState({
+                            cus_id: "",
+                            name: "",
+                            email: "",
+                            note: "",
+                            city: "",
+                            province: "",
+                            wards: "",
+                            phone: "",
+                            isLoading: false,
+                        });
+                    } else {
+                        this.setState({
+                            errors: response.errors,
+                            isLoading: false,
+                        });
+                    }
+                }
+        };
+        handlePrev = () => {
+            const { stepIndex } = this.state;
+            if (stepIndex > 0) {
+                this.setState({ stepIndex: stepIndex - 1 });
             }
-        }
-    };
-    handlePrev = () => {
-        const { stepIndex } = this.state;
-        if (stepIndex > 0) {
-            this.setState({ stepIndex: stepIndex - 1 });
-        }
-    };
-    onNameChange = (e) => {
-        let name = e.target.value;
-        let nameValidation = "success";
-        if (name.trim().length === 0) {
-            nameValidation = "error";
-        }
-        if (name.length <= 45) {
-            this.setState(() => ({ name, nameValidation }));
-        }
-    };
+        };
+        onNameChange = (e) => {
+            let name = e.target.value;
+            let nameValidation = "success";
+            if (name.trim().length === 0) {
+                nameValidation = "error";
+            }
+            if (name.length <= 45) {
+                this.setState(() => ({ name, nameValidation }));
+            }
+        };
     static emailValidation = (email) => {
         let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
@@ -176,14 +222,19 @@ class CheckoutInformation extends React.Component {
             this.setState(() => ({ note, noteValidation }));
         }
     };
-    onInputAddressChange = address1 => {
+    onInputCityChange = city => {
         this.setState({
-            address1: address1
+            city: city
         });
     };
     onInputProvinceChange = province => {
         this.setState({
             province: province
+        });
+    };
+    onInputWardsChange = wards => {
+        this.setState({
+            wards: wards
         });
     };
     onInputPhoneChange = phone => {
@@ -272,8 +323,9 @@ class CheckoutInformation extends React.Component {
                                 <Row>
                                     <Col lg={12} md={12}>
                                         <AddressForm
-                                            AddressOneChange={this.onInputAddressChange}
+                                            CityOneChange={this.onInputCityChange}
                                             ProvinceOneChange={this.onInputProvinceChange}
+                                            WardsOneChange={this.onInputWardsChange}
                                             PhoneOneChange={this.onInputPhoneChange}
                                             loadedAddress={this.state.loadedAddress}
                                             handleNext={this.handleNext}
@@ -326,13 +378,9 @@ class CheckoutInformation extends React.Component {
                                             <p>Discount applied: ${discount.toFixed(2)}</p>} */}
                                             {/* <p>Amount Due: ${amountDue}</p> */}
                                             <hr />
-                                            <Form.Check name="radioGroup" value="1"
-                                                onClick={this.handlePaymentMethod}
-                                                checked={this.state.creditCardChecked}
-                                                onChange={this.handlePaymentChange}
-                                            >
-                                                Credit Card
-                                        </Form.Check>
+                                            <Button>
+                                                Thanh toán trả trước
+                                            </Button>
                                             <Form.Check name="radioGroup" value="2"
                                                 onClick={this.handlePaymentMethod}
                                                 checked={this.state.debitCardChecked}
