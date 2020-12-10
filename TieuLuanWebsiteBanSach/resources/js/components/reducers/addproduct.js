@@ -2,7 +2,9 @@ import * as types from '../constants/ActionType'
 
 var data = JSON.parse(localStorage.getItem('tasks'))
 var initialState = {
-    total: 0
+    total: 0,
+    cartlist: [],
+    totalCart: 0
 }
 var myReducer = (state = initialState, action) =>{
     switch (action.type) {

@@ -24,10 +24,10 @@ class Product extends Component {
         this.getTotalCart();
         this.getTotalQuantity();
     }
-    onAddItem = (value)=>{
-        this.props.onAddProduct(value);
-        console.log("test: ",value)
-    }
+    // onAddItem = (value)=>{
+    //     this.props.onAddProduct(value);
+    //     console.log("test: ",value)
+    // }
     handleSubmit(e) {
         e.preventDefault();
         Axios.post('http://127.0.0.1:8000/add', {
@@ -55,25 +55,23 @@ class Product extends Component {
             this.setState({
                 totalCart: res.data,
             });
-            console.log(this.state.totalCart);
         });
+        this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
     }
     getTotalQuantity = () => {
         Axios.get('http://127.0.0.1:8000/totalQuantity').then((res) => {
             this.setState({
                 totalQuantity: res.data,
             });
-            console.log(this.state.totalQuantity);
-            console.log("aaa: ",this.state.totalQuantity);
-            this.props.onAddProduct(this.state.totalQuantity);
+            this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
         });
     }
     getCartDetails = () => {
+        this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
         Axios.get('http://127.0.0.1:8000/cart').then((res) => {
             this.setState({
                 cartlist: res.data,
             });
-            console.log("cartlist", this.state.cartlist);
         });
     };
     render() {
@@ -128,8 +126,8 @@ const mapStateToProps = state =>{
 }
 const mapDispatchToProps = (dispatch, props) =>{
     return {
-        onAddProduct : (product) =>{
-            dispatch(actions.addProduct(product));
+        onAddProduct : (total,cartlist,totalCart) =>{
+            dispatch(actions.addProduct(total,cartlist,totalCart));
         }
     }
 }

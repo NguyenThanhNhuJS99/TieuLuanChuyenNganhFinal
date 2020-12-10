@@ -24,10 +24,6 @@ a:hover {
     background-color: #fff;
 }
 
-.sticky #topmenu {
-    padding: 5px 0 0;
-}
-
 .sticky .mainmenu {
     height: 44px;
 }
@@ -45,99 +41,9 @@ a:hover {
     box-shadow: 0 0 9px #888;
 }
 
-#topmenu {
-    padding: 10px 0;
-}
-
-#topmenu .box-contact .hotline {
-    margin: 5px 0;
-}
-
-#topmenu .box-contact .hotline i {
-    color: #00AFF0;
-    font-size: 24px;
-}
-
-#topmenu .box-contact .hotline p {
-    display: inline;
-    font-weight: 600;
-    font-size: 18px;
-}
-
-#topmenu .box-logoTop {
-    text-align: center;
-}
-
-#topmenu .box-search-cart {
-    line-height: 40px;
-    text-align: right;
-}
-
-#topmenu .box-search-cart .box-cart {
-    height: 40px;
-    width: 42px;
-    text-align: center;
-    line-height: 42px;
-    background-color: #00AFF0;
-    border-radius: 5px;
-    background-size: cover;
-    display: inline-block;
-    cursor: pointer;
-}
-
-#topmenu .box-search-cart .box-cart i {
-    color: #ffffff;
-}
-
-#topmenu .box-search-cart .box-search form.form-search {
-    position: relative;
-}
-
-#topmenu .box-search-cart .box-search {
-    display: inline;
-}
-
-#topmenu .box-search-cart .box-search form.form-search input[type=text] {
-    font-size: 15px;
-    border: 1px solid #00AFF0;
-    float: left;
-    width: 80%;
-    height: 40px;
-    background: #ffffff;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-    padding-left: 10px;
-}
-
-#topmenu .box-search-cart .box-search form.form-search .btn-search {
-    height: 40px;
-    width: 42px;
-    background-color: #00AFF0;
-    border-radius: 0 5px 5px 0;
-    background-size: cover;
-    border: none;
-    outline: none;
-    color: #ffffff;
-    position: absolute;
-    right: 22px;
-}
-
-#topmenu .box-search-cart .col-md-2,
-#topmenu .box-search-cart .col-md-10 {
-    padding: 0;
-}
-
-#topmenu .box-search-cart ::placeholder {
-    font-style: italic;
-}
-
 /* ------ End Top Menu ------- */
 
 /* --------------- HEADER ---------------- */
-.topmenu {
-    padding: 10px 0 0;
-}
-
 .mainmenu {
     text-align: center;
 }
@@ -157,6 +63,7 @@ header ul {
 header ul li {
     float: left;
     padding: 0 20px;
+    position: relative;
 }
 
 header ul li a {
@@ -170,6 +77,120 @@ ul li a:hover {
     text-decoration: none !important;
     border: none;
 }
+/* ------------------------------ */
+header #top-menu{
+    position: relative;
+    height: 40px;
+    background-color: #e6f5ff;
+}
+header #top-menu .content-top-menu{
+    position: relative;
+    height: 40px;
+}
+header #top-menu .title-welcome{
+    display: inline-block;
+    margin: 0;
+    color: #00AFF0;
+    font-style: italic;
+    align-self: center;
+    line-height: 40px;
+    font-weight: 600;
+}
+header #top-menu .box-icon-top{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+header #top-menu .box-icon-top img{
+    margin-left: 5px;
+}
+
+.sticky #top-menu{
+    display: none !important;
+}
+
+header .box-logo-search{
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+}
+header .logo-top, header .box-search-cart{
+    align-self: center;
+}
+header .logo-top{
+    height: 70px;
+}
+header .box-search-cart{
+    display: inline-block;
+    height: 40px;
+}
+header .imgLogoTop{
+    height: 45px;
+    margin: auto 0;
+}
+header ul li a i {
+    font-size: 11px;
+}
+header .search-box{
+    position: relative;;
+    display: inline-block;
+    height: 40px;
+    width: 280px;
+    border: none;
+}
+header .search-box .input-search{
+    width: 280px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #00AFF0;
+    padding: 0 20px;
+    outline: none;
+}
+header .search-box .input-search::placeholder{
+    font-style: italic;
+    font-size: 16px;
+    font-weight: 400;
+}
+header .search-box .btn-search{
+    position: absolute;
+    right: 0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: #00AFF0;
+    border:none;
+    outline: none;
+}
+header .search-box .btn-search i{
+    color: #fff;
+}
+header .box-logo-search .box-search-cart .box-cart{
+    display: inline-block;
+    line-height: 40px;
+    padding: 0 15px;
+    border-radius: 20px;
+    background-color: #00AFF0;
+    border:none;
+    outline: none;
+    margin-left: 15px;
+}
+header .box-logo-search .box-search-cart .box-cart span{
+    color: #fff;
+    margin: 0 5px 0 0;
+}
+header .box-logo-search .box-search-cart .box-cart i, header .box-logo-search .box-search-cart .box-cart p{
+    margin: 0;
+    display: inline-block;
+    color: #fff;
+}
+header .box-logo-search .box-search-cart .box-cart i{
+    margin-right: 5px;
+}
+.sticky .box-logo-search{
+    height: 60px;
+}
+/* ============================== */
 
 /* header ul li a:hover {
     color: #00AFF0;
@@ -179,6 +200,40 @@ ul li a:hover {
 
 .mainmenu {
     height: 50px;
+}
+
+header .mainmenu ul li ul.sub-menu {
+    display: none;
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 9999;
+    margin: 0px;
+    left: 0px;
+}
+.mainmenu ul .main-sub:hover>.sub-menu {
+    display: block;
+    animation: cd 0.4s ease-in-out;
+}
+.mainmenu ul li ul li {
+    text-transform: uppercase;
+    color: #fff000;
+    line-height: 30px;
+    width: 280px;
+    font-weight: 600;
+    border-bottom: 1px solid #888888;
+    display: block;
+    float: none;
+    text-align: left;
+}
+
+.mainmenu ul li ul li:last-child {
+    border-bottom: none;
+}
+
+.mainmenu ul li ul li a {
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 /* ------------- End HEADER -------------- */
@@ -1517,10 +1572,6 @@ margin: 10px 0 60px;
         display: none !important;
     }
 
-    .sticky #topmenu {
-        padding: 10px 0;
-    }
-
     .boxbanner .bannerTop p {
         font-size: 18px;
         top: 11%;
@@ -1597,7 +1648,14 @@ margin: 10px 0 60px;
         font-size: 22px;
     }
 }
-
+@media only screen and (max-width: 740px){
+    header .box-logo-search .box-search-cart .box-cart p{
+        display: none;
+    }
+    header .box-logo-search{
+        position: relative;
+    }
+}
 @media only screen and (max-width: 440px) {
     .news .itemNews01 h4, .news .itemNewRight h4 {
         margin-top: 10px;
@@ -1694,5 +1752,14 @@ margin: 10px 0 60px;
     }
     .box20 .title {
         font-size: 12px;
+    }
+}
+@keyframes cd {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }

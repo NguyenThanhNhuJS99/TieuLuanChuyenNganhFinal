@@ -48,16 +48,16 @@ var itemsMenu = [
     to: '/shopbansach/contact',
     exact: false
   },
-  {
-    lable: 'Đăng nhập',
-    to: '/shopbansach/login-checkout',
-    exact: false
-  },
-  {
-    lable: 'Đăng ký',
-    to: '/shopbansach/register-checkout',
-    exact: false
-  },
+  // {
+  //   lable: 'Đăng nhập',
+  //   to: '/shopbansach/login-checkout',
+  //   exact: false
+  // },
+  // {
+  //   lable: 'Đăng ký',
+  //   to: '/shopbansach/register-checkout',
+  //   exact: false
+  // },
 ]
 
 class Header extends Component {
@@ -76,6 +76,15 @@ class Header extends Component {
     this.getCartDetails();
     this.getTotalCart();
     this.getTotalQuantity();
+    this.tangSoLuongSach();
+    this.giamSoLuongSach();
+  }
+  componentWillMount() {
+    this.getCartDetails();
+    this.getTotalCart();
+    this.getTotalQuantity();
+    this.tangSoLuongSach();
+    this.giamSoLuongSach();
   }
   handleCart(e) {
     e.preventDefault();
@@ -88,7 +97,7 @@ class Header extends Component {
       this.setState({
         cartlist: res.data,
       });
-      console.log(this.state.cartlist);
+      console.log(this.props.products.cartlist);
     });
   };
   getTotalCart = () => {
@@ -96,16 +105,18 @@ class Header extends Component {
       this.setState({
         totalCart: res.data,
       });
-      console.log(this.state.totalCart);
+      console.log(this.props.products.totalCart);
     });
+    
   }
   getTotalQuantity = () => {
     Axios.get('http://127.0.0.1:8000/totalQuantity').then((res) => {
       this.setState({
         totalQuantity: res.data,
       });
-      console.log(this.state.totalQuantity);
+      console.log(this.props.products.total);
     });
+    
   }
   tangSoLuongSach = async (id) => {
     Axios.put(`http://127.0.0.1:8000/tang-so-luong/${id}`)
@@ -129,6 +140,7 @@ class Header extends Component {
         this.getCartDetails();
         this.getTotalCart();
       });
+    
   };
   deleteAllCart = async () => {
     Axios.delete('http://127.0.0.1:8000/clear')
@@ -143,11 +155,12 @@ class Header extends Component {
       this.setState({
         cartlist: res.data,
       });
-      console.log(this.state.cartlist);
+      console.log('cartlist: ',this.props.products.cartlist);
     });
+    
   };
   render() {
-    console.log('check: ',this.props.products.product)
+    console.log('check: ',this.props.products)
     const logout = () => {
       localStorage.removeItem("loginData");
       window.location.href = PUBLIC_URL + "login";
@@ -159,7 +172,36 @@ class Header extends Component {
     const getLoginCustomerData = localStorage.getItem("loginCustomerData");
     return (
       <header id="menu">
-        <div id="topmenu">
+        <div id="top-menu" class="d-md-none d-sm-none d-none d-lg-block">
+                <div class="container">
+                    <div class="content-top-menu">
+                        <p class="title-welcome">
+                            Chào mừng bạn đến với thế giới cây cảnh
+                        </p>
+                        <div class="box-icon-top">
+                          Đăng Nhập - Đăng Ký
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div className="container">
+          <div className="box-logo-search">
+            <img className="imgLogoTop" src="/images/logo1.png" alt=""/>
+            <div className="box-search-cart">
+                <form className="search-box" action="aaaa">
+                    <input className="input-search" type="text" placeholder="Tìm kiếm..."/>
+                    <button type="submit" className="btn-search"><i className="fas fa-search"></i></button>
+                </form>
+                <a href="#" data-toggle="modal" data-target="#cart">
+                    <div className="box-cart" ><i class="fas fa-shopping-cart"></i>
+                        <span className="count">({this.props.products.total})</span><p>Sản phẩm</p>
+                    </div>
+                </a>
+                      </div>
+            <div class="menumobi d-lg-none d-md-block"> <a href="#my-menu" id="open" class="icon-menu">☰</a></div>
+          </div>
+        </div>
+        {/* <div id="topmenu">
           <div className="container">
             <div className="row">
               <div className="menumobi mainmenu d-lg-none d-md-block"> <a href="#my-menu" id="open"
@@ -191,7 +233,7 @@ class Header extends Component {
                     <div className="col-lg-2">
                       <div className="box-cart" data-toggle="modal" data-target="#cart">
                         <i className="fas fa-shopping-cart"></i>
-                        <span className="total-count"> ({this.props.products.product})</span>
+                        <span className="total-count"> ({this.props.products.total})</span>
                       </div>
                     </div>
                   </div>
@@ -229,7 +271,7 @@ class Header extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Modal */}
         <form onSubmit={this.handleCart}>
           <div className="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -247,16 +289,16 @@ class Header extends Component {
                       <th>Số lượng</th>
                     </tr>
                   </thead>
-                  {Object.keys(this.state.cartlist).map((item, i) => (
+                  {Object.keys(this.props.products.cartlist).map((item, i) => (
                     <tbody>
                       <tr key={i}>
-                        <td>{this.state.cartlist[item].name}</td>
-                        <td>{this.state.cartlist[item].price}đ</td>
+                        <td>{this.props.products.cartlist[item].name}</td>
+                        <td>{this.props.products.cartlist[item].price}đ</td>
                         <td>
                           <div className="input-group" style={{ width: 130 + "px" }}>
                             <button
                               className="minus-item input-group-addon btn btn-primary"
-                              onClick={() => this.giamSoLuongSach(this.state.cartlist[item].id)}
+                              onClick={() => this.giamSoLuongSach(this.props.products.cartlist[item].id)}
                             >
                               -
                             </button>
@@ -264,18 +306,18 @@ class Header extends Component {
                               type="number"
                               className="item-count form-control"
                               disabled
-                              value={this.state.cartlist[item].quantity}
+                              value={this.props.products.cartlist[item].quantity}
                             />
                             <button
                               className="plus-item btn btn-primary input-group-addon"
-                              onClick={() => this.tangSoLuongSach(this.state.cartlist[item].id)}
+                              onClick={() => this.tangSoLuongSach(this.props.products.cartlist[item].id)}
                             >
                               +
                             </button>
                           </div>
                         </td>
                         <td><Button
-                          onClick={() => this.deleteCart(this.state.cartlist[item].id)}
+                          onClick={() => this.deleteCart(this.props.products.cartlist[item].id)}
                           className="btn btn-danger"
                         >
                           Xóa
@@ -286,12 +328,12 @@ class Header extends Component {
                   ))
                   }
                 </Table>
-                {this.state.cartlist.length === 0 && (
+                {this.props.products.cartlist.length === 0 && (
                   <Alert variant={"warning"}>
                     Không có sản phẩm nào trong giỏ
                   </Alert>
                 )}
-                <div>Tổng tiền: {this.state.totalCart} VNĐ</div>
+                <div>Tổng tiền: {this.props.products.totalCart} VNĐ</div>
                 <div className="modal-footer">
                   <button type="button" className="btn btn-info" data-dismiss="modal">Tiếp tục mua hàng</button>
                   <button
@@ -301,7 +343,7 @@ class Header extends Component {
                   >
                     Xóa hết
                   </button>
-                  {this.state.cartlist.length !== 0 && (
+                  {this.props.products.cartlist.length !== 0 && (
                     <>
                       {getLoginCustomerData === null && (
                         <>
@@ -328,6 +370,15 @@ class Header extends Component {
           <div className="container">
             <ul>
               {this.showMenu(itemsMenu)}
+                <li class="main-sub">
+                  <a href="">Thể loại <i class="fas fa-chevron-down"></i></a>
+                  <ul class="sub-menu">
+                      <li><a href="">Văn Học</a></li>
+                      <li><a href="">Thiếu Nhi</a></li>
+                      <li><a href="">Khoa Học</a></li>
+                      <li><a href="">Truyện</a></li>
+                  </ul>
+                </li>
             </ul>
           </div>
         </div>
@@ -350,5 +401,11 @@ const mapStateToProps = state =>{
       products: state.products
   }
 }
-
-export default connect(mapStateToProps,null)(Header);
+const mapDispatchToProps = (dispatch, props) =>{
+  return {
+      onAddProduct : (total,cartlist,totalCart) =>{
+          dispatch(actions.addProduct(total,cartlist,totalCart));
+      }
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Header);
