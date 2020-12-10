@@ -76,19 +76,20 @@ class OrdersController extends Controller
         // Khóa bí mật - được cấp bởi OnePAY
         $SECURE_SECRET = "A3EFDFABA8653DF2342E8DAC29B51AF0";
 
+        $data_onepay['virtualPaymentClientURL'] = 'https://mtf.onepay.vn/onecomm-pay/vpc.op';
         // add the start of the vpcURL querystring parameters
         // *****************************Lấy giá trị url cổng thanh toán*****************************
-        $vpcURL = $request->virtualPaymentClientURL . "?";
+        $vpcURL =  $data_onepay['virtualPaymentClientURL'] . "?";
 
         // Remove the Virtual Payment Client URL from the parameter hash as we 
         // do not want to send these fields to the Virtual Payment Client.
         // bỏ giá trị url và nút submit ra khỏi mảng dữ liệu
-        unset($request->virtualPaymentClientURL); 
+        unset( $data_onepay['virtualPaymentClientURL']); 
         unset($request->SubButL);
 
         //$stringHashData = $SECURE_SECRET; *****************************Khởi tạo chuỗi dữ liệu mã hóa trống*****************************
         $stringHashData = "";
-        $request_all = $request->all();
+    
 
                 $data_onepay['vpc_Merchant'] =  'ONEPAY';
                 $data_onepay['vpc_AccessCode'] = 'D67342C2';
@@ -107,7 +108,6 @@ class OrdersController extends Controller
                 $data_onepay['vpc_Customer_Phone'] = '840904280949';
                 $data_onepay['vpc_Customer_Email'] = 'support@onepay.vn';
                 $data_onepay['vpc_Customer_Id'] = 'thanhvt';
-                $data_onepay['virtualPaymentClientURL'] = 'https://mtf.onepay.vn/onecomm-pay/vpc.op';
                 $data_onepay['vpc_Command'] = 'pay';
                 $data_onepay['Title'] = 'VPC 3-Party';
 
@@ -182,7 +182,7 @@ class OrdersController extends Controller
 
         $orders = $this->orderRepository->delete($id);
         return response()->json([
-            'success' => true,
+            'success' => true,  
             'message' => 'Order Deleted',
             'data'    => $orders
         ]);

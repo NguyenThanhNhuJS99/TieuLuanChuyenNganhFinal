@@ -124,32 +124,12 @@ class CheckoutInformation extends React.Component {
                 name: this.state.name,
                 email: this.state.email,
                 note: this.state.note,
+                city: this.state.city,
                 province: this.state.province,
-               
+                wards: this.state.wards,
                 phone: this.state.phone,
                 status: 0,
                 paymentMethod: 'Thanh toán trả trước',
-                /*vpc_Merchant: 'ONEPAY',
-                vpc_AccessCode: 'D67342C2',
-                vpc_MerchTxnRef: '202012051903352146282783',
-                vpc_OrderInfo: 'JSECURETEST01',
-                vpc_Amount: '100',
-                vpc_ReturnURL: 'http://127.0.0.1:8000/shopbansach/onepay',
-                vpc_Version: '2',
-                vpc_Locale: 'vn',
-                vpc_Currency: 'VND',
-                vpc_TicketNo: '::1',
-                vpc_SHIP_Street01: '39A Ngo Quyen',
-                vpc_SHIP_Provice: 'Hoan Kiem',
-                vpc_SHIP_City: 'Ha Noi',
-                vpc_SHIP_Country: 'Viet Nam',
-                vpc_Customer_Phone: '840904280949',
-                vpc_Customer_Email: 'support@onepay.vn',
-                vpc_Customer_Id: 'thanhvt',
-                virtualPaymentClientURL: 'https://mtf.onepay.vn/onecomm-pay/vpc.op',
-                vpc_Command: 'pay',
-                Title: 'VPC 3-Party'
-                */
             };
 
             const response = Axios.post("http://127.0.0.1:8000/api/order/store", postBody)
