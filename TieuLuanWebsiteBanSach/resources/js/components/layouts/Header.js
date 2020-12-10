@@ -9,7 +9,7 @@ import {
   Link
 } from "react-router-dom";
 import { connect } from 'react-redux'
-
+import * as actions from './../actions/index'
 const CustomLink = ({ lable, to, activeOnlyOnExact }) => {
   return (
     <Route path={to} exact={activeOnlyOnExact} children={({ match }) => {
@@ -118,27 +118,35 @@ class Header extends Component {
     });
     
   }
-  tangSoLuongSach = async (id) => {
-    Axios.put(`http://127.0.0.1:8000/tang-so-luong/${id}`)
+  tangSoLuongSach = async(id) => {
+    await Axios.put(`http://127.0.0.1:8000/tang-so-luong/${id}`)
       .then((res) => {
-        console.log(res.data);
+        this.props.onAddNewProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        this.getTotalQuantity();
         this.getCartDetails();
+        this.getTotalCart();
+        console.log(res.data);
+        console.log('Tăng:',this.state.totalQuantity);
       });
   };
-  giamSoLuongSach = async (id) => {
+  giamSoLuongSach = (id) => {
     Axios.put(`http://127.0.0.1:8000/giam-so-luong/${id}`)
       .then((res) => {
         console.log(res.data);
+        this.props.onAddNewProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        this.getTotalQuantity();
         this.getCartDetails();
+        this.getTotalCart();
       });
   };
-  deleteCart = async (id) => {
+  deleteCart = (id) => {
     Axios.delete(`http://127.0.0.1:8000/xoa-san-pham/${id}`)
       .then((res) => {
         console.log(res.data);
         this.getTotalQuantity();
         this.getCartDetails();
         this.getTotalCart();
+        this.props.onAddNewProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
       });
     
   };
@@ -148,6 +156,7 @@ class Header extends Component {
         this.getTotalQuantity();
         this.getCartDetails();
         this.getTotalCart();
+        this.props.onAddNewProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
       });
   }
   getCartDetails = () => {
@@ -403,7 +412,7 @@ const mapStateToProps = state =>{
 }
 const mapDispatchToProps = (dispatch, props) =>{
   return {
-      onAddProduct : (total,cartlist,totalCart) =>{
+      onAddNewProduct : (total,cartlist,totalCart) =>{
           dispatch(actions.addProduct(total,cartlist,totalCart));
       }
   }

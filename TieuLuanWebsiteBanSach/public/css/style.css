@@ -1763,3 +1763,7 @@ margin: 10px 0 60px;
         opacity: 1;
     }
 }
+
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }

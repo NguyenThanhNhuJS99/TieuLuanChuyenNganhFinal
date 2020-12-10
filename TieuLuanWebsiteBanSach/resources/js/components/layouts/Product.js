@@ -11,7 +11,7 @@ class Product extends Component {
             qty:0,
             id: '',
             totalCart: '',
-            totalQuantity: 0,
+            totalQuantity: '',
             cartlist: [],
             setcartlist: [],
             booklist: [],
@@ -20,6 +20,11 @@ class Product extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     };
     componentDidMount() {
+        this.getCartDetails();
+        this.getTotalCart();
+        this.getTotalQuantity();
+    }
+    componentDidMount(){
         this.getCartDetails();
         this.getTotalCart();
         this.getTotalQuantity();
@@ -45,6 +50,7 @@ class Product extends Component {
                 this.props.temp(this.state.cartlist);
                 localStorage.setItem("CartData", JSON.stringify(res));
             });
+            this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
     };
     qty(id, e) {
         console.log(id);
@@ -55,8 +61,9 @@ class Product extends Component {
             this.setState({
                 totalCart: res.data,
             });
+            this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
         });
-        this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        
     }
     getTotalQuantity = () => {
         Axios.get('http://127.0.0.1:8000/totalQuantity').then((res) => {
