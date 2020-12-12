@@ -8,13 +8,8 @@ class Order extends Model
 {
     protected $table = "orders";
 
-    public function customer()
+    public function order_items()
     {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function shipping()
-    {
-        return $this->belongsTo(Shipping::class);
+        return $this->hasMany(OrderItem::class);
     }
 }

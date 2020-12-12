@@ -20,7 +20,10 @@ class cartController extends Controller
                 'image' => $data->image1
             )
         ]);
-        return Cart::getContent();
+        if($add)
+        {
+            return "Thêm thành công vào giỏ hàng";
+        }
     }
 
     public function tangsoluong($id) {

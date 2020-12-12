@@ -2,6 +2,7 @@ import Axios from "axios";
 import React from "react";
 import { Card, Button, Badge, Spinner, Form, ListGroup } from 'react-bootstrap';
 import { Link, withRouter } from "react-router-dom";
+import { PUBLIC_URL } from "../../../constants";
 import { updateBook } from "../../../services/BookService";
 
 class BookEdit extends React.Component {
@@ -35,6 +36,21 @@ class BookEdit extends React.Component {
     ).then((res) => {
       this.setState({
         book: res.data.data,
+        name: res.data.data.name,
+        author: res.data.data.author,
+        description: res.data.data.description,
+        status: res.data.data.status,
+        price: res.data.data.price,
+        image1: res.data.data.image1,
+        image2: res.data.data.image2,
+        image3: res.data.data.image3,
+        originalPrice: res.data.data.originalPrice,
+        ratings: res.data.data.ratings,
+        quantity: res.data.data.quantity,
+        category_id: res.data.data.category_id,
+        new: res.data.data.new,
+        bestsale: res.data.data.bestsale,
+        toprating: res.data.data.toprating,
         isloading: false,
       });
     });
@@ -54,6 +70,7 @@ class BookEdit extends React.Component {
       name: this.state.name,
       description: this.state.description,
       status: this.state.status,
+      author: this.state.author,
       price: this.state.price,
       image1: this.state.image1,
       image2: this.state.image2,
@@ -61,15 +78,11 @@ class BookEdit extends React.Component {
       originalPrice: this.state.originalPrice,
       ratings: this.state.ratings,
       quantity: this.state.quantity,
-      category_id: this.state.book.category_id,
+      category_id: this.state.category_id,
+      new: this.state.new,
+      bestsale: this.state.bestsale,
+      toprating: this.state.toprating
     };
-    // Axios.put('http://127.0.0.1:8000/api/books/'+this.props.match.params.id, postBody)
-    // .then(res => {
-    //     this.setState({ alert: "success" })
-    // }).catch(error => {
-    //     this.setState({ alert: "error" });
-    // })
-
     const response = await updateBook(this.state.book.bookId, postBody);
     console.log("response", response);
     if (response.success) {
@@ -84,9 +97,13 @@ class BookEdit extends React.Component {
         originalPrice: "",
         ratings: "",
         quantity: "",
+        new: "",
+        bestsale: "",
+        toprating: "",
+        author: "",
         isloading: false,
       });
-      // history.push(`${PUBLIC_URL}categories/view/${this.state.book.category_id}`);
+      history.push(`${PUBLIC_URL}categories/view/${this.state.book.category_id}`);
     } else {
       this.setState({
         errors: response.errors,
@@ -111,7 +128,7 @@ class BookEdit extends React.Component {
                       placeholder="Nhập tên sách"
                       value={this.state.name}
                       name="name"
-                      onChange={(e) => this.changeInput(e)}
+                      onChange={(e) => this.onChangeInput(e)}
                     />
                   </Form.Group>
                   {this.state.errors && this.state.errors.name && (
@@ -131,6 +148,9 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.description && (
+                    <p className="text-danger">{this.state.errors.description[0]}</p>
+                  )}
                 </div>
               </div>
 
@@ -146,8 +166,8 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
-                  {this.state.errors && this.state.errors.name && (
-                    <p className="text-danger">{this.state.errors.name[0]}</p>
+                  {this.state.errors && this.state.errors.originalPrice && (
+                    <p className="text-danger">{this.state.errors.originalPrice[0]}</p>
                   )}
                 </div>
                 <div className="col-4">
@@ -161,8 +181,8 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
-                  {this.state.errors && this.state.errors.name && (
-                    <p className="text-danger">{this.state.errors.name[0]}</p>
+                  {this.state.errors && this.state.errors.price && (
+                    <p className="text-danger">{this.state.errors.price[0]}</p>
                   )}
                 </div>
                 <div className="col-4">
@@ -178,6 +198,9 @@ class BookEdit extends React.Component {
                       <option value="0">Hết hàng</option>
                     </Form.Control>
                   </Form.Group>
+                  {this.state.errors && this.state.errors.status && (
+                    <p className="text-danger">{this.state.errors.status[0]}</p>
+                  )}
                 </div>
               </div>
               <div className="row">
@@ -193,8 +216,8 @@ class BookEdit extends React.Component {
                     />
                   </Form.Group>
                 </div>
-                {this.state.errors && this.state.errors.name && (
-                  <p className="text-danger">{this.state.errors.name[0]}</p>
+                {this.state.errors && this.state.errors.quantity && (
+                  <p className="text-danger">{this.state.errors.quantity[0]}</p>
                 )}
                 <div className="col-4">
                   <Form.Group controlId="ratings">
@@ -207,8 +230,8 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
-                  {this.state.errors && this.state.errors.name && (
-                    <p className="text-danger">{this.state.errors.name[0]}</p>
+                  {this.state.errors && this.state.errors.ratings && (
+                    <p className="text-danger">{this.state.errors.ratings[0]}</p>
                   )}
                 </div>
                 <div className="col-4">
@@ -222,8 +245,10 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.author && (
+                    <p className="text-danger">{this.state.errors.author[0]}</p>
+                  )}
                 </div>
-
               </div>
               <div className="row">
                 <div className="col-4">
@@ -237,6 +262,9 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.image1 && (
+                    <p className="text-danger">{this.state.errors.image1[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="image2">
@@ -249,6 +277,9 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.image2 && (
+                    <p className="text-danger">{this.state.errors.image2[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="image3">
@@ -261,6 +292,9 @@ class BookEdit extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.image3 && (
+                    <p className="text-danger">{this.state.errors.image3[0]}</p>
+                  )}
                 </div>
               </div>
               <div className="row">
@@ -277,6 +311,9 @@ class BookEdit extends React.Component {
                       <option value="0">Sai</option>
                     </Form.Control>
                   </Form.Group>
+                  {this.state.errors && this.state.errors.new && (
+                    <p className="text-danger">{this.state.errors.new[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="bestsale">
@@ -291,6 +328,9 @@ class BookEdit extends React.Component {
                       <option value="0">Sai</option>
                     </Form.Control>
                   </Form.Group>
+                  {this.state.errors && this.state.errors.bestsale && (
+                    <p className="text-danger">{this.state.errors.bestsale[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="toprating">
@@ -305,11 +345,11 @@ class BookEdit extends React.Component {
                       <option value="0">Sai</option>
                     </Form.Control>
                   </Form.Group>
+                  {this.state.errors && this.state.errors.toprating && (
+                    <p className="text-danger">{this.state.errors.toprating[0]}</p>
+                  )}
                 </div>
               </div>
-              {this.state.errors && this.state.errors.description && (
-                <p className="text-danger">{this.state.errors.description[0]}</p>
-              )}
               {
                 this.state.isloading && (
                   <Button variant="primary" type="button" disabled>

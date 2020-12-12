@@ -68,7 +68,7 @@ class CustomerListGroupItemCheckout extends React.Component {
                                         <div className={"checkout-price-div"}>
                                             <h5>Tổng cộng</h5>
                                             <span className={"cart-price"}>
-                                                {parseFloat(parseFloat(this.state.cartlist[item].price) * parseInt(this.state.cartlist[item].quantity)).toFixed(2)}đ
+                                                {parseFloat(parseFloat(this.state.cartlist[item].price) * parseInt(this.state.cartlist[item].quantity))}đ
                                             </span>
                                         </div>
                                     </Col>

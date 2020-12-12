@@ -85,6 +85,7 @@ class Header extends Component {
         this.getTotalQuantity();
         this.getCartDetails();
         this.getTotalCart();
+        console.log("ProsCart",this.props.products.cartlist);
     }
     handleCart(e) {
         e.preventDefault();
@@ -446,7 +447,7 @@ class Header extends Component {
                                         )
                                     )}
                                 </Table>
-                                {this.props.products.cartlist.length === 0 && (
+                                {this.props.products.cartlist && this.props.products.cartlist.length === 0 && (
                                     <Alert variant={"warning"}>
                                         Không có sản phẩm nào trong giỏ
                                     </Alert>
@@ -467,10 +468,10 @@ class Header extends Component {
                                         onClick={() => this.deleteAllCart()}
                                         type="button"
                                         className="btn btn-secondary"
-                                    >
+                                    > 
                                         Xóa hết
                                     </button>
-                                    {this.props.products.cartlist.length !==
+                                    {this.props.products.cartlist && this.props.products.cartlist.length !==
                                         0 && (
                                         <>
                                             {getLoginCustomerData === null && (

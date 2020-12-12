@@ -198,7 +198,7 @@ input {
 		<tr>
 			<td><strong><i>Purchase Amount</i></strong></td>
 			<td><?php
-			echo $data['amount'];
+			echo $data['amount']/100;
 			?></td>
 			<td>Số tiền được thanh toán</td>
 		</tr>
