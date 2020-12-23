@@ -25,7 +25,7 @@ class CreateBooksTable extends Migration
             $table->string('image3');
             $table->integer('quantity');
             $table->integer('ratings');
-            $table->boolean('status')->default(0)->comment('0=>hết hàng,  1=>hiện có');
+            $table->integer('status')->default(0)->comment('0=>hết hàng,  1=>hiện có, 2=>ngừng kinh doanh');
             $table->boolean('new');
             $table->boolean('bestsale');
             $table->boolean('toprating');

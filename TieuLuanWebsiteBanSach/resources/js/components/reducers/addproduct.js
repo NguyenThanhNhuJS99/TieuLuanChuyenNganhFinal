@@ -4,7 +4,8 @@ var data = JSON.parse(localStorage.getItem('tasks'))
 var initialState = {
     total: 0,
     cartlist: [],
-    totalCart: 0
+    totalCart: 0,
+    keywords_submit: ""
 }
 var myReducer = (state = initialState, action) =>{
     switch (action.type) {

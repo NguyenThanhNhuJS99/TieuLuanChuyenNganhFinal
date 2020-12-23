@@ -28,49 +28,49 @@ class AddDelivery extends React.Component {
         this.getCityDetails();
         fetch_delivery();
 
-        function fetch_delivery(){
+        function fetch_delivery() {
             var _token = $('input[name="_token"]').val();
-             $.ajax({
-                url : '/api/select-feeship',
+            $.ajax({
+                url: '/api/select-feeship',
                 method: 'POST',
-                data:{_token:_token},
-                success:function(data){
-                   $('#load_delivery').html(data);
+                data: { _token: _token },
+                success: function (data) {
+                    $('#load_delivery').html(data);
                 }
             });
         }
-        $(document).on('blur','.fee_feeship_edit',function(){
+        $(document).on('blur', '.fee_feeship_edit', function () {
 
             var feeship_id = $(this).data('feeship_id');
             var fee_value = $(this).text();
-             var _token = $('input[name="_token"]').val();
+            var _token = $('input[name="_token"]').val();
             // alert(feeship_id);
             // alert(fee_value);
             $.ajax({
-                url : '/api/update-delivery',
+                url: '/api/update-delivery',
                 method: 'POST',
-                data:{feeship_id:feeship_id, fee_value:fee_value, _token:_token},
-                success:function(data){
-                   fetch_delivery();
+                data: { feeship_id: feeship_id, fee_value: fee_value, _token: _token },
+                success: function (data) {
+                    fetch_delivery();
                 }
             });
 
         });
-        $('.add_delivery').on("click", function(){
+        $('.add_delivery').on("click", function () {
             var city = $('.city').val();
             var province = $('.province').val();
             var wards = $('.wards').val();
             var fee_ship = $('.fee_ship').val();
-             var _token = $('input[name="_token"]').val();
-             $.ajax({
-                 url : '/api/insert-delivery',
-                 method: 'POST',
-                 data:{city:city, province:province, _token:_token, wards:wards, fee_ship:fee_ship},
-                 success:function(data){
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '/api/insert-delivery',
+                method: 'POST',
+                data: { city: city, province: province, _token: _token, wards: wards, fee_ship: fee_ship },
+                success: function (data) {
                     fetch_delivery();
-                 }
-             });
-         });
+                }
+            });
+        });
         $('.choose').on('change', function () {
             var action = $(this).attr('id');
             var ma_id = $(this).val();
@@ -181,81 +181,81 @@ class AddDelivery extends React.Component {
 
     render() {
         return (
-            <>
-            <form>
-                <h2>Thêm phí vận chuyển</h2>
-                <Form.Group>
-                    <Form.Label>Chọn tỉnh/thành phố</Form.Label>
-                    <Form.Control as="select"
-                        value={this.state.city}
-                        name="city"
-                        id="city"
-                        onChange={(e) => this.changeInput(e)}
-                        className="choose city"
+            <div className="container">
+                <form>
+                    <h2 className="mt-4">Thêm phí vận chuyển</h2>
+                    <Form.Group>
+                        <Form.Label>Chọn tỉnh/thành phố</Form.Label>
+                        <Form.Control as="select"
+                            value={this.state.city}
+                            name="city"
+                            id="city"
+                            onChange={(e) => this.changeInput(e)}
+                            className="choose city"
+                        >
+                            <option>Chọn tỉnh/thành phố</option>
+                            {this.state.cities.map((city, index) => (
+                                <option key={index} value={city.matp}>{city.name_city}</option>
+                            ))}
+                        </Form.Control>
+                        <FormControl.Feedback />
+                    </Form.Group>
+
+
+                    <Form.Group>
+                        <Form.Label>Chọn quận huyện</Form.Label>
+                        <Form.Control as="select"
+                            value={this.state.province}
+                            name="province"
+                            id="province"
+                            onChange={this.handleProvinceChange}
+                            className="choose province"
+                        >
+                            <option>Chọn quận huyện</option>
+                        </Form.Control>
+                        <FormControl.Feedback />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>Chọn xã phường</Form.Label>
+                        <Form.Control as="select"
+                            value={this.state.wards}
+                            name="wards"
+                            id="wards"
+                            onChange={this.handleWardsChange}
+                            className="wards"
+                        >
+                            <option>Chọn xã phường</option>
+                        </Form.Control>
+                        <FormControl.Feedback />
+                    </Form.Group>
+
+                    <FormGroup>
+                        <FormLabel>Phí vận chuyển</FormLabel>
+                        <FormControl
+                            type="text"
+                            value={this.state.fee_ship}
+                            name="fee_ship"
+                            className="fee_ship"
+                            placeholder="Nhập phí vận chuyển"
+                            onChange={this.handleFeeShipChange}
+                        />
+                        <FormControl.Feedback />
+                    </FormGroup>
+
+                    <button
+                        type="submit"
+                        name="add_delivery"
+                        className="btn btn-info add_delivery"
                     >
-                        <option>Chọn tỉnh/thành phố</option>
-                        {this.state.cities.map((city, index) => (
-                            <option key={index} value={city.matp}>{city.name_city}</option>
-                        ))}
-                    </Form.Control>
-                    <FormControl.Feedback />
-                </Form.Group>
-
-
-                <Form.Group>
-                    <Form.Label>Chọn quận huyện</Form.Label>
-                    <Form.Control as="select"
-                        value={this.state.province}
-                        name="province"
-                        id="province"
-                        onChange={this.handleProvinceChange}
-                        className="choose province"
-                    >
-                        <option>Chọn quận huyện</option>
-                    </Form.Control>
-                    <FormControl.Feedback />
-                </Form.Group>
-
-                <Form.Group>
-                    <Form.Label>Chọn xã phường</Form.Label>
-                    <Form.Control as="select"
-                        value={this.state.wards}
-                        name="wards"
-                        id="wards"
-                        onChange={this.handleWardsChange}
-                        className="wards"
-                    >
-                        <option>Chọn xã phường</option>
-                    </Form.Control>
-                    <FormControl.Feedback />
-                </Form.Group>
-
-                <FormGroup>
-                    <FormLabel>Phí vận chuyển</FormLabel>
-                    <FormControl
-                        type="text"
-                        value={this.state.fee_ship}
-                        name="fee_ship"
-                        className="fee_ship"
-                        placeholder="Nhập phí vận chuyển"
-                        onChange={this.handleFeeShipChange}
-                    />
-                    <FormControl.Feedback />
-                </FormGroup>
-
-                <button
-                    type="submit"
-                    name="add_delivery"
-                    className="btn btn-info add_delivery"
-                >
-                    Thêm phí vận chuyển
+                        Thêm phí vận chuyển
                 </button>
-            </form>
-            <h2>Danh sách phí vận chuyển của các tỉnh thành</h2>
-            <div id="load_delivery">
-                                
+                </form>
+                <h2 className="mt-4">Danh sách phí vận chuyển của các tỉnh thành</h2>
+                <div id="load_delivery">
+
+                </div>
             </div>
-            </>
         )
     }
 }

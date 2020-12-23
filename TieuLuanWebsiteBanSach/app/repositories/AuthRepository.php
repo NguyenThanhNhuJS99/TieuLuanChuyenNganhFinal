@@ -2,7 +2,6 @@
 
 namespace App\repositories;
 use App\interfaces\AuthInterface;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +16,8 @@ class AuthRepository implements AuthInterface{
         }
         return false;
     }
+
+    public function findById($id){}
 
     public function registerUser(Request $request)
     {

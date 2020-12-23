@@ -18,7 +18,6 @@ class CategoryView extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props.match.params.id);
     this.getCategoryDetails();
   }
 
@@ -95,97 +94,87 @@ class CategoryView extends React.Component {
   render() {
     return (
       <>
-        <div className="header-part">
-          <div className="float-left">
-            {!this.state.toggleEditCategory && (
-              <>
-                <h2>
-                  {this.state.category.name}
-                  <Badge variant="primary">{
-                    this.state.searchBookList.length}
-                  </Badge>
-                </h2>
-              </>
-            )}
-            {this.state.toggleEditCategory && (
-              <>
-                <CategoryEdit
-                  category={this.state.category}
-                  onCompleteCategoryEdit={this.onCompleteCategoryEdit}
+        <div className="container my-4">
+          <div className="header-part">
+            <div className="float-left">
+              {!this.state.toggleEditCategory && (
+                <>
+                  <h2>
+                    {this.state.category.name}:{" "}
+                    <Badge variant="primary">{
+                      this.state.searchBookList.length} quyển sách
+                    </Badge>
+                  </h2>
+                </>
+              )}
+              {this.state.toggleEditCategory && (
+                <>
+                  <CategoryEdit
+                    category={this.state.category}
+                    onCompleteCategoryEdit={this.onCompleteCategoryEdit}
+                  />
+                </>
+              )}
+            </div>
+            <div className="float-left ml-5">
+              <InputGroup className="mb-3">
+                <FormControl
+                  placeholder="Gõ để tìm kiếm..."
+                  aria-label="Gõ để tìm kiếm..."
+                  aria-describedby="basic-addon2"
+                  onChange={(e) => this.onSearchBooks(e)}
                 />
-              </>
-            )}
+              </InputGroup>
+            </div>
+            <div className="float-right">
+              <Button
+                className="btn btn-success mr-2"
+                onClick={() => this.toggleEditCategory()}
+              >
+                {!this.state.toggleEditCategory && <span>Cập nhật thể loại sách</span>}
+                {this.state.toggleEditCategory && <span>Hủy bỏ</span>}
+              </Button>
+              <Button
+                className="btn btn-info mr-2"
+                onClick={() => this.toggleAddBook()}
+              >
+                {!this.state.toggleAddBook && <span>+ Thêm sách</span>}
+                {this.state.toggleAddBook && <span>Hủy bỏ</span>}
+              </Button>
+            </div>
+            <div className="clearfix"></div>
           </div>
-          <div className="float-left ml-5">
-            <InputGroup className="mb-3">
-              <FormControl
-                placeholder="Gõ để tìm kiếm..."
-                aria-label="Gõ để tìm kiếm..."
-                aria-describedby="basic-addon2"
-                onChange={(e) => this.onSearchBooks(e)}
-              />
-            </InputGroup>
-          </div>
-          <div className="float-right">
-            <button
-              className={`btn btn-outline-${this.state.category.status === 1 ? "success" : "info"
-                } mr-2`}
-              disabled
-            >
-              {this.state.category.status === 1 && (
-                <span className="">✓ Hiện có</span>
-              )}
-              {this.state.category.status === 0 && (
-                <span className="">Hết hàng...</span>
-              )}
-            </button>
-            <Button
-              className="btn btn-success mr-2"
-              onClick={() => this.toggleEditCategory()}
-            >
-              {!this.state.toggleEditCategory && <span>Edit</span>}
-              {this.state.toggleEditCategory && <span>Cancel Editing</span>}
-            </Button>
-            <Button
-              className="btn btn-info mr-2"
-              onClick={() => this.toggleAddBook()}
-            >
-              {!this.state.toggleAddBook && <span>+ Add Book</span>}
-              {this.state.toggleAddBook && <span>Cancel Adding</span>}
-            </Button>
-          </div>
-          <div className="clearfix"></div>
-        </div>
 
 
-        {this.state.toggleAddBook && (
-          <BookCreate
+          {this.state.toggleAddBook && (
+            <BookCreate
+              category_id={this.props.match.params.id}
+              onCompleteBookCreate={this.onCompleteBookCreate}
+            />
+          )}
+
+          {this.state.isloading && (
+            <div className="text-center mt-5">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          )}
+
+          {this.state.searchBookList.length === 0 && (
+            <Alert variant={"warning"}>
+              Không tìm thấy sách! Hãy tạo mới sách...
+            </Alert>
+          )}
+
+          <BookList
+            bookList={this.state.searchBookList}
+            toggleEditBook={this.state.toggleEditBook}
+            isDetailsView={true}
+            onEditBook={this.onEditBook}
             category_id={this.props.match.params.id}
-            onCompleteBookCreate={this.onCompleteBookCreate}
           />
-        )}
-
-        {this.state.isloading && (
-          <div className="text-center mt-5">
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
-        )}
-
-        {this.state.searchBookList.length === 0 && (
-          <Alert variant={"warning"}>
-            Không tìm thấy sách! Hãy tạo mới sách...
-          </Alert>
-        )}
-
-        <BookList
-          bookList={this.state.searchBookList}
-          toggleEditBook={this.state.toggleEditBook}
-          isDetailsView={true}
-          onEditBook={this.onEditBook}
-          category_id={this.props.match.params.id}
-        />
+        </div>
       </>
     );
   }

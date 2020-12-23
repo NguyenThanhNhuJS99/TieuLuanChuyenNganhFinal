@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Cart;
 use App\Models\Book;
+use App\Models\OrderDetails;
+
 class cartController extends Controller
 {
     public function add(Request $res) {

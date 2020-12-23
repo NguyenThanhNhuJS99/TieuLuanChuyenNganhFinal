@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\repositories\CategoryRepository;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class CategoriesController extends Controller
 {
@@ -61,7 +62,9 @@ class CategoriesController extends Controller
             ]);
         }
 
-        $categories = $this->categoryRepository->create($request);
+        
+        $categories = $this->categoryRepository->create($request);      
+
         return response()->json([
             'success' => true,
             'message' => 'Category Stored',

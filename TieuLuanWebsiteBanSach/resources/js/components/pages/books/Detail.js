@@ -4,7 +4,9 @@ import ReactImageZoom from 'react-image-zoom';
 import StarRatingComponent from 'react-star-ratings';
 import { image } from "../../image";
 import Axios from 'axios';
-export default class Detail extends Component {
+import { connect } from 'react-redux'
+import * as actions from './../../actions/index'
+class Detail extends Component {
     constructor() {
         super();
         this.state = {
@@ -13,6 +15,9 @@ export default class Detail extends Component {
             qty: '',
             img: '',
             id: '',
+            totalCart: '',
+            totalQuantity: '',
+            cartlist: [],
             isloading: false,
             productNotFound: false,
             snackbarMessage: "",
@@ -44,7 +49,10 @@ export default class Detail extends Component {
     componentDidMount() {
         let bookID = this.props.match.params.id;
         this.getBookDetails();
-        this.changeActive(this.state.book.image1)
+        this.changeActive(this.state.book.image1);
+        this.getCartDetails();
+        this.getTotalCart();
+        this.getTotalQuantity();
     };
 
     getBookDetails = () => {
@@ -66,16 +74,49 @@ export default class Detail extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { history } = this.props;
         Axios.post('http://127.0.0.1:8000/add', {
             qty: this.state.qty,
             id: this.state.id
         })
             .then(res => {
                 console.log(res.data);
+                this.setState({
+                    cartlist: res.data,
+                });
+                this.getTotalQuantity();
+                this.getCartDetails();
+                this.getTotalCart();
+                this.props.temp(this.state.cartlist);
+                localStorage.setItem("CartData", JSON.stringify(res));
             });
-        history.replace('/cart');
+        this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
     }
+
+    getTotalCart = () => {
+        Axios.get('http://127.0.0.1:8000/totalCart').then((res) => {
+            this.setState({
+                totalCart: res.data,
+            });
+            this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        });
+        
+    }
+    getTotalQuantity = () => {
+        Axios.get('http://127.0.0.1:8000/totalQuantity').then((res) => {
+            this.setState({
+                totalQuantity: res.data,
+            });
+            this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        });
+    }
+    getCartDetails = () => {
+        this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        Axios.get('http://127.0.0.1:8000/cart').then((res) => {
+            this.setState({
+                cartlist: res.data,
+            });
+        });
+    };
 
     onQuantityBlur = () => {
         if (this.state.qty.length === 0 || (this.state.qty.length > 0 && parseInt(this.state.qty) < 1)) {
@@ -90,7 +131,7 @@ export default class Detail extends Component {
                     <div className="container">
                         <form onSubmit={this.handleSubmit}>
                             <Row>
-                                <Col lg={4} md={4}>
+                                <Col sm={12} lg={4} md={5}>
                                     <div className={"margin-div-five"}>
                                         <ReactImageZoom {...{
                                             width: 240,
@@ -110,7 +151,7 @@ export default class Detail extends Component {
                                     </a>
                                 </Col>
 
-                                <Col lg={6} md={6}>
+                                <Col sm={12} lg={6} md={6}>
                                     <div className="contentPreview">
                                         <h3>{this.state.book.name}</h3>
                                         <p><b>Tác giả: {this.state.book.author}</b></p>
@@ -129,11 +170,6 @@ export default class Detail extends Component {
                                                         starSpacing={"0px"}
                                                         starRatedColor={"rgb(247, 202, 37)"}
                                                     />
-                                                    {/* {this.state.book.numberOfRatings &&
-                                                        <span className={"product-info-number-of-ratings"}>
-                                                            {this.state.book.numberOfRatings} ratings
-                                                        </span>
-                                                    } */}
                                                 </div>
                                                 :
                                                 <span className={"not-enough-ratings-span"}>Not enough ratings</span>
@@ -170,3 +206,16 @@ export default class Detail extends Component {
         );
     }
 }
+const mapStateToProps = state =>{
+    return {
+
+    }
+}
+const mapDispatchToProps = (dispatch, props) =>{
+    return {
+        onAddProduct : (total,cartlist,totalCart) =>{
+            dispatch(actions.addProduct(total,cartlist,totalCart));
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Detail);

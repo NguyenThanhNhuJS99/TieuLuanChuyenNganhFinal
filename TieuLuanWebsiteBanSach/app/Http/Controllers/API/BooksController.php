@@ -65,7 +65,7 @@ class BooksController extends Controller
             'name.required' => 'Please give book name',
             'author.required' => 'Please give book author',
             'description.required' => 'Please give book description',
-            'originalPrice' => 'Please give book originalPrice',
+            'originalPrice.required' => 'Please give book originalPrice',
             'price.required' => 'Please give book price',
             'quantity.required' => 'Please give book quantity',
             'ratings.required' => 'Please give book ratings',
@@ -124,7 +124,7 @@ class BooksController extends Controller
         ], [
             'name.required' => 'Please give book name',
             'description.required' => 'Please give book description',
-            'originalPrice' => 'Please give book originalPrice',
+            'originalPrice.required' => 'Please give book originalPrice',
             'price.required' => 'Please give book price',
             'quantity.required' => 'Please give book quantity',
             'ratings.required' => 'Please give book ratings',

@@ -7,12 +7,12 @@ import {
 } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import { Row, Col, FormGroup, FormLabel, FormControl, Radio, Form, Button, FormCheck, Spinner } from "react-bootstrap";
+import { Row, Col, FormGroup, FormLabel, FormControl, Form, Button } from "react-bootstrap";
 import AddressForm from "./AddressForm";
 import Axios from "axios";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { withRouter } from "react-router-dom";
-
+var randomstring = require("randomstring");
 const FieldGroup = ({ id, label, validationState = null, ...props }) => (
     <FormGroup controlId={id} validationState={validationState}>
         <FormLabel>{label}</FormLabel>
@@ -40,9 +40,19 @@ class CheckoutInformation extends React.Component {
             city: '',
             province: '',
             wards: '',
+            address: '',
             feeship: '',
             phone: '',
-            item_name: '',
+            paymentMethod: '',
+            coupon: '',
+            coupon_id: '',
+            coupon_condition: '',
+            coupon_time: '',
+            coupon_number: '',
+            couponError: undefined,
+            couponMessage: undefined,
+            random: '',
+            tongTien: '',
             customer: {},
             isCusLoggedIn: false,
             loadedAddress: 0,
@@ -50,14 +60,7 @@ class CheckoutInformation extends React.Component {
             url_one_pay: '',
             totalCart: '',
         };
-    }
-    getTotalCart = () => {
-        Axios.get('http://127.0.0.1:8000/totalCart').then((res) => {
-            this.setState({
-                totalCart: res.data,
-            });
-            console.log(this.state.totalCart);
-        });
+        this.handleOrderCode = this.handleOrderCode.bind(this);
     }
     componentDidMount() {
         this.getTotalCart();
@@ -92,8 +95,12 @@ class CheckoutInformation extends React.Component {
             this.setState({
                 cartlist: res.data,
             });
-            console.log("cartlist", this.state.cartlist);
-            console.log("item_name", this.state.item_name);
+            console.log("cartlist", this.state.cartlist)
+        });
+    };
+    getOrderItem = () => {
+        Axios.get('http://127.0.0.1:8000/cartContent').then((res) => {
+
         });
     };
     getTotalCart = () => {
@@ -101,11 +108,28 @@ class CheckoutInformation extends React.Component {
             this.setState({
                 totalCart: res.data,
             });
-            console.log(this.state.totalCart);
         });
+    }
+    finalPriceOrder = () => {
+        const totalAmount = this.state.totalCart;
+        if (this.state.coupon_condition === 1) {
+            this.setState({ tongTien: (totalAmount * ((100 - this.state.coupon_number) / 100)) + this.state.loadedAddress.feeship }, () => {
+                console.log("tongTien", this.state.tongTien)
+            });
+        }
+        else {
+            this.setState({ tongTien: totalAmount - this.state.coupon_number + this.state.loadedAddress.feeship }, () => {
+                console.log("tongTien", this.state.tongTien)
+            });
+        }
+    }
+    handleOrderCode() {
+        var x = randomstring.generate(7);
+        this.setState({ random: x });
     }
     handleNext = async (address) => {
         const { stepIndex } = this.state;
+
         this.setState({
             stepIndex: stepIndex + 1,
             finished: stepIndex >= 2,
@@ -116,50 +140,149 @@ class CheckoutInformation extends React.Component {
         else if (stepIndex >= 2) {
             // process the order
             this.setState(() => ({ isLoading: true }));
-            const totalAmount = this.state.totalCart;
+            await this.finalPriceOrder();
 
-            //const paymentMethod = this.state.creditCardChecked ? 'Credit Card' : 'Debit Card';
+            if (this.state.paymentMethod === '1') {
+                const postBody = {
+                    customer_id: this.state.cus_id,
+                    name: this.state.name,
+                    email: this.state.email,
+                    note: this.state.note,
+                    city: this.state.city,
+                    province: this.state.province,
+                    wards: this.state.wards,
+                    address: this.state.address,
+                    phone: this.state.phone,
+                    status: 0,
+                    vpc_Amount: this.state.tongTien * 100,
+                    totalPrice: this.state.tongTien,
+                    coupon_code: this.state.coupon,
+                    coupon_number: this.state.coupon_number,
+                    feeship: this.state.loadedAddress.feeship,
+                    paymentMethod: this.state.paymentMethod,
+                    order_code: this.state.random,
+                    prevTotalPrice: this.state.totalCart
+                };
+                const response = Axios.post("http://127.0.0.1:8000/api/order/store", postBody)
+                    .then((res) => {
+                        //this.getOrderItem();
+                        const cartItemData = {
+                            order_code: this.state.random,
+                        }; 
+                        Axios.post('http://127.0.0.1:8000/cartContent', cartItemData)
+                            .then((res) => {
 
-            const postBody = {
-                customer_id: this.state.cus_id,
-                name: this.state.name,
-                email: this.state.email,
-                note: this.state.note,
-                city: this.state.city,
-                province: this.state.province,
-                wards: this.state.wards,
-                phone: this.state.phone,
-                status: 0,
-                vpc_Amount: (this.state.totalCart - this.state.loadedAddress.feeship) * 100,
-                paymentMethod: 'Thanh toán trả trước',
-            };
+                            });
+                        const emailData = {
+                            email: this.state.email,
+                            full_name: this.state.name,
+                            city: this.state.city,
+                            province: this.state.province,
+                            wards: this.state.wards,
+                            address: this.state.address,
+                            phone: this.state.phone,
+                            feeship: this.state.loadedAddress.feeship,
+                            total: this.state.tongTien,
+                            order_code: this.state.random,
+                        }
+                        Axios.post('http://127.0.0.1:8000/send-mail', emailData);
+                        window.location.href = res.data.url_one_pay;
+                        this.deleteAllCart();
+                    })
+                    .catch((error) => {
+                        console.log(error.res);
+                    });
+                if (response.success) {
+                    this.setState({
+                        cus_id: "",
+                        name: "",
+                        email: "",
+                        note: "",
+                        city: "",
+                        province: "",
+                        wards: "",
+                        address: "",
+                        phone: "",
+                        paymentMethod: "",
+                        random: "",
+                        isLoading: false,
+                    });
+                } else {
+                    this.setState({
+                        errors: response.errors,
+                        isLoading: false,
+                    });
+                }
+            }
+            else if (this.state.paymentMethod === '0') {
+                const postBody = {
+                    customer_id: this.state.cus_id,
+                    name: this.state.name,
+                    email: this.state.email,
+                    note: this.state.note,
+                    city: this.state.city,
+                    province: this.state.province,
+                    wards: this.state.wards,
+                    address: this.state.address,
+                    phone: this.state.phone,
+                    status: 0,
+                    vpc_Amount: this.state.tongTien * 100,
+                    paymentMethod: this.state.paymentMethod,
+                    order_code: this.state.random,
+                    coupon_code: this.state.coupon,
+                    coupon_number: this.state.coupon_number,
+                    feeship: this.state.loadedAddress.feeship,
+                    totalPrice: this.state.tongTien,
+                    prevTotalPrice: this.state.totalCart
+                };
+                const response = Axios.post("http://127.0.0.1:8000/api/order/storeCOD", postBody)
+                    .then((res) => {
+                        const cartItemData = {
+                            order_code: this.state.random,
+                        }; 
+                        Axios.post('http://127.0.0.1:8000/cartContent', cartItemData)
+                            .then((res) => {
 
-            const response = Axios.post("http://127.0.0.1:8000/api/order/store", postBody)
-                .then((res) => {
-                    window.location.href = res.data.url_one_pay;
-                    console.log("onepay res", res);
-                    this.deleteAllCart();
-                })
-                .catch((error) => {
-                    console.log(error.res);
-                });
-            if (response.success) {
-                this.setState({
-                    cus_id: "",
-                    name: "",
-                    email: "",
-                    note: "",
-                    city: "",
-                    province: "",
-                    wards: "",
-                    phone: "",
-                    isLoading: false,
-                });
-            } else {
-                this.setState({
-                    errors: response.errors,
-                    isLoading: false,
-                });
+                            });
+                        const emailData = {
+                            email: this.state.email,
+                            full_name: this.state.name,
+                            city: this.state.city,
+                            province: this.state.province,
+                            wards: this.state.wards,
+                            address: this.state.address,
+                            phone: this.state.phone,
+                            feeship: this.state.loadedAddress.feeship,
+                            total: this.state.tongTien
+                        }
+                        Axios.post('http://127.0.0.1:8000/send-mail', emailData);
+                        window.location.href = 'http://127.0.0.1:8000/shopbansach/pagesuccessful';
+                        this.deleteAllCart();
+                    })
+                    .catch((error) => {
+                        console.log(error.res);
+                    });
+                if (response.success) {
+                    this.setState({
+                        cus_id: "",
+                        name: "",
+                        email: "",
+                        note: "",
+                        city: "",
+                        province: "",
+                        wards: "",
+                        address: "",
+                        phone: "",
+                        paymentMethod: "",
+                        random: "",
+                        isLoading: false,
+                    });
+                } else {
+                    this.setState({
+                        errors: response.errors,
+                        isLoading: false,
+                    });
+                }
             }
         }
     };
@@ -193,6 +316,7 @@ class CheckoutInformation extends React.Component {
         if (email.length <= 45) {
             this.setState(() => ({ email, emailValidation }));
         }
+        console.log("email", this.state.email)
     };
     onNoteChange = (e) => {
         let note = e.target.value;
@@ -202,6 +326,20 @@ class CheckoutInformation extends React.Component {
         }
         if (note.length <= 45) {
             this.setState(() => ({ note, noteValidation }));
+        }
+    };
+    onPaymentMethodChange = (e) => {
+        this.setState({
+            paymentMethod: e.target.value
+        });
+        console.log("paymentMethod", this.state.paymentMethod)
+    };
+    couponChange = (e) => {
+        const coupon = e.target.value.trim();
+        if (coupon.length < 25) {
+            this.setState(() => ({
+                coupon
+            }));
         }
     };
     onInputCityChange = city => {
@@ -219,6 +357,11 @@ class CheckoutInformation extends React.Component {
             wards: wards
         });
     };
+    onInputAddressChange = address => {
+        this.setState({
+            address: address
+        });
+    };
     onInputPhoneChange = phone => {
         this.setState({
             phone: phone
@@ -229,7 +372,39 @@ class CheckoutInformation extends React.Component {
             feeship: feeship
         });
     };
-    
+    onCouponFormSubmit = (e) => {
+        e.preventDefault();
+        const couponData = {
+            coupon: this.state.coupon
+        };
+        Axios.post('/api/check-coupon', couponData)
+            .then((response) => {
+                const response_data = response.data.data;
+                const response_success = response.data.success;
+                if (response_success == true) {
+                    this.setState(() => ({
+                        couponError: false,
+                        couponMessage: "Áp dụng thành công mã giảm giá!",
+                        coupon: response_data.coupon_code,
+                        coupon_id: response_data.coupon_id,
+                        coupon_condition: response_data.coupon_condition,
+                        coupon_time: response_data.coupon_time,
+                        coupon_number: response_data.coupon_number
+                    }));
+                }
+                else {
+                    this.setState(() => ({
+                        couponError: true,
+                        couponMessage: "Mã khuyến mãi không đúng!",
+                        coupon: null,
+                        coupon_condition: null,
+                        coupon_time: null,
+                        coupon_number: null
+                    }))
+                }
+            })
+    };
+
     renderStepActions(step) {
         const { stepIndex } = this.state;
 
@@ -237,7 +412,7 @@ class CheckoutInformation extends React.Component {
             <>
                 <div style={{ margin: '12px 0' }}>
                     <RaisedButton
-                        label={stepIndex === 2 ? 'Thanh toán trả trước' : 'Tiếp tục'}
+                        label={stepIndex === 2 ? 'Hoàn thành' : 'Tiếp tục'}
                         disableTouchRipple={true}
                         disableFocusRipple={true}
                         primary={true}
@@ -291,14 +466,15 @@ class CheckoutInformation extends React.Component {
                                             <FieldGroup
                                                 id="formControlsNote"
                                                 type="text"
-                                                label="Ghi chú"
+                                                label="Lời nhắn"
                                                 as="textarea"
                                                 rows="3"
                                                 validationState={this.state.noteValidation}
-                                                placeholder="Ghi chú"
+                                                placeholder="Lưu ý cho Người bán..."
                                                 value={this.state.note}
                                                 onChange={this.onNoteChange}
                                             />
+                                            
                                         </form>
                                     </Col>
                                 </Row>
@@ -311,6 +487,8 @@ class CheckoutInformation extends React.Component {
                                 <Row>
                                     <Col lg={12} md={12}>
                                         <AddressForm
+                                            Cus_ID={this.state.cus_id}
+                                            AddressOneChange={this.onInputAddressChange}
                                             CityOneChange={this.onInputCityChange}
                                             ProvinceOneChange={this.onInputProvinceChange}
                                             WardsOneChange={this.onInputWardsChange}
@@ -329,43 +507,75 @@ class CheckoutInformation extends React.Component {
                             <StepContent>
                                 <Row>
                                     <Col lg={12} md={12}>
-                                        {/* {this.props.authentication.isAuthenticated &&
-                                        <Form onSubmit={this.onPromoCodeFormSubmit}>
+                                        <Form onSubmit={this.onCouponFormSubmit}>
                                             <FormGroup controlId={"promo-code-text"}>
-                                                <FormLabel>Promo Code</FormLabel>
+                                                <FormLabel>Mã giảm giá</FormLabel>
                                                 <FormControl
                                                     type="text"
-                                                    placeholder="Promo Code"
+                                                    placeholder="Nhập mã giảm giá"
                                                     max={45}
-                                                    name={"promo_code"}
+                                                    name="coupon"
                                                     className={"fifty-width"}
-                                                    value={this.state.promoCode}
-                                                    onChange={this.promoCodeChange}
+                                                    value={this.state.coupon}
+                                                    onChange={this.couponChange}
                                                 />
-                                                {this.state.promoCodeError ?
+                                                {this.state.couponError ?
                                                     <p className={"error-message"}>
-                                                        {this.state.promoCodeMessage}
+                                                        {this.state.couponMessage}
                                                     </p> :
                                                     <p className={"promo-successfully-applied"}>
-                                                        {this.state.promoCodeMessage}
+                                                        {this.state.couponMessage}
                                                     </p>
                                                 }
                                                 <Button
                                                     bsStyle={"primary"}
                                                     type={"submit"}
-                                                    className={"star-rating-div btn-sm"}
+                                                    className="star-rating-div btn-sm check_coupon"
+                                                    name="check_coupon"
                                                 >
-                                                    Apply
+                                                    Áp dụng
                                                 </Button>
                                             </FormGroup>
+
+                                            <Form.Group>
+                                                <Form.Label>Chọn phương thức thanh toán</Form.Label>
+                                                <Form.Control as="select"
+                                                    value={this.state.paymentMethod}
+                                                    name="paymentMethod"
+                                                    id="paymentMethod"
+                                                    onChange={this.onPaymentMethodChange}
+                                                    onClick={this.handleOrderCode.bind(this)}
+                                                >
+                                                    <option>----- Chọn -----</option>
+                                                    <option value="1">Thanh toán OnePay</option>
+                                                    <option value="0">Thanh toán khi nhận hàng</option>
+
+                                                </Form.Control>
+                                                <FormControl.Feedback />
+                                            </Form.Group>
                                         </Form>
-                                    } */}
+
                                         <FormGroup>
-                                            <p>Phí vận chuyển: {this.state.loadedAddress.feeship}đ</p>
-                                            <p>Thành tiền: {(totalAmount - this.state.loadedAddress.feeship)}đ</p>
-                                            {/* {(typeof this.state.promoCodeResponse.promoCodeId !== 'undefined') &&
-                                            <p>Discount applied: ${discount.toFixed(2)}</p>} */}
-                                            {/* <p>Amount Due: ${amountDue}</p> */}
+                                            {this.state.coupon_condition === 1 && (
+                                                <>
+                                                    <p>Mã giảm giá: -{this.state.coupon_number}%</p>
+                                                    <p>Phí vận chuyển: {this.state.loadedAddress.feeship}đ</p>
+                                                    <p>Thành tiền: {((totalAmount * ((100 - this.state.coupon_number) / 100)) + this.state.loadedAddress.feeship)}đ</p>
+                                                </>
+                                            )}
+                                            {this.state.coupon_condition === 0 && (
+                                                <>
+                                                    <p>Mã giảm giá: -{this.state.coupon_number}đ</p>
+                                                    <p>Phí vận chuyển: {this.state.loadedAddress.feeship}đ</p>
+                                                    <p>Thành tiền: {(totalAmount - this.state.coupon_number + this.state.loadedAddress.feeship)}đ</p>
+                                                </>
+                                            )}
+                                            {this.state.coupon_condition !== 0 && this.state.coupon_condition !== 1 && (
+                                                <>
+                                                    <p>Phí vận chuyển: {this.state.loadedAddress.feeship}đ</p>
+                                                    <p>Thành tiền: {(totalAmount + this.state.loadedAddress.feeship)}đ</p>
+                                                </>
+                                            )}
                                             <hr />
                                         </FormGroup>
                                     </Col>

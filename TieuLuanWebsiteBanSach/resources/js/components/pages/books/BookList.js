@@ -99,33 +99,26 @@ class BookList extends React.Component {
                                         {book.status === 1 && <span> ✓ Hiện có</span>}
                                         {book.status === 0 && <span> Hết hàng</span>}
                                     </button>
-                                    {/* <Button
-                                        className="btn btn-success mr-2"
-                                        onClick={() => this.toggleEditBook()}
-                                    >
-                                        {!this.state.toggleEditBook && <span>Edit</span>}
-                                        {this.state.toggleEditBook && <span>Cancel Editing</span>}
-                                    </Button> */}
 
                                     <Link
                                         to={`${PUBLIC_URL}books/view/${book.bookId}`}
                                         className="btn btn-outline-success btn-sm ml-2"
                                     >
-                                        View
+                                        Chi tiết
                                     </Link>
 
                                     <Link
                                         to={`${PUBLIC_URL}books/update/${book.bookId}`}
                                         className="btn btn-outline-primary btn-sm ml-2"
                                     >
-                                        Edit
+                                        Cập nhật
                                     </Link>
 
                                     <button
                                         className="btn btn-outline-danger btn-sm ml-2"
                                         onClick={() => this.deleteBook(book.bookId)}
                                     >
-                                        Delete
+                                        Xóa
                                     </button>
                                 </div>
                             </div>
@@ -135,11 +128,6 @@ class BookList extends React.Component {
                                     Giá tiền: {book.price} VNĐ
                                 </Card.Text>
                             )}
-                            {/* {this.state.toggleEditBook && (
-                                <BookEdit
-                                    
-                                />
-                            )} */}
                         </Card.Body>
                     </Card>
                 ))}

@@ -1,7 +1,7 @@
 import Axios from "axios";
 import Table from "react-bootstrap/Table";
 import React, { Component } from "react";
-import { Alert, Button, Nav } from "react-bootstrap";
+import { Alert, Button, Nav, Row } from "react-bootstrap";
 import { PUBLIC_URL } from "../../constants";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -28,17 +28,36 @@ const CustomLink = ({ lable, to, activeOnlyOnExact }) => {
         />
     );
 };
-var itemsMenu = [
+var trangChu = [
     {
         lable: "Trang Chủ",
         to: "/shopbansach",
-        exact: true
-    },
-    {
-        lable: "Cửa Hàng",
-        to: "/store",
         exact: false
     },
+]
+var nhanvien = [
+    {
+        lable: "Thể loại sách",
+        to: "/shopbansach/categories",
+        exact: false
+    },
+    {
+        lable: "Mã giảm giá",
+        to: "/shopbansach/coupon",
+        exact: false
+    },
+    {
+        lable: "Phí vận chuyển",
+        to: "/shopbansach/delivery",
+        exact: false
+    },
+    {
+        lable: "Đơn hàng",
+        to: "/shopbansach/order",
+        exact: false
+    },
+]
+var itemsMenu = [
     {
         lable: "Tin Tức",
         to: "/shopbansach/news",
@@ -54,16 +73,6 @@ var itemsMenu = [
         to: "/shopbansach/contact",
         exact: false
     }
-    // {
-    //   lable: 'Đăng nhập',
-    //   to: '/shopbansach/login-checkout',
-    //   exact: false
-    // },
-    // {
-    //   lable: 'Đăng ký',
-    //   to: '/shopbansach/register-checkout',
-    //   exact: false
-    // },
 ];
 
 class Header extends Component {
@@ -73,7 +82,10 @@ class Header extends Component {
             cartlist: [],
             idBookCart: "",
             totalCart: 0,
-            totalQuantity: 0
+            totalQuantity: 0,
+            category: '',
+            categoryList: [],
+            keywords_submit: "",
         };
         this.cartlist = [];
         this.totalQuantity = 0;
@@ -85,7 +97,31 @@ class Header extends Component {
         this.getTotalQuantity();
         this.getCartDetails();
         this.getTotalCart();
-        console.log("ProsCart",this.props.products.cartlist);
+        this.getListCategory();
+    }
+    // componentWillMount() {
+    //     const getLoginData = localStorage.getItem("loginData");
+    //     if (getLoginData != null) {
+    //         const data = JSON.parse(getLoginData);
+    //         if (data.access_token !== null) {
+    //             this.setState({
+
+    //             });
+    //         }
+    //         else {
+    //             console.log("Quản lý chưa đăng nhập!");
+    //         }
+    //     }
+    // }
+    getListCategory = () => {
+        this.setState({ isloading: true });
+        Axios.get(`http://127.0.0.1:8000/api/categories/`
+        ).then((res) => {
+            this.setState({
+                categoryList: res.data.data,
+                isloading: false,
+            });
+        });
     }
     handleCart(e) {
         e.preventDefault();
@@ -93,6 +129,29 @@ class Header extends Component {
         this.getCartDetails();
         this.getTotalCart();
     }
+    onSearch = (e) => {
+        e.preventDefault();
+        const searchData = {
+            keywords_submit: this.state.keywords_submit,
+        }
+        Axios.post('/api/tim-kiem', searchData)
+            .then(res => {
+                this.setState({
+                    alert_message: "success",
+                })
+                //window.location.href = 'http://127.0.0.1:8000/shopbansach/search-page'
+
+            }).catch(error => {
+                this.setState({ alert_message: "error" });
+            })
+        this.props.onSearchProduct(this.state.keywords_submit);
+    }
+    handleSearchChange = (e) => {
+        let keywords_submit = e.target.value;
+        this.setState(() => ({
+            keywords_submit,
+        }));
+    };
     getCartDetails = async () => {
         await Axios.get("http://127.0.0.1:8000/cart").then(res => {
             this.setState({
@@ -182,8 +241,8 @@ class Header extends Component {
             totalQuantity: this.props.products.total
         });
     };
+
     render() {
-        console.log("check: ", this.props.products);
         const logout = () => {
             localStorage.removeItem("loginData");
             window.location.href = PUBLIC_URL + "login";
@@ -193,18 +252,56 @@ class Header extends Component {
             window.location.href = PUBLIC_URL + "login-checkout";
         };
         const getLoginCustomerData = localStorage.getItem("loginCustomerData");
+        const getLoginData = localStorage.getItem("loginData");
+        var listCategory = this.state.categoryList.map((category, index) => {
+            return <li>
+                <Link key={index} to={`${PUBLIC_URL}categoryproducts/${category.id}`}>{category.name}</Link>
+            </li>
+
+        })
         return (
             <header id="menu">
                 <div
                     id="top-menu"
-                    class="d-md-none d-sm-none d-none d-lg-block"
+                    className="d-md-none d-sm-none d-none d-lg-block"
                 >
-                    <div class="container">
-                        <div class="content-top-menu">
-                            <p class="title-welcome">
-                                Chào mừng bạn đến với thế giới cây cảnh
-                            </p>
-                            <div class="box-icon-top">Đăng Nhập - Đăng Ký</div>
+                    <div className="container">
+                        <div className="content-top-menu">
+                            <div className="box-icon-top title-welcome">
+
+                                {!this.props.authData.isLoggedIn && !this.props.authCusData.isCusLoggedIn && (
+                                    <>
+                                        <Row>
+                                            <Link to={`${PUBLIC_URL}login-checkout`}>
+                                                <Nav.Item className="text-dark mr-1">Đăng nhập |</Nav.Item>
+                                            </Link>
+                                            <Link to={`${PUBLIC_URL}register-checkout`}>
+                                                <Nav.Item className="text-dark ml-1 "> Đăng ký</Nav.Item>
+                                            </Link>
+                                        </Row>
+                                    </>
+                                )}
+                                {this.props.authData.isLoggedIn && (
+                                    <>
+                                        <Row>
+                                            <Nav.Link>Chào mừng Quản lý {this.props.authData.user.name} đã đến với thế giới sách</Nav.Link>
+                                            <Nav.Link onClick={() => logout()}>
+                                                <Nav.Item className="text-dark ml-2 ">Đăng xuất</Nav.Item>
+                                            </Nav.Link>
+                                        </Row>
+                                    </>
+                                )}
+                                {this.props.authCusData.isCusLoggedIn && (
+                                    <>
+                                        <Row>
+                                            <Nav.Link>Chào mừng {this.props.authCusData.customer.name} đã đến với thế giới sách</Nav.Link>
+                                            <Nav.Link onClick={() => logoutCus()}>
+                                                <Nav.Item className="text-dark ml-lg-auto">Đăng xuất</Nav.Item>
+                                            </Nav.Link>
+                                        </Row>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -216,21 +313,29 @@ class Header extends Component {
                             alt=""
                         />
                         <div className="box-search-cart">
-                            <form className="search-box" action="aaaa">
-                                <input
-                                    className="input-search"
-                                    type="text"
-                                    placeholder="Tìm kiếm..."
-                                />
-                                <button type="submit" className="btn-search">
-                                    <i className="fas fa-search"></i>
-                                </button>
-                            </form>
+                            <div className="form-search">
+                                <form className="search-box d-none d-sm-none d-lg-block" onSubmit={this.onSearch}>
+                                    <input
+                                        className="input-search"
+                                        value={this.state.keywords_submit}
+                                        type="text"
+                                        placeholder="Tìm kiếm..."
+                                        onChange={this.handleSearchChange}
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="btn-search"
+                                    >
+                                        <i className="fas fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
                             <a
                                 href="#"
                                 data-toggle="modal"
                                 data-target="#cart"
                                 onClick={this.updateCart}
+                                className="cart"
                             >
                                 <div className="box-cart">
                                     <i class="fas fa-shopping-cart"></i>
@@ -249,77 +354,6 @@ class Header extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <div id="topmenu">
-          <div className="container">
-            <div className="row">
-              <div className="menumobi mainmenu d-lg-none d-md-block"> <a href="#my-menu" id="open"
-                className="icon-menu">☰</a>
-              </div>
-              <div className="col-6 col-sm-4 col-md-6 col-lg-6">
-                <div className="box-logoTop">
-                  <img src="/images/logo1.png" alt="" className="imgLogoTop"></img>
-                </div>
-              </div>
-              {this.props.authData.isLoggedIn && (
-                <Link to={`${PUBLIC_URL}categories`}>
-                  <Nav.Item className="text-white mr-2">Thể loại sách</Nav.Item>
-                </Link>
-              )
-              }
-              <div className="col-3 col-sm-4 col-md-3 col-lg-3">
-                <div className="box-search-cart">
-                  <div className="row">
-                    <div className="col-lg-10">
-                      <div className="box-search d-md-none d-sm-none d-none d-lg-block">
-                        <form className="form-search">
-                          <input type="text" placeholder="Tìm kiếm..." name="search" />
-                          <button className="btn-search" type="submit"><i
-                            className="fas fa-search"></i></button>
-                        </form>
-                      </div>
-                    </div>
-                    <div className="col-lg-2">
-                      <div className="box-cart" data-toggle="modal" data-target="#cart">
-                        <i className="fas fa-shopping-cart"></i>
-                        <span className="total-count"> ({this.props.products.total})</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-3 col-sm-4 col-md-3 col-lg-3">
-                {!this.props.authCusData.isCusLoggedIn && (
-                  <>
-                    <Link to={`${PUBLIC_URL}login-checkout`}>
-                      <Nav.Item className="text-white mr-1 ">Đăng nhập</Nav.Item>
-                    </Link>
-                    <Link to={`${PUBLIC_URL}register-checkout`}>
-                      <Nav.Item className="text-white mr-1 ">Đăng ký</Nav.Item>
-                    </Link>
-                  </>
-                )}
-                <Nav className="ml-auto">
-                  {this.props.authData.isLoggedIn && (
-                    <>
-                      <Nav.Link>Xin chào Admin {this.props.authData.user.name}</Nav.Link>
-                      <Nav.Link onClick={() => logout()}>
-                        <Nav.Item className="text-dark mr-2 ">Đăng xuất</Nav.Item>
-                      </Nav.Link>
-                    </>
-                  )}
-                  {this.props.authCusData.isCusLoggedIn && (
-                    <>
-                      <Nav.Link>Xin chào {this.props.authCusData.customer.name}</Nav.Link>
-                      <Nav.Link onClick={() => logoutCus()}>
-                        <Nav.Item className="text-dark mr-2 ">Đăng xuất</Nav.Item>
-                      </Nav.Link>
-                    </>
-                  )}
-                </Nav>
-              </div>
-            </div>
-          </div>
-        </div> */}
                 {/* Modal */}
                 <form onSubmit={this.handleCart}>
                     <div
@@ -468,64 +502,59 @@ class Header extends Component {
                                         onClick={() => this.deleteAllCart()}
                                         type="button"
                                         className="btn btn-secondary"
-                                    > 
+                                    >
                                         Xóa hết
                                     </button>
                                     {this.props.products.cartlist && this.props.products.cartlist.length !==
                                         0 && (
-                                        <>
-                                            {getLoginCustomerData === null && (
-                                                <>
-                                                    <Link
-                                                        to={`${PUBLIC_URL}login-checkout`}
-                                                    >
-                                                        <Button>
-                                                            Thanh toán
+                                            <>
+                                                {getLoginCustomerData === null && (
+                                                    <>
+                                                        <Link
+                                                            to={`${PUBLIC_URL}login-checkout`}
+                                                        >
+                                                            <Button>
+                                                                Thanh toán
                                                         </Button>
-                                                    </Link>
-                                                </>
-                                            )}
-                                            {getLoginCustomerData !== null && (
-                                                <>
-                                                    <Link
-                                                        to={`${PUBLIC_URL}checkout`}
-                                                    >
-                                                        <Button>
-                                                            Thanh toán
+                                                        </Link>
+                                                    </>
+                                                )}
+                                                {getLoginCustomerData !== null && (
+                                                    <>
+                                                        <Link
+                                                            to={`${PUBLIC_URL}checkout`}
+                                                        >
+                                                            <Button>
+                                                                Thanh toán
                                                         </Button>
-                                                    </Link>
-                                                </>
-                                            )}
-                                        </>
-                                    )}
+                                                        </Link>
+                                                    </>
+                                                )}
+                                            </>
+                                        )}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
                 <div className="mainmenu d-none d-lg-block">
-                    <div className="container">
+                    <div className="container-fluid">
                         <ul>
-                            {this.showMenu(itemsMenu)}
+                            {this.showMenu(trangChu)}
                             <li class="main-sub">
                                 <a href="">
                                     Thể loại <i class="fas fa-chevron-down"></i>
                                 </a>
                                 <ul class="sub-menu">
-                                    <li>
-                                        <a href="">Văn Học</a>
-                                    </li>
-                                    <li>
-                                        <a href="">Thiếu Nhi</a>
-                                    </li>
-                                    <li>
-                                        <a href="">Khoa Học</a>
-                                    </li>
-                                    <li>
-                                        <a href="">Truyện</a>
-                                    </li>
+                                    {listCategory}
                                 </ul>
                             </li>
+                            {getLoginData !== null && (
+                                <>
+                                    {this.showMenu(nhanvien)}
+                                </>
+                            )}
+                            {this.showMenu(itemsMenu)}
                         </ul>
                     </div>
                 </div>
@@ -558,6 +587,10 @@ const mapDispatchToProps = (dispatch, props) => {
     return {
         onAddNewProduct: (total, cartlist, totalCart) => {
             dispatch(actions.addProduct(total, cartlist, totalCart));
+        },
+
+        onSearchProduct: (keywords_submit) => {
+            dispatch(actions.searchProduct(keywords_submit));
         }
     };
 };

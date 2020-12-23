@@ -70,12 +70,12 @@ class CategoryList extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="container my-4">
         <div className="header-part">
           <div className="float-left">
             <h2>
-              Danh sách thể loại sách{" "}
-              <Badge variant="primary">{this.state.searchCategoryList.length}</Badge>
+              Danh sách thể loại sách:{" "}
+              <Badge variant="primary">{this.state.searchCategoryList.length} thể loại sách</Badge>
             </h2>
           </div>
           <div className="float-left text-center ml-5">
@@ -90,7 +90,7 @@ class CategoryList extends React.Component {
           </div>
           <div className="float-right">
             <Link to={`${PUBLIC_URL}categories/create`} className="btn btn-info">
-              + Create New
+              + Tạo mới thể loại sách
             </Link>
           </div>
           <div className="clearfix"></div>
@@ -112,26 +112,26 @@ class CategoryList extends React.Component {
         {this.state.searchCategoryList.map((category, index) => (
           <Card key={index} className="mt-3">
             <Card.Header>
-              {category.name} <Badge variant="primary">{category.books_count}</Badge></Card.Header>
+              {category.name} <Badge variant="primary">{category.books_count} quyển sách</Badge></Card.Header>
             <Card.Body>
               <Card.Text>
                 {category.description}
               </Card.Text>
               {/* <BookList bookList={category.books} isDetailsView={false} /> */}
               <Link to={`${PUBLIC_URL}categories/view/${category.id}`} className="btn btn-primary mr-2">
-                View & Edit
+                Chi tiết & Cập nhật
               </Link>
               <Button
                 variant="danger"
                 className="mr-2"
                 onClick={() => this.deleteCategory(category.id)}
               >
-                Delete
+                Xóa
               </Button>
             </Card.Body>
           </Card>
         ))}
-      </>
+      </div>
     );
   }
 }

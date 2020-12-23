@@ -52,81 +52,68 @@ class CategoryCreate extends React.Component {
   render() {
     return (
       <>
-        <div className="header-part">
-          <div className="float-left">
-            <h2>Thể loại sách mới</h2>
+        <div className="container">
+          <div className="header-part mt-4">
+            <div className="float-left">
+              <h2>Thể loại sách mới</h2>
+            </div>
+            <div className="float-right">
+              <Link to={`${PUBLIC_URL}categories`} className="btn btn-info">Xem tất cả thể loại sách</Link>
+            </div>
+            <div className="clearfix"></div>
           </div>
-          <div className="float-right">
-            <Link to={`${PUBLIC_URL}categories`} className="btn btn-info">Xem tất cả thể loại sách</Link>
-          </div>
-          <div className="clearfix"></div>
-        </div>
-        <Card>
-          <Card.Body>
-            <Form onSubmit={this.submitForm}>
-              <Form.Group controlId="name">
-                <Form.Label>Tên thể loại sách: </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Nhập tên"
-                  value={this.state.name}
-                  name="name"
-                  onChange={(e) => this.changeInput(e)}
-                />
-              </Form.Group>
-              {this.state.errors && this.state.errors.name && (
-                <p className="text-danger">{this.state.errors.name[0]}</p>
-              )}
-              <Form.Group controlId="description">
-                <Form.Label>Mô tả</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Nhập mô tả"
-                  as="textarea"
-                  rows="5"
-                  value={this.state.description}
-                  name="description"
-                  onChange={(e) => this.changeInput(e)}
-                />
-              </Form.Group>
-              {this.state.errors && this.state.errors.description && (
-                <p className="text-danger">{this.state.errors.description[0]}</p>
-              )}
-              <Form.Group controlId="status">
-                <Form.Label>Tình trạng</Form.Label>
-                <Form.Control as="select"
-                  value={this.state.status}
-                  name="status"
-                  onChange={(e) => this.changeInput(e)}
-                >
-                  <option>Chọn</option>
-                  <option value="1">Hiện có</option>
-                  <option value="0">Hết hàng</option>
-                </Form.Control>
-              </Form.Group>
-              {this.state.errors && this.state.errors.status && (
-                <p className="text-danger">{this.state.errors.status[0]}</p>
-              )}
-              {
-                this.state.isloading && (
-                  <Button variant="primary" type="button" disabled>
-                    <Spinner animation="border" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </Spinner>
+          <Card>
+            <Card.Body>
+              <Form onSubmit={this.submitForm}>
+                <Form.Group controlId="name">
+                  <Form.Label>Tên thể loại sách: </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Nhập tên"
+                    value={this.state.name}
+                    name="name"
+                    onChange={(e) => this.changeInput(e)}
+                  />
+                </Form.Group>
+                {this.state.errors && this.state.errors.name && (
+                  <p className="text-danger">{this.state.errors.name[0]}</p>
+                )}
+                <Form.Group controlId="description">
+                  <Form.Label>Mô tả</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Nhập mô tả"
+                    as="textarea"
+                    rows="5"
+                    value={this.state.description}
+                    name="description"
+                    onChange={(e) => this.changeInput(e)}
+                  />
+                </Form.Group>
+                {this.state.errors && this.state.errors.description && (
+                  <p className="text-danger">{this.state.errors.description[0]}</p>
+                )}
+                {
+                  this.state.isloading && (
+                    <Button variant="primary" type="button" disabled>
+                      <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </Spinner>
                     Saving...
-                  </Button>
-                )
-              }
-              {
-                !this.state.isloading && (
-                  <Button variant="primary" type="submit">
-                    Lưu
-                  </Button>
-                )
-              }
-            </Form>
-          </Card.Body>
-        </Card>
+                    </Button>
+                  )
+                }
+                {
+                  !this.state.isloading && (
+                    <Button variant="primary" type="submit">
+                      Lưu
+                    </Button>
+                  )
+                }
+              </Form>
+            </Card.Body>
+          </Card>
+        </div>
       </>
     );
   }

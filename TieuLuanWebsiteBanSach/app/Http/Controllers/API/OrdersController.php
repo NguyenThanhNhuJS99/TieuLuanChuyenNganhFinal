@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use App\repositories\OrderRepository;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Session;
+use App\Models\Coupon;
+session_start();
+use App\Models\OrderDetails;
+use Cart;
+
 class OrdersController extends Controller
 {
     public $orderRepository;
@@ -20,6 +26,140 @@ class OrdersController extends Controller
         return $orders;
     }
 
+    public function show($id)
+    {
+        $orders = $this->orderRepository->findById($id);
+        if(is_null($orders))
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order Details',
+                'data'    => null
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Order Details',
+            'data'    => $orders
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $orders = $this->orderRepository->findById($id);
+        if (is_null($orders)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order Not found',
+                'data' => null,
+            ]);
+        }
+
+        $formData = $request->all();
+        $validator = \Validator::make($formData, [
+            'customer_id' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'city' => 'required',
+            'province' => 'required',
+            'wards' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'note' => 'required',
+            'feeship' => 'required',
+            'totalPrice' => 'required',
+            'paymentMethod' => 'required',
+            'status' => 'required',
+            'prevTotalPrice' => 'required',
+            'coupon_code' => 'required',
+            'coupon_number' => 'required',
+        ], [
+            'customer_id.required' => 'Please give customer id',
+            'name.required' => 'Please give name for shipping',
+            'email.required' => 'Please give email for shipping',
+            'city.required' => 'Please give city for shipping',
+            'province.required' => 'Please give province for shipping',
+            'wards.required' => 'Please give wards for shipping',
+            'address.required' => 'Please give address for shipping',
+            'phone.required' => 'Please give phone for shipping',
+            'note.required' => 'Please give note for shipping',
+            'feeship.required' => 'Please give feeship for shipping',
+            'totalPrice.required' => 'Please give totalPrice shipping',
+            'paymentMethod.required' => 'Please give paymentMethod for shipping',
+            'status.required' => 'Please give status for shipping',
+            'prevTotalPrice' => 'Please give prevTotalPrice for shipping',
+            'coupon_code' => 'Please give coupon_code for shipping',
+            'coupon_number' => 'Please give coupon_number for shipping'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->getMessageBag()->first(),
+                'errors' => $validator->getMessageBag(),
+            ]);
+        }
+
+        $orders = $this->orderRepository->edit($request, $id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Order Updated',
+            'data'    => $orders
+        ]);
+    }
+
+    public function storeCOD(Request $request)
+    {
+        $formData = $request->all();
+        $validator = \Validator::make($formData, [
+            'customer_id' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'city' => 'required',
+            'province' => 'required',
+            'wards' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'note' => 'required',
+            'feeship' => 'required',
+            'totalPrice' => 'required',
+            'paymentMethod' => 'required',
+            'status' => 'required',
+            'prevTotalPrice' => 'required',
+            'coupon_code' => 'required',
+            'coupon_number' => 'required',
+        ], [
+            'customer_id.required' => 'Please give customer id',
+            'name.required' => 'Please give name for shipping',
+            'email.required' => 'Please give email for shipping',
+            'city.required' => 'Please give city for shipping',
+            'province.required' => 'Please give province for shipping',
+            'wards.required' => 'Please give wards for shipping',
+            'address.required' => 'Please give address for shipping',
+            'phone.required' => 'Please give phone for shipping',
+            'note.required' => 'Please give note for shipping',
+            'feeship.required' => 'Please give feeship for shipping',
+            'totalPrice.required' => 'Please give totalPrice shipping',
+            'paymentMethod.required' => 'Please give paymentMethod for shipping',
+            'status.required' => 'Please give status for shipping',
+            'prevTotalPrice' => 'Please give prevTotalPrice for shipping',
+            'coupon_code' => 'Please give coupon_code for shipping',
+            'coupon_number' => 'Please give coupon_number for shipping'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->getMessageBag()->first(),
+                'errors' => $validator->getMessageBag(),
+            ]);
+        }
+        $orders = $this->orderRepository->create($request);
+        return response()->json([
+            'success' => true,
+            'message' => 'Order Stored',
+            'data'    => $orders
+        ]);
+    }
+
     public function store(Request $request)
     {
         $formData = $request->all();
@@ -30,10 +170,16 @@ class OrdersController extends Controller
             'city' => 'required',
             'province' => 'required',
             'wards' => 'required',
+            'address' => 'required',
             'phone' => 'required',
             'note' => 'required',
+            'feeship' => 'required',
+            'totalPrice' => 'required',
             'paymentMethod' => 'required',
             'status' => 'required',
+            'prevTotalPrice' => 'required',
+            'coupon_code' => 'required',
+            'coupon_number' => 'required',
         ], [
             'customer_id.required' => 'Please give customer id',
             'name.required' => 'Please give name for shipping',
@@ -41,10 +187,16 @@ class OrdersController extends Controller
             'city.required' => 'Please give city for shipping',
             'province.required' => 'Please give province for shipping',
             'wards.required' => 'Please give wards for shipping',
+            'address.required' => 'Please give address for shipping',
             'phone.required' => 'Please give phone for shipping',
             'note.required' => 'Please give note for shipping',
+            'feeship.required' => 'Please give feeship for shipping',
+            'totalPrice.required' => 'Please give totalPrice shipping',
             'paymentMethod.required' => 'Please give paymentMethod for shipping',
             'status.required' => 'Please give status for shipping',
+            'prevTotalPrice' => 'Please give prevTotalPrice for shipping',
+            'coupon_code' => 'Please give coupon_code for shipping',
+            'coupon_number' => 'Please give coupon_number for shipping'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -345,7 +497,6 @@ class OrdersController extends Controller
         return $result;
     }
     
-
     public function null2unknown($data) {
         if ($data == "") {
             return "No Value Returned";
@@ -353,4 +504,48 @@ class OrdersController extends Controller
             return $data;
         }
     }
+
+    public function check_coupon(Request $request){
+        $data = $request->all();
+        $coupon = Coupon::where('coupon_code',$data['coupon'])->first();
+        if($coupon){
+            $count_coupon = $coupon->count();
+            if($count_coupon>0){
+                $coupon_session = Session::get('coupon');
+                if($coupon_session==true){
+                    $is_avaiable = 0;
+                    if($is_avaiable==0){
+                        $cou[] = array(
+                            'coupon_code' => $coupon->coupon_code,
+                            'coupon_condition' => $coupon->coupon_condition,
+                            'coupon_number' => $coupon->coupon_number,
+
+                        );
+                        Session::put('coupon',$cou);
+                    }
+                }else{
+                    $cou[] = array(
+                            'coupon_code' => $coupon->coupon_code,
+                            'coupon_condition' => $coupon->coupon_condition,
+                            'coupon_number' => $coupon->coupon_number,
+
+                        );
+                    Session::put('coupon',$cou);
+                }
+                Session::save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Coupon Correct',
+                    'data'    => $coupon
+                ]);
+            }
+
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Coupon Incorrect',
+                'data'    => null
+            ]);
+        }
+    }   
 }

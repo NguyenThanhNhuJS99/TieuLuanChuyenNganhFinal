@@ -6,70 +6,57 @@ class Process extends Component {
             <div className="process">
                     <div className="container">
                         <hr/>
-                        <h2 className="title">QUY TRÌNH TIẾP NHẬN VÀ THI CÔNG</h2>
-                        <p className="introduce">Khi khách hàng có nhu cầu sử dụng dịch vụ thì đội ngũ tư vấn của CHÚNG TÔI sẽ đến
-                            tận nơi của quý
-                            khách
-                            khảo sát tình hình và tư vấn để đưa ra các gói giá thích hợp cũng như giới thiệu cho quý khách những
-                            hình thức ưu đãi của CHÚNG TÔI dành cho khách hàng của mình. Quý khách có thể tham khảo quy trình
-                            tiếp
-                            nhận và thi công của CHÚNG TÔI dưới đây</p>
+                        <h2 className="title">QUY TRÌNH TIẾP NHẬN VÀ GIAO HÀNG</h2>
+                        <p className="introduce">Khi khách hàng tiến hành đặt đơn hàng. Đội ngũ của chúng tôi sẽ tiến hành tiếp nhận đơn hàng, xác nhận và tiến hành vận chuyển giao hàng cho khách hàng một cách nhanh nhất. Dưới đây là quy trình của chúng tôi: </p>
                         <div className="timeline">
                             <ul>
                                 <li>
                                     <div className="itemTimeline">
                                         <div className="row titleItemTimeline">
-                                            <img className="col-lg-3 col-md-3 col-3" src="images/iconProcess01.png" alt=""/>
-                                            <h3 className="col-lg-9 col-md-9 col-9">KHẢO SÁT CÔNG TRÌNH</h3>
+                                            <img className="col-lg-3 col-md-3 col-3" src="/images/iconProcess01.png" alt=""/>
+                                            <h3 className="col-lg-9 col-md-9 col-9">TIẾP NHẬN ĐƠN HÀNG</h3>
                                         </div>
-                                        <p>Gặp gỡ khách hàng, tiếp nhận ý kiến khách hàng, tiến hành khảo sát thực tế tỷ mỹ và
-                                            ghi
-                                            chú, đo vẽ hiện trạng (đối với công trình phức tạp).</p>
+                                        <p>Bước đầu tiên sau khi khách hàng thực hiện đơn hàng đó là tiếp nhận đơn. Tất cả đơn hàng sẽ được tiếp nhận và chuyển thông tin đến với bộ phận xác nhận.</p>
                                         <img className="imgLine" src="/images/imgTimeline01.png" alt=""/>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="itemTimeline">
                                         <div className="row titleItemTimeline">
-                                            <h3 className="col-lg-9 col-md-9 col-9">DỰ TOÁN BÁO GIÁ</h3>
-                                            <img className="col-lg-3 col-md-3 col-3" src="images/iconProcess02.png" alt=""/>
+                                            <h3 className="col-lg-9 col-md-9 col-9">XÁC NHẬN ĐƠN HÀNG</h3>
+                                            <img className="col-lg-3 col-md-3 col-3" src="/images/iconProcess02.png" alt=""/>
                                         </div>
-                                        <p>Thiết kế phương án thi công, bóc tách khối lượng, lập dự toán báo giá và thời gian
-                                            thi công cho khách hàng.</p>
+                                        <p>Sau khi tiếp nhận, chúng tôi sẽ tiến hành xác nhận lại giao dịch. Hệ thống tự động gửi thông tin đơn hàng đến email cá nhân của khách hàng và nhân viên sẽ gọi điện để xác nhận lại với khách hàng.</p>
                                         <img className="imgLine" src="/images/imgTimeline02.png" alt=""/>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="itemTimeline">
                                         <div className="row titleItemTimeline">
-                                            <img className="col-lg-3 col-md-3 col-3" src="images/iconProcess03.png" alt=""/>
-                                            <h3 className="col-lg-9 col-md-9 col-9">THẢO LUẬN VÀ KÍ HỢP ĐỒNG</h3>
+                                            <img className="col-lg-3 col-md-3 col-3" src="/images/iconProcess03.png" alt=""/>
+                                            <h3 className="col-lg-9 col-md-9 col-9">ĐÓNG GÓI HÀNG</h3>
                                         </div>
-                                        <p>Chúng tôi sẽ cung cấp cho quý khách quy trình làm việc thực tế và thời gian hoàn
-                                            thành chính xác. Nếu như khách hàng đồng ý thì sẽ tiến hành ký hợp đồng.</p>
+                                        <p>Khi đơn hàng được xác nhận, hóa đơn sẽ được chuyển đến bộ phận kho để tiến hành lấy hàng và đóng gói. Hàng hóa sẽ được đóng gói cẩn thận và đẹp nhất để có thể đến tay khách hàng một cách hoàn hảo nhất.</p>
                                         <img className="imgLine" src="/images/imgTimeline03.png" alt=""/>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="itemTimeline">
                                         <div className="row titleItemTimeline">
-                                            <h3 className="col-lg-9 col-md-9 col-9">THI CÔNG VÀ BÀN GIAO</h3>
-                                            <img className="col-lg-3 col-md-3 col-3" src="images/iconProcess04.png" alt=""/>
+                                            <h3 className="col-lg-9 col-md-9 col-9">BÀN GIAO VẬN CHUYỂN</h3>
+                                            <img className="col-lg-3 col-md-3 col-3" src="/images/iconProcess04.png" alt=""/>
                                         </div>
-                                        <p>Sau khi cả hai đã thống nhất thì đội ngũ nhân viên của chúng tôi sẽ tiến hành nhiệm
-                                            vụ của mình. Với trình độ chuyên môn cao, được đào tào bài bản và máy móc hiện đại
-                                            đảm bảo khách hàng sẽ hài lòng khi sử dụng dịch vụ của chúng tôi</p>
+                                        <p>Hàng hóa sau khi đóng gói sẽ được bàn giao cho đơn vị vận chuyển thứ 3 để tiền hành giao sản phẩm đến cho khách hàng.</p>
                                         <img className="imgLine" src="/images/imgTimeline04.png" alt=""/>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="itemTimeline">
                                         <div className="row titleItemTimeline">
-                                            <img className="col-lg-3 col-md-3 col-3" src="images/iconProcess05.png" alt=""/>
-                                            <h3 className="col-lg-9 col-md-9 col-9">THANH LÝ HỢP ĐỒNG</h3>
+                                            <img className="col-lg-3 col-md-3 col-3" src="/images/iconProcess05.png" alt=""/>
+                                            <h3 className="col-lg-9 col-md-9 col-9">GIAO HÀNG</h3>
                                         </div>
-                                        <p>Tiến hành nghiệm thu công trình, kí biên nhận và xuất phiếu bảo hành cho khách hàng.
-                                        </p>
+                                        <p>Sau khi bàn giao, đơn hàng sẽ được đơn vị vận chuyển chuyên nghiệp tiến hành giao đến cho khách hàng trong thời gian nhanh nhất có thể.</p>
                                         <img className="imgLine" src="/images/imgTimeline05.png" alt=""/>
                                     </div>
                                 </li>

@@ -34,4 +34,6 @@ interface AuthInterface
      * @return obj $user object
      */
     public function findUserByEmailAddress($email);
+
+    public function findById($id);
 }

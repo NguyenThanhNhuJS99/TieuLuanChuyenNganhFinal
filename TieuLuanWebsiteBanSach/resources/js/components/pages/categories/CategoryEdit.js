@@ -79,7 +79,7 @@ class CategoryEdit extends React.Component {
                       type="text"
                       placeholder="Nhập mô tả"
                       as="textarea"
-                      rows="1"
+                      rows="3"
                       value={this.state.description}
                       name="description"
                       onChange={(e) => this.changeInput(e)}
@@ -87,22 +87,6 @@ class CategoryEdit extends React.Component {
                   </Form.Group>
                   {this.state.errors && this.state.errors.description && (
                     <p className="text-danger">{this.state.errors.description[0]}</p>
-                  )}
-                </div>
-
-                <div className="col-6">
-                  <Form.Label>Tình trạng thể loại sách </Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={this.state.status}
-                    name="status"
-                    onChange={(e) => this.changeInput(e)}
-                  >
-                    <option value={1}>Hiện có</option>
-                    <option value={0}>Hết hàng</option>
-                  </Form.Control>
-                  {this.state.errors && this.state.errors.status && (
-                    <p className="text-danger">{this.state.errors.status[0]}</p>
                   )}
                 </div>
               </div>

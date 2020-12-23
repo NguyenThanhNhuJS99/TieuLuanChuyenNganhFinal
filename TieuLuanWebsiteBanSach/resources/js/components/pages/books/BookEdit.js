@@ -117,7 +117,7 @@ class BookEdit extends React.Component {
       <>
         <Card>
           <Card.Body>
-            <h2>Sách mới</h2>
+            <h2>Cập nhật thông tin sách</h2>
             <Form onSubmit={this.submitForm}>
               <div className="row">
                 <div className="col-6">
@@ -196,6 +196,7 @@ class BookEdit extends React.Component {
                       <option>Chọn</option>
                       <option value="1">Hiện có</option>
                       <option value="0">Hết hàng</option>
+                      <option value="2">Ngừng bán</option>
                     </Form.Control>
                   </Form.Group>
                   {this.state.errors && this.state.errors.status && (
@@ -206,7 +207,7 @@ class BookEdit extends React.Component {
               <div className="row">
                 <div className="col-4">
                   <Form.Group controlId="quantity">
-                    <Form.Label>Quantity</Form.Label>
+                    <Form.Label>Số lượng</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Nhập số lượng sách"

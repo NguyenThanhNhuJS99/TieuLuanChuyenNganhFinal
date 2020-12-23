@@ -24,7 +24,7 @@ class Ranking extends Component {
                 id: 1,
                 keyid: '1',
                 name:"Cá Voi Tỉ Đô",
-                img:"images/top01.jpg",
+                img:"/images/top01.jpg",
                 author:"Bradley Hope, Tom Wright",
                 price:21000,
                 description: "Vào năm 2009, cựu sinh viên Trường Kinh doanh Wharton của Đại học Pennsylvania (Mỹ) Jho Low, với dáng vẻ “bầu bĩnh”, hiền lành đã khởi động chuỗi hành vi gian lận lớn chưa từng thấy - biểu tượng cho mối đe dọa lớn tiếp theo đối với hệ thống tài chính toàn cầu. Trong một thập kỷ, Low, với sự trợ giúp của ngân hàng Goldman Sachs (Mỹ) và nhiều nhân vật khác, đã rút ruột hàng tỷ đô la từ Quỹ đầu tư nhà nước Malaysia 1MDB - ngay dưới mũi của các cơ quan giám sát ngành tài chính toàn cầu."
@@ -33,7 +33,7 @@ class Ranking extends Component {
                 id: 2,
                 keyid: '2',
                 name:"Muôn Kiếp Nhân Sinh",
-                img:"images/top02.jpg",
+                img:"/images/top02.jpg",
                 author:"Bradley Hope, Tom Wright",
                 price:21000,
                 description: "Vào năm 2009, cựu sinh viên Trường Kinh doanh Wharton của Đại học Pennsylvania (Mỹ) Jho Low, với dáng vẻ “bầu bĩnh”, hiền lành đã khởi động chuỗi hành vi gian lận lớn chưa từng thấy - biểu tượng cho mối đe dọa lớn tiếp theo đối với hệ thống tài chính toàn cầu. Trong một thập kỷ, Low, với sự trợ giúp của ngân hàng Goldman Sachs (Mỹ) và nhiều nhân vật khác, đã rút ruột hàng tỷ đô la từ Quỹ đầu tư nhà nước Malaysia 1MDB - ngay dưới mũi của các cơ quan giám sát ngành tài chính toàn cầu."
@@ -42,7 +42,7 @@ class Ranking extends Component {
                 id: 3,
                 keyid: '3',
                 name:"Hành Trình Về Phương Đông",
-                img:"images/top03.jpg",
+                img:"/images/top03.jpg",
                 author:"Bradley Hope, Tom Wright",
                 price:21000,
                 description: "Vào năm 2009, cựu sinh viên Trường Kinh doanh Wharton của Đại học Pennsylvania (Mỹ) Jho Low, với dáng vẻ “bầu bĩnh”, hiền lành đã khởi động chuỗi hành vi gian lận lớn chưa từng thấy - biểu tượng cho mối đe dọa lớn tiếp theo đối với hệ thống tài chính toàn cầu. Trong một thập kỷ, Low, với sự trợ giúp của ngân hàng Goldman Sachs (Mỹ) và nhiều nhân vật khác, đã rút ruột hàng tỷ đô la từ Quỹ đầu tư nhà nước Malaysia 1MDB - ngay dưới mũi của các cơ quan giám sát ngành tài chính toàn cầu."

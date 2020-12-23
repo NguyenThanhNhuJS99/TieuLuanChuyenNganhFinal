@@ -73,9 +73,9 @@ class Register extends React.Component {
   render() {
     return (
       <>
-        <div className="header-part">
+        <div className="header-part mt-4">
           <div className="float-left">
-            <h2>Đăng ký</h2>
+            <h2>Đăng ký tài khoản Quản lý</h2>
           </div>
           <div className="clearfix"></div>
         </div>

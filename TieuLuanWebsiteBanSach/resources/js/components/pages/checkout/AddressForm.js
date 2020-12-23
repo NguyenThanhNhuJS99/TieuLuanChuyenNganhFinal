@@ -11,17 +11,19 @@ class AddressForm extends React.Component {
         super(props);
         this.state = {
             cities: [],
+            address1: '',
             city: '',
             province: '',
             wards: '',
             phone: '',
             feeship: '',
             stateName: '',
-            provinceValidation: null,
             phoneValidation: null,
             noteValidation: null,
             cityValidation: null,
+            provinceValidation: null,
             wardsValidation: null,
+            addressValidation: null,
             feeshipValidation: null,
         };
         this.handleStateChange = this.handleStateChange.bind(this);
@@ -30,11 +32,13 @@ class AddressForm extends React.Component {
         this.handleCityChange = this.handleCityChange.bind(this);
         this.handleProvinceChange = this.handleProvinceChange.bind(this);
         this.handleWardsChange = this.handleWardsChange.bind(this);
+        this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleFeeShipChange = this.handleFeeShipChange.bind(this);
     }
 
     componentDidMount() {
         this.getCityDetails();
+        
         $('.choose').on('change', function () {
             var action = $(this).attr('id');
             var ma_id = $(this).val();
@@ -84,6 +88,18 @@ class AddressForm extends React.Component {
         });
     };
 
+    getAddressDetails = () => {
+        Axios.get(`http://127.0.0.1:8000/api/auth/getCustomer/${this.state.cus_id}`).then((res) => {
+            this.setState({
+                city: res.data.data.city,
+                province: res.data.data.province,
+                wards: res.data.data.wards,
+                address: res.data.data.address,
+                phone: res.data.data.phone,
+            });
+        });
+    };
+
     handleStateChange = (e) => {
         let stateName = e.target.value;
         this.setState(() => ({ stateName }));
@@ -106,8 +122,9 @@ class AddressForm extends React.Component {
     };
 
     handleNextAddress = () => {
-        const { city, province, wards, stateName: state, phone, feeship } = this.state;
+        const { address1, city, province, wards, stateName: state, phone, feeship } = this.state;
         const address = {
+            address1,
             city,
             province,
             wards,
@@ -147,6 +164,17 @@ class AddressForm extends React.Component {
         }));
         this.props.WardsOneChange(wards);
     };
+
+    handleAddressChange = (e) => {
+        let addressValidation = "success";
+        let address1 = e.target.value;
+        this.setState(() => ({
+            address1,
+            addressValidation
+        }));
+        this.props.AddressOneChange(address1);
+    };
+
     handleFeeShipChange = (e) => {
         let feeshipValidation = "success";
         let feeship = e.target.value;
@@ -156,6 +184,7 @@ class AddressForm extends React.Component {
         }));
         this.props.FeeShipOneChange(feeship);
     };
+
     calculateFeeShip = () => {
         const postBody = {
             city: this.state.city,
@@ -197,7 +226,6 @@ class AddressForm extends React.Component {
                         <FormControl.Feedback />
                     </Form.Group>
 
-
                     <Form.Group>
                         <Form.Label>Chọn quận huyện</Form.Label>
                         <Form.Control as="select"
@@ -228,6 +256,20 @@ class AddressForm extends React.Component {
                     </Form.Group>
 
                     <FormGroup
+                        controlId="formBasicAddress"
+                        validationState={this.state.addressValidation}
+                    >
+                        <FormLabel>Điền địa chỉ nhà</FormLabel>
+                        <FormControl
+                            type="text"
+                            value={this.state.address1}
+                            placeholder="Điền Điền địa chỉ nhà"
+                            onChange={this.handleAddressChange}
+                        />
+                        <FormControl.Feedback />
+                    </FormGroup>
+
+                    <FormGroup
                         controlId="formBasicZip"
                         validationState={this.state.phoneValidation}
                     >
@@ -253,10 +295,8 @@ class AddressForm extends React.Component {
                         disableTouchRipple={true}
                         disableFocusRipple={true}
                         primary={true}
-                        //onClick={() => {this.calculateFeeShip(); this.handleNextAddress()}}
                         onClick={this.handleNextAddress}
                         style={{ marginRight: 12 }}
-                        className="calculate_delivery"
                         name="calculate_order"
                     />
 

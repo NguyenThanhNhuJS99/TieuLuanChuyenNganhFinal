@@ -4,15 +4,20 @@ import ReactImageZoom from 'react-image-zoom';
 import StarRatingComponent from 'react-star-ratings';
 import { image } from "../../image";
 import Axios from 'axios';
-
-export default class BookView extends Component {
+import { connect } from 'react-redux'
+import * as actions from './../../actions/index'
+class BookView extends Component {
     constructor() {
         super();
         this.state = {
             book: {},
-            qty: 1,
+            imageBook: '',
+            qty: '',
             img: '',
             id: '',
+            totalCart: '',
+            totalQuantity: '',
+            cartlist: [],
             isloading: false,
             productNotFound: false,
             snackbarMessage: "",
@@ -23,6 +28,7 @@ export default class BookView extends Component {
         };
         this.qty = this.qty.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.changeActive = this.changeActive.bind(this)
     }
     componentWillReceiveProps(nextProps) {
         if (this.props.match.params.id !== nextProps.match.params.id) {
@@ -30,10 +36,23 @@ export default class BookView extends Component {
             this.getBookDetails(bookID);
         }
     }
-
+    changeActive = (value) => {
+        this.setState({
+            imageBook: value
+        })
+        console.log("value", value)
+        console.log("state", this.state.img.value)
+    }
+    componentWillMount() {
+        this.changeActive(this.state.book.image1)
+    };
     componentDidMount() {
         let bookID = this.props.match.params.id;
         this.getBookDetails();
+        this.changeActive(this.state.book.image1);
+        this.getCartDetails();
+        this.getTotalCart();
+        this.getTotalQuantity();
     };
 
     getBookDetails = () => {
@@ -42,6 +61,7 @@ export default class BookView extends Component {
         ).then((res) => {
             this.setState({
                 book: res.data.data,
+                imageBook: res.data.data.image1,
                 isloading: false,
             });
         });
@@ -54,16 +74,49 @@ export default class BookView extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { history } = this.props;
         Axios.post('http://127.0.0.1:8000/add', {
             qty: this.state.qty,
             id: this.state.id
         })
             .then(res => {
                 console.log(res.data);
+                this.setState({
+                    cartlist: res.data,
+                });
+                this.getTotalQuantity();
+                this.getCartDetails();
+                this.getTotalCart();
+                this.props.temp(this.state.cartlist);
+                localStorage.setItem("CartData", JSON.stringify(res));
             });
-        history.replace('/cart');
+        this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
     }
+
+    getTotalCart = () => {
+        Axios.get('http://127.0.0.1:8000/totalCart').then((res) => {
+            this.setState({
+                totalCart: res.data,
+            });
+            this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        });
+        
+    }
+    getTotalQuantity = () => {
+        Axios.get('http://127.0.0.1:8000/totalQuantity').then((res) => {
+            this.setState({
+                totalQuantity: res.data,
+            });
+            this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        });
+    }
+    getCartDetails = () => {
+        this.props.onAddProduct(this.state.totalQuantity, this.state.cartlist, this.state.totalCart);
+        Axios.get('http://127.0.0.1:8000/cart').then((res) => {
+            this.setState({
+                cartlist: res.data,
+            });
+        });
+    };
 
     onQuantityBlur = () => {
         if (this.state.qty.length === 0 || (this.state.qty.length > 0 && parseInt(this.state.qty) < 1)) {
@@ -75,92 +128,94 @@ export default class BookView extends Component {
         return (
             <>
                 <div className="detail">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-xl-5">
-                                    <div className="app-figure" id="zoom-fig">
-                                        <a id="Zoom-1" className="MagicZoom" title="Muôn Kiếp Nhân Sinh" href="images/detail-01.jpg?h=1400"
-                                            data-zoom-image-2x="images/detail-01.jpg?h=2800" data-image-2x="images/detail-01.jpg?h=800">
-                                            <img src="images/detail-01.jpg?h=800 2x" alt="" />
-                                        </a>
-                                        <div className="selectors">
-                                            <a data-zoom-id="Zoom-1" href="images/detail-01.jpg?h=1400"
-                                                data-image="images/detail-01.jpg?h=400" data-zoom-image-2x="images/detail-01.jpg?h=2800"
-                                                data-image-2x="images/detail-01.jpg?h=800"/>
-                                                <img srcset="images/rsz_detail-01.jpg?h=120 2x" src="images/rsz_detail-01.jpg?h=60" />
-                                                <a data-zoom-id="Zoom-1" href="images/detail-02.jpg?h=1400"
-                                                    data-image="images/detail-02.jpg?h=400" data-zoom-image-2x="images/detail-02.jpg?h=2800"
-                                                    data-image-2x="images/detail-02.jpg?h=800">
-                                                    <img srcset="images/rsz_detail-02.jpg?h=120 2x" src="images/rsz_detail-02.jpg?h=60" />
-                                                </a>
+                    <div className="container">
+                        <form onSubmit={this.handleSubmit}>
+                            <Row>
+                                <Col sm={12} lg={4} md={5}>
+                                    <div className={"margin-div-five"}>
+                                        <ReactImageZoom {...{
+                                            width: 240,
+                                            height: 300,
+                                            zoomWidth: 200,
+                                            img: this.state.imageBook ? this.state.imageBook : image,
+                                            zoomStyle: 'z-index: 999;',
+                                            zoomPosition: 'right: 10px'
+                                        }} />
+                                    </div>
+                                    {/* <p className={"margin-div-five"}>Scroll over the image to zoom</p> */}
+                                    <a onClick={() => { this.changeActive(this.state.book.image1) }} className={this.state.imageBook === this.state.book.image1 ? 'imgDetailMini active' : 'imgDetailMini'}>
+                                        <img src={this.state.book.image1}></img>
+                                    </a>
+                                    <a onClick={() => { this.changeActive(this.state.book.image2) }} className={this.state.imageBook === this.state.book.image2 ? 'imgDetailMini active' : 'imgDetailMini'}>
+                                        <img src={this.state.book.image2}></img>
+                                    </a>
+                                </Col>
+
+                                <Col sm={12} lg={6} md={6}>
+                                    <div className="contentPreview">
+                                        <h3>{this.state.book.name}</h3>
+                                        <p><b>Tác giả: {this.state.book.author}</b></p>
+                                        <p><b>Nhà xuất bản: NXB Trẻ</b></p>
+                                        <h4 className="price"><span>{this.state.book.originalPrice}đ</span> - {this.state.book.price}đ</h4>
+                                        <h5 className="save">Tiết kiệm được: {(this.state.book.originalPrice - this.state.book.price)}đ</h5>
+                                        <p>
+                                            {this.state.book.description}
+                                        </p>
+                                        <div className={"product-info-star-rating"}>
+                                            {(this.state.book.ratings && this.state.book.ratings > 0) ?
+                                                <div>
+                                                    <StarRatingComponent
+                                                        rating={this.state.book.ratings}
+                                                        starDimension={"20px"}
+                                                        starSpacing={"0px"}
+                                                        starRatedColor={"rgb(247, 202, 37)"}
+                                                    />
+                                                </div>
+                                                :
+                                                <span className={"not-enough-ratings-span"}>Not enough ratings</span>
+                                            }
+                                        </div>
+                                        <br></br>
+                                        <FormGroup controlId="formQuantitySelect" className={"quantity-select"}>
+                                            <FormLabel>Số lượng sách</FormLabel>
+                                            <FormControl
+                                                type="number"
+                                                name="quantity"
+                                                value={this.state.qty}
+                                                onChange={(e) => this.qty(this.props.match.params.id, e)}
+                                                onBlur={this.onQuantityBlur}
+                                            />
+                                        </FormGroup>
+                                        <div>
+                                            <span>
+                                                <Button
+                                                    type="submit"
+                                                    bsstyle={"primary"}
+                                                    className={"btn add-to-cart-product"}
+                                                >Thêm vào giỏ
+                                                </Button>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="col-xl-7">
-                                    <div className="contentPreview">
-                                        <h3>Muôn Kiếp Nhân Sinh</h3>
-                                        <p><b> Tác giả: Nguyên Phong</b></p>
-                                        <p><b>Nhà xuất bản: NXB Trẻ</b></p>
-                                        <h4 className="price">$10.25</h4>
-                                        <p>
-                                            “Muôn kiếp nhân sinh” là tác phẩm do Giáo sư John Vũ - Nguyên Phong viết từ
-                                            năm
-                                            2017 và hoàn tất đầu năm 2020 ghi lại những câu chuyện, trải nghiệm tiền
-                                            kiếp kỳ
-                                            lạ từ nhiều kiếp sống của người bạn tâm giao lâu năm, ông Thomas – một nhà
-                                            kinh
-                                            doanh tài chính nổi tiếng ở New York. Những câu chuyện chưa từng tiết lộ này
-                                            sẽ
-                                            giúp mọi người trên thế giới chiêm nghiệm, khám phá các quy luật về luật
-                                            Nhân
-                                            quả và Luân hồi của vũ trụ giữa lúc trái đất đang gặp nhiều tai ương, biến
-                                            động,
-                                            khủng hoảng từng ngày.
-                                        </p>
-                                        <a href="#" data-name="Book Story 01" data-price="17" className="add-to-cart"><button
-                                                className="btnMuaNgay">MUA NGAY</button></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul className="nav nav-tabs" role="tablist">
-                                <li className="nav-item">
-                                    <a className="nav-link active" data-toggle="tab" href="#thongtin">THÔNG TIN SẢN PHẨM</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" data-toggle="tab" href="#binhluan">BÌNH LUẬN</a>
-                                </li>
-                            </ul>
-                            <div className="tab-content">
-                                <div id="thongtin" className="container tab-pane active"><br/>
-                                    <h3>THÔNG TIN SẢN PHẨM</h3>
-                                    <p><b>Nội dung: “Muôn kiếp nhân sinh”</b> là tác phẩm do Giáo sư John Vũ - Nguyên Phong viết từ
-                                        năm
-                                        2017 và hoàn tất đầu năm 2020 ghi lại những câu chuyện, trải nghiệm tiền
-                                        kiếp kỳ
-                                        lạ từ nhiều kiếp sống của người bạn tâm giao lâu năm, ông Thomas – một nhà
-                                        kinh
-                                        doanh tài chính nổi tiếng ở New York. Những câu chuyện chưa từng tiết lộ này
-                                        sẽ
-                                        giúp mọi người trên thế giới chiêm nghiệm, khám phá các quy luật về luật
-                                        Nhân
-                                        quả và Luân hồi của vũ trụ giữa lúc trái đất đang gặp nhiều tai ương, biến
-                                        động,
-                                        khủng hoảng từng ngày.</p>
-                                    <p><b>Bìa:</b> <i>Bìa gập</i></p>
-                                    <p><b>Nhà xuất bản:</b> <i>First News</i></p>
-                                    <p><b>Thể loại:</b> <i>Tôn giáo</i> </p>
-                                </div>
-                                <div id="binhluan" className="container tab-pane fade"><br/>
-                                    <h3>BÌNH LUẬN</h3>
-                                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat.</p>
-                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                                        totam rem aperiam.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                  
+                                </Col>
+                            </Row>
+                        </form>
+                    </div>
+                </div>
             </>
         );
     }
 }
+const mapStateToProps = state =>{
+    return {
+
+    }
+}
+const mapDispatchToProps = (dispatch, props) =>{
+    return {
+        onAddProduct : (total,cartlist,totalCart) =>{
+            dispatch(actions.addProduct(total,cartlist,totalCart));
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(BookView);

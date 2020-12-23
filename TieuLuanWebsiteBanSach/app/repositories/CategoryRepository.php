@@ -19,7 +19,6 @@ class CategoryRepository implements CrudInterface{
         $categories = new Category();
         $categories->name=$request->name;
         $categories->description=$request->description;
-        $categories->status=$request->status;
         $categories->user_id=$request->user_id;
         $categories->save();
         return $categories;
@@ -28,7 +27,6 @@ class CategoryRepository implements CrudInterface{
         $categories = $this->findById($id);
         $categories->name=$request->name;
         $categories->description=$request->description;
-        $categories->status=$request->status;
         $categories->user_id=$request->user_id;
         $categories->save();
         return $categories;

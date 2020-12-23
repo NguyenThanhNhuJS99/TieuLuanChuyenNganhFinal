@@ -11,9 +11,9 @@ import Contact from './pages/contact/Contact';
 import CategoryList from './pages/categories/CategoryList';
 import CategoryCreate from './pages/categories/CategoryCreate';
 import CategoryView from './pages/categories/CategoryView';
+import CategoryProducts from './pages/categories/CategoryProducts';
 import { PUBLIC_URL } from "../constants";
 import BookEdit from './pages/books/BookEdit';
-import BookView from './pages/books/BookView';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import { checkIfAuthenticated } from '../services/AuthService';
@@ -33,8 +33,21 @@ import { Provider } from 'react-redux'
 import myReducer from './reducers/index'
 import { reduce } from 'lodash';
 import { MapsLocalShipping } from 'material-ui/svg-icons';
-import Shipping from './pages/checkout/Shipping';
 import AddDelivery from './pages/delivery/AddDelivery';
+import PageSuccessful from './pages/checkout/PageSuccessful';
+import CustomerPurchase from './pages/customer/CustomerPurchase';
+import OrderManagement from './pages/order/OrderManagement';
+import OrderView from './pages/order/OrderView';
+import Transaction from './pages/customer/Transaction';
+import ChangeInfoCheckout from './pages/checkout/ChangeInfoCheckout';
+import CouponList from './pages/coupon/CouponList';
+import CouponCreate from './pages/coupon/CouponCreate';
+import CouponEdit from './pages/coupon/CouponEdit';
+import RegisterStaff from './pages/auth/RegisterStaff';
+import LoginStaff from './pages/auth/LoginStaff';
+import { checkIfStaffAuthenticated } from '../services/StaffAuthService';
+import OrderDetail from './pages/customer/OrderDetail';
+import SearchPage from './pages/SearchPage';
 const store = createStore(myReducer)
 class App extends Component {
     state = {
@@ -94,10 +107,7 @@ class App extends Component {
                     <div>
                         <div>
                             <Switch>
-                                <Route path={`${PUBLIC_URL}contact`}
-                                    exact={true}
-                                    component={Contact}
-                                />
+                                {/* Book */}
                                 <Route path={`${PUBLIC_URL}books/view/:id`}
                                     exact={true}
                                     component={Detail}
@@ -106,6 +116,14 @@ class App extends Component {
                                     exact={true}
                                     component={BookEdit}
                                 />
+
+                                {/* Search Page */}
+                                <Route path={`${PUBLIC_URL}search-page`}
+                                    exact={true}
+                                    component={SearchPage}
+                                />
+
+                                {/* Category */}
                                 <Route path={`${PUBLIC_URL}categories/view/:id`}
                                     exact={true}
                                     authed={this.state.isLoggedIn}
@@ -121,6 +139,13 @@ class App extends Component {
                                     authed={this.state.isLoggedIn}
                                     component={CategoryList}
                                 />
+                                <Route path={`${PUBLIC_URL}categoryproducts/:id`}
+                                    exact={true}
+                                    authed={this.state.isLoggedIn}
+                                    component={CategoryProducts}
+                                />
+
+                                {/* Admin Account */}
                                 <Route path={`${PUBLIC_URL}register`}
                                     exact={true}
                                     component={Register}
@@ -129,6 +154,18 @@ class App extends Component {
                                     exact={true}
                                     component={Login}
                                 />
+
+                                {/* Staff Account */}
+                                <Route path={`${PUBLIC_URL}register-staff`}
+                                    exact={true}
+                                    component={RegisterStaff}
+                                />
+                                <Route path={`${PUBLIC_URL}login-staff`}
+                                    exact={true}
+                                    component={LoginStaff}
+                                />
+
+                                {/* Customer */}
                                 <Route path={`${PUBLIC_URL}register-checkout`}
                                     exact={true}
                                     component={RegisterCheckout}
@@ -137,6 +174,16 @@ class App extends Component {
                                     exact={true}
                                     component={LoginCheckout}
                                 />
+                                <Route path={`${PUBLIC_URL}customer-purchase`}
+                                    exact={true}
+                                    component={CustomerPurchase}
+                                />
+                                <Route path={`${PUBLIC_URL}order-detail-customer/:order_code`}
+                                    exact={true}
+                                    component={OrderDetail}
+                                />
+
+                                {/* Checkout */}
                                 <Route path={`${PUBLIC_URL}checkoutitem`}
                                     exact={true}
                                     component={CheckoutItem}
@@ -149,30 +196,72 @@ class App extends Component {
                                     exact={true}
                                     component={NoCheckoutItems}
                                 />
+                                <Route path={`${PUBLIC_URL}pagesuccessful`}
+                                    exact={true}
+                                    component={PageSuccessful}
+                                />
                                 <Route path={`${PUBLIC_URL}checkout`}
                                     exact={true}
                                     component={ShowCheckout}
                                 />
+                                <Route path={`${PUBLIC_URL}changeinfocheckout`}
+                                    exact={true}
+                                    component={ChangeInfoCheckout}
+                                />
+
+                                {/* News */}
                                 <Route path={`${PUBLIC_URL}news`}
                                     exact={true}
                                     component={News}
                                 />
+
+                                {/* About */}
                                 <Route path={`${PUBLIC_URL}about`}
                                     exact={true}
                                     component={About}
                                 />
+
+                                {/* Contact */}
                                 <Route path={`${PUBLIC_URL}contact`}
                                     exact={true}
                                     component={Contact}
                                 />
-                                <Route path={`${PUBLIC_URL}shipping`}
-                                    exact={true}
-                                    component={Shipping}
-                                />
+
+                                {/* Delivery */}
                                 <Route path={`${PUBLIC_URL}delivery`}
                                     exact={true}
                                     component={AddDelivery}
                                 />
+
+                                {/* Coupon */}
+                                <Route path={`${PUBLIC_URL}coupon`}
+                                    exact={true}
+                                    component={CouponList}
+                                />
+                                <Route path={`${PUBLIC_URL}coupon/create`}
+                                    exact={true}
+                                    component={CouponCreate}
+                                />
+                                <Route path={`${PUBLIC_URL}coupon/update/:id`}
+                                    exact={true}
+                                    component={CouponEdit}
+                                />
+
+                                {/* OrderManagement */}
+                                <Route path={`${PUBLIC_URL}order`}
+                                    exact={true}
+                                    component={OrderManagement}
+                                />
+                                <Route path={`${PUBLIC_URL}cus-order`}
+                                    exact={true}
+                                    component={Transaction}
+                                />
+                                <Route path={`${PUBLIC_URL}order/view/:order_code`}
+                                    exact={true}
+                                    component={OrderView}
+                                />
+
+                                {/* Home */}
                                 <Route path={`${PUBLIC_URL}`}
                                     exact={true}
                                     component={Home}

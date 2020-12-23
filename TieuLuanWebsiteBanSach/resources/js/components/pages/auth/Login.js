@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Button, Spinner, Form, Alert } from "react-bootstrap";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { PUBLIC_URL } from "../../../constants";
 import { loginUser } from "../../../services/AuthService";
 
@@ -14,7 +14,7 @@ class Login extends React.Component {
     validated: false,
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   changeInput = (e) => {
     this.setState({
@@ -32,8 +32,6 @@ class Login extends React.Component {
     this.setState({
       validated: true,
     });
-
-    const { history } = this.props;
 
     const postBody = {
       email: this.state.email,
@@ -53,8 +51,7 @@ class Login extends React.Component {
           errorMessage: "",
         });
         localStorage.setItem("loginData", JSON.stringify(response));
-        // history.replace(`${PUBLIC_URL}projects`);
-        window.location.href = PUBLIC_URL;
+        window.location.href = 'http://127.0.0.1:8000/shopbansach/categories';
       } else {
         console.log("response.errors", response.errors);
         this.setState({
@@ -70,9 +67,9 @@ class Login extends React.Component {
   render() {
     return (
       <>
-        <div className="header-part">
+        <div className="header-part mt-4">
           <div className="text-center">
-            <h2>Sign In</h2>
+            <h2>Đăng nhập</h2>
           </div>
           <div className="clearfix"></div>
         </div>
@@ -97,11 +94,11 @@ class Login extends React.Component {
                   )}
 
                   <Form.Group controlId="email">
-                    <Form.Label>Email Address</Form.Label>
+                    <Form.Label>Email</Form.Label>
                     <Form.Control
                       required
                       type="email"
-                      placeholder="Enter Email Address"
+                      placeholder="Nhập địa chỉ Email"
                       value={this.state.email}
                       name="email"
                       onChange={(e) => this.changeInput(e)}
@@ -112,12 +109,12 @@ class Login extends React.Component {
                       </p>
                     )}
                     <Form.Control.Feedback type="invalid">
-                      Please give your valid email address
+                      Email chưa hợp lệ
                     </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Mật khẩu</Form.Label>
                     <Form.Control
                       required
                       type="password"
@@ -133,24 +130,28 @@ class Login extends React.Component {
                       </p>
                     )}
                     <Form.Control.Feedback type="invalid">
-                      Please give password
+                      Hãy nhập mật khẩu
                     </Form.Control.Feedback>
                   </Form.Group>
 
-                  {this.state.isLoading && (
-                    <Button variant="success" type="button" disabled block>
-                      <Spinner animation="border" role="status">
-                        <span className="sr-only">Loading...</span>
-                      </Spinner>{" "}
-                      Signing In...
-                    </Button>
-                  )}
-
-                  {!this.state.isLoading && (
-                    <Button variant="success" type="submit" block>
-                      Sign In
-                    </Button>
-                  )}
+                  <div className="row mt-4 mb-2">
+                    <div className="col-md-6 col-12">
+                      {!this.state.isLoading && (
+                        <Button variant="success" type="submit" block>
+                          Đăng nhập
+                        </Button>
+                      )}
+                    </div>
+                    <div className="col-md-6 col-12">
+                      {!this.state.isLoading && (
+                        <Link to={`${PUBLIC_URL}register`}>
+                          <Button variant="info" type="submit" block>
+                            Đăng ký tài khoản
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
                 </Card.Body>
               </Card>
             </div>

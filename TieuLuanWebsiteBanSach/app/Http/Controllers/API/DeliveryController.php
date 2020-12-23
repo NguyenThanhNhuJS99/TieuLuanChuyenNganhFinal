@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Customer;
 use App\Models\City;
 use App\Models\Province;
 use App\Models\Wards;
@@ -69,7 +70,7 @@ class DeliveryController extends Controller
 						<th>Tên thành phố</th>
 						<th>Tên quận huyện</th> 
 						<th>Tên xã phường</th>
-						<th>Phí ship</th>
+						<th>Phí vận chuyển</th>
 					</tr>  
 				</thread>
 				<tbody>
@@ -98,6 +99,19 @@ class DeliveryController extends Controller
     {
         $fee_ship = Feeship::paginate(4);
         return $fee_ship;
+	}
+	public function customer_feeship($cus_id){
+		$customer = Customer::where('id', $cus_id)->first();
+		$city_cus = $customer->city;
+		$province_cus = $customer->province;
+		$wards_cus = $customer->wards;
+		$cus_feeship = Feeship::where('fee_matp',$city_cus)->where('fee_maqh',$province_cus)->where('fee_xaid',$wards_cus)->first();
+
+		return response()->json([
+            'success' => true,
+            'message' => 'Customer Details City',
+            'cus_feeship'    => $cus_feeship->fee_feeship
+        ]);
 	}
 	public function calculate_fee(Request $request){
         $data = $request->all();

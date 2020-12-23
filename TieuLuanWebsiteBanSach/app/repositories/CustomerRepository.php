@@ -18,13 +18,22 @@ class CustomerRepository implements AuthInterface{
         return false;
     }
 
+    public function findById($id){
+        $customer = Customer::find($id);
+        return $customer;
+    }
+
     public function registerUser(Request $request)
     {
         $customer = new Customer();
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->password = Hash::make($request->password);
-
+        $customer->city = $request->city;
+        $customer->province = $request->province;
+        $customer->wards = $request->wards;
+        $customer->address = $request->address;
+        $customer->phone = $request->phone;
         $customer->save();
         return $customer;
     }

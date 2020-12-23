@@ -161,6 +161,7 @@ class BookCreate extends React.Component {
                       <option>Chọn</option>
                       <option value="1">Hiện có</option>
                       <option value="0">Hết hàng</option>
+                      <option value="2">Ngừng bán</option>
                     </Form.Control>
                   </Form.Group>
                 </div>
@@ -168,7 +169,7 @@ class BookCreate extends React.Component {
               <div className="row">
                 <div className="col-4">
                   <Form.Group controlId="quantity">
-                    <Form.Label>Quantity</Form.Label>
+                    <Form.Label>Số lượng</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Nhập số lượng sách"

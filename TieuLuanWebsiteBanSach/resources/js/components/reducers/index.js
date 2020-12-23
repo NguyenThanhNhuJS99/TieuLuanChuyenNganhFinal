@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux';
 import products from './addproduct'
+import search from './searchproduct'
 
 const myReducer = combineReducers({
-    products
+    products,
+    search,
 });
 
 export default myReducer;
