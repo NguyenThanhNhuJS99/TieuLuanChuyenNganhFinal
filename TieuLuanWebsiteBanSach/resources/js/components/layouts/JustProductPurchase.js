@@ -1,8 +1,5 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { PUBLIC_URL } from '../../constants';
-import OrderCode from './OrderCode';
 
 class JustProductPurchase extends Component {
     constructor(props) {

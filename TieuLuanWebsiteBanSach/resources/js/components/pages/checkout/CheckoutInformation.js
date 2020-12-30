@@ -459,7 +459,7 @@ class CheckoutInformation extends React.Component {
                                                 type="email"
                                                 label="Địa chỉ Email"
                                                 validationState={this.state.emailValidation}
-                                                placeholder="Enter email"
+                                                placeholder="Điền địa chỉ email"
                                                 value={this.state.email}
                                                 onChange={this.onEmailChange}
                                             />
@@ -512,7 +512,7 @@ class CheckoutInformation extends React.Component {
                                                 <FormLabel>Mã giảm giá</FormLabel>
                                                 <FormControl
                                                     type="text"
-                                                    placeholder="Nhập mã giảm giá"
+                                                    placeholder="Nhập mã giảm giá (Nếu có)"
                                                     max={45}
                                                     name="coupon"
                                                     className={"fifty-width"}

@@ -20,7 +20,7 @@ class CheckoutItem extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div className="mt-4">
                 <h4>Sản phẩm thanh toán: </h4>
                 <br />
                 <ListGroup className={"checkout-items-listgroup"}>

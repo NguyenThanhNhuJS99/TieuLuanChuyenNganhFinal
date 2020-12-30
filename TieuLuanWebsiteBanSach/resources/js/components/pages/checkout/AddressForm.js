@@ -4,8 +4,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Axios from "axios";
 
-const s = "success";
-
 class AddressForm extends React.Component {
     constructor(props) {
         super(props);
@@ -259,11 +257,11 @@ class AddressForm extends React.Component {
                         controlId="formBasicAddress"
                         validationState={this.state.addressValidation}
                     >
-                        <FormLabel>Điền địa chỉ nhà</FormLabel>
+                        <FormLabel>Số nhà và Tên đường</FormLabel>
                         <FormControl
                             type="text"
                             value={this.state.address1}
-                            placeholder="Điền Điền địa chỉ nhà"
+                            placeholder="Điền số nhà, tên đường"
                             onChange={this.handleAddressChange}
                         />
                         <FormControl.Feedback />

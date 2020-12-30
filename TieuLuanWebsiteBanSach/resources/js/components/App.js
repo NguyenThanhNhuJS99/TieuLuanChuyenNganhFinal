@@ -18,8 +18,8 @@ import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import { checkIfAuthenticated } from '../services/AuthService';
 import AuthenticatedRoutes from './AuthenticatedRoutes';
-import LoginCheckout from './pages/checkout/LoginCheckout';
-import RegisterCheckout from './pages/checkout/RegisterCheckout';
+import LoginCheckout from './pages/auth/LoginCustomer';
+import RegisterCheckout from './pages/auth/RegisterCustomer';
 import { checkCusIfAuthenticated } from '../services/CustomerAuthService';
 import { checkCartItem } from '../services/CartService';
 import CheckoutItem from './pages/checkout/CheckoutItem';
@@ -38,7 +38,6 @@ import PageSuccessful from './pages/checkout/PageSuccessful';
 import CustomerPurchase from './pages/customer/CustomerPurchase';
 import OrderManagement from './pages/order/OrderManagement';
 import OrderView from './pages/order/OrderView';
-import Transaction from './pages/customer/Transaction';
 import ChangeInfoCheckout from './pages/checkout/ChangeInfoCheckout';
 import CouponList from './pages/coupon/CouponList';
 import CouponCreate from './pages/coupon/CouponCreate';
@@ -48,12 +47,16 @@ import LoginStaff from './pages/auth/LoginStaff';
 import { checkIfStaffAuthenticated } from '../services/StaffAuthService';
 import OrderDetail from './pages/customer/OrderDetail';
 import SearchPage from './pages/SearchPage';
+import AccountInfo from './pages/customer/AccountInfo';
+import ChangeDefaultAddress from './pages/customer/ChangeDefaultAddress';
 const store = createStore(myReducer)
 class App extends Component {
     state = {
         user: {},
+        staff: {},
         customer: {},
         isLoggedIn: false,
+        isStaffLoggedIn: false,
         isCusLoggedIn: false,
         cart:[],
     };
@@ -83,6 +86,12 @@ class App extends Component {
                 isLoggedIn: true,
             });
         }
+        if (checkIfStaffAuthenticated()) {
+            this.setState({
+                staff: checkIfStaffAuthenticated(),
+                isStaffLoggedIn: true,
+            });
+        }
         if (checkCusIfAuthenticated()) {
             this.setState({
                 customer: checkCusIfAuthenticated(),
@@ -101,6 +110,7 @@ class App extends Component {
                 <Router>
                     <Header id="top"
                         authData={this.state}
+                        authStaffData={this.state}
                         authCusData={this.state}
                         cart={this.state.cart}
                     />
@@ -173,6 +183,14 @@ class App extends Component {
                                 <Route path={`${PUBLIC_URL}login-checkout`}
                                     exact={true}
                                     component={LoginCheckout}
+                                />
+                                <Route path={`${PUBLIC_URL}account-info`}
+                                    exact={true}
+                                    component={AccountInfo}
+                                />
+                                <Route path={`${PUBLIC_URL}change-default-address`}
+                                    exact={true}
+                                    component={ChangeDefaultAddress}
                                 />
                                 <Route path={`${PUBLIC_URL}customer-purchase`}
                                     exact={true}
@@ -251,10 +269,6 @@ class App extends Component {
                                 <Route path={`${PUBLIC_URL}order`}
                                     exact={true}
                                     component={OrderManagement}
-                                />
-                                <Route path={`${PUBLIC_URL}cus-order`}
-                                    exact={true}
-                                    component={Transaction}
                                 />
                                 <Route path={`${PUBLIC_URL}order/view/:order_code`}
                                     exact={true}

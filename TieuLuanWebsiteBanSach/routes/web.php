@@ -76,6 +76,12 @@ Route::get('/shopbansach/login-checkout', function(){
 Route::get('/shopbansach/register-checkout', function(){
     return view('layouts.app');
 });
+Route::get('/shopbansach/account-info', function(){
+    return view('layouts.app');
+});
+Route::get('/shopbansach/change-default-address', function(){
+    return view('layouts.app');
+});
 Route::get('/shopbansach/customer-purchase', function(){
     return view('layouts.app');
 });
@@ -153,6 +159,7 @@ Route::post('cartContent', function(Request $request){
         $order_details->product_id= $row->id;
         $order_details->order_code= $request->order_code;
         $order_details->product_name= $row->name;
+        $order_details->product_quantity_available= $row->attributes->quantityAvailable;
         $order_details->product_sales_quantity= $row->quantity;
         $product_price = $row->quantity * $row->price;
         $order_details->product_price= $product_price;

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Mail;
+use Cart;
 use App\Models\Feeship;
 
 class MailController extends Controller
@@ -32,7 +33,8 @@ class MailController extends Controller
                     "wards" => $feeship_wards->wards->name_xaphuong,
                     "address" => $address,
                     "feeship" => $feeship,
-                    "total" => $total
+                    "total" => $total,
+                    
                 ); //body of mail.blade.php
                 
                 Mail::send('send_mail',$data,function($message) 

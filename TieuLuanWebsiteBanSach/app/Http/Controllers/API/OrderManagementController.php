@@ -17,6 +17,7 @@ class OrderManagementController extends Controller
 	public function view_order($order_code){
 		$order_details = OrderDetails::with('book')->where('order_code',$order_code)->get();
 		$order = Order::where('order_code',$order_code)->get();
+
 		foreach($order as $key => $ord){
 			$customer_id = $ord->customer_id;
 			$order_status = $ord->order_status;
@@ -28,7 +29,7 @@ class OrderManagementController extends Controller
             'message' => 'Order View',
             'order' => $order,
             'customer' => $customer,
-            'order_details' => $order_details,
+			'order_details' => $order_details,
         ]);
 	}
 	public function view_coupon_order($coupon_code){
@@ -85,11 +86,49 @@ class OrderManagementController extends Controller
             'success' => true,
 			'message' => 'Customer Order View',
 			'order' => $order,
-            'order_details' => $order_details_cus,
+            'order_details_cus' => $order_details_cus,
         ]);
 	}
     public function manage_order(){
     	$orderManagement = Order::orderby('created_at','DESC')->paginate(5);
     	return $orderManagement;
+	}
+	public function update_order_qty(Request $request){
+		//update order
+		$data = $request->all();
+		$order = Order::find($data['order_id']);
+		$order->status = $data['order_status'];
+		$order->save();
+		if($order->status == 3){
+			foreach($data['order_product_id'] as $key => $product_id){
+				
+				$book = Book::find($product_id);
+				$product_quantity = $book->quantity;
+				$product_sold = $book->sold;
+				foreach($data['quantity'] as $key2 => $qty){
+						if($key==$key2){
+								$pro_remain = $product_quantity - $qty;
+								$book->quantity = $pro_remain;
+								$book->sold = $product_sold + $qty;
+								$book->save();
+						}
+				}
+			}
+		}else if($order->status == 4 || $order->status == 5){
+			foreach($data['order_product_id'] as $key => $product_id){
+				
+				$book = Book::find($product_id);
+				$product_quantity = $book->quantity;
+				$product_sold = $book->sold;
+				foreach($data['quantity'] as $key2 => $qty){
+						if($key==$key2){
+								$pro_remain = $product_quantity + $qty;
+								$book->quantity = $pro_remain;
+								$book->sold = $product_sold - $qty;
+								$book->save();
+						}
+				}
+			}
+		}
 	}
 }

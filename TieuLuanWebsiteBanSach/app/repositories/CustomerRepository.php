@@ -23,6 +23,19 @@ class CustomerRepository implements AuthInterface{
         return $customer;
     }
 
+    public function edit(Request $request, $id){
+        $customer = $this->findById($id);
+        $customer->name=$request->name;
+        $customer->email=$request->email;
+        $customer->city=$request->city;
+        $customer->province=$request->province;
+        $customer->wards=$request->wards;
+        $customer->address=$request->address;
+        $customer->phone=$request->phone;
+        $customer->save();
+        return $customer;
+    }
+
     public function registerUser(Request $request)
     {
         $customer = new Customer();

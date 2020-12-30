@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-class Reset extends Component {
+class Welcome extends Component {
   render() {
     return (
         <div className="welcome">
@@ -16,4 +16,4 @@ class Reset extends Component {
     }
 }
 
-export default Reset;
+export default Welcome;

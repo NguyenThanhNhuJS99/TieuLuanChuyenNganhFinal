@@ -130,7 +130,11 @@ class DeliveryController extends Controller
                 }
             }
 		}
-		return $fee->fee_feeship;
+		return response()->json([
+            'success' => true,
+            'message' => 'FeeShip',
+            'feeship'    => $fee->fee_feeship
+        ]);
 		//echo Session::get('fee');
     }
 }

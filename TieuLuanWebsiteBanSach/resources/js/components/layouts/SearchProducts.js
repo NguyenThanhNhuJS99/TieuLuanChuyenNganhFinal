@@ -22,16 +22,30 @@ class SearchProducts extends Component {
         console.log(value);
     }
     componentDidMount(){
-        const searchData = {
-            keywords_submit: this.props.search.keywords_submit
-        }
-        Axios.post('http://127.0.0.1:8000/api/tim-kiem', searchData)
-            .then(res => {
-                this.setState({ booklist: res.data });
-            });
-        console.log("booklist", this.state.booklist)
+        this.searchBook();
         
         this.changeSlide('1')
+    }
+    searchBook = () => {
+        const searchData = {
+            keywords_submit: this.props.searchBook.search
+        }
+        const response = Axios.post('http://127.0.0.1:8000/api/tim-kiem', searchData)
+            .then(res => {
+                this.setState({ 
+                    booklist: res.data, 
+                    keywords_submit: this.props.searchBook.search
+                });
+            });
+        if(response.success){
+            this.setState({
+                keywords_submit: '',
+            });
+        } else {
+            this.setState({
+                errors: response.errors,
+            });
+        }
     }
     componentWillMount() {
         
@@ -97,14 +111,8 @@ class SearchProducts extends Component {
 
 const mapStateToProps = state => {
     return {
-        search: state.search
+        searchBook: state.searchBook
     };
 };
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        onSearchProduct: (keywords_submit) => {
-            dispatch(actions.searchProduct(keywords_submit));
-        }
-    };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(SearchProducts);
+
+export default connect(mapStateToProps, null)(SearchProducts);

@@ -43,6 +43,7 @@ Route::get('/customer-order/{cus_id}','API\OrderManagementController@list_order_
 Route::get('/view-order/{order_code}','API\OrderManagementController@view_order');
 Route::get('/get-order-id/{order_code}','API\OrderManagementController@get_order_id');
 Route::get('/view-coupon-order/{coupon_code}','API\OrderManagementController@view_coupon_order');
+Route::post('/update-order-qty','API\OrderManagementController@update_order_qty');
 
 //Delivery
 Route::get('delivery', 'API\DeliveryController@delivery');
@@ -63,6 +64,7 @@ Route::post('auth/register', 'API\Auth\AuthAPIController@register');
 Route::get('auth/create-token-checkout', 'API\Auth\CustomerAPIController@createToken');
 Route::post('auth/login-checkout', 'API\Auth\CustomerAPIController@login');
 Route::post('auth/register-checkout', 'API\Auth\CustomerAPIController@register');
+Route::put('auth/update-customer-info/{id}', 'API\Auth\CustomerAPIController@update');
 Route::get('auth/getCustomer/{id}', 'API\Auth\CustomerAPIController@show');
 Route::get('auth/view-address-cus/{id}', 'API\Auth\CustomerAPIController@view_address_cus');
 Route::post('/tim-kiem','API\Auth\CustomerAPIController@search');

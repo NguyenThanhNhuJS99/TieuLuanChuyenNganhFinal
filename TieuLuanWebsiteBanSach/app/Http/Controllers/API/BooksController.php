@@ -152,6 +152,20 @@ class BooksController extends Controller
         ]);
     }
 
+    public function updateQuantity(Request $request, $id)
+    {
+        $books = $this->bookRepository->findById($id);
+        if (is_null($books)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Book Not found',
+                'data' => null,
+            ]);
+        }
+
+        
+    }
+
     public function destroy($id)
     {
         $books = $this->bookRepository->findById($id);

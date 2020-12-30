@@ -1,35 +1,56 @@
-import Axios from "axios";
 import React from "react";
-import { Card, Button, Badge, Spinner, Form, ListGroup } from 'react-bootstrap';
-import { Link, withRouter } from "react-router-dom";
-import { PUBLIC_URL } from "../../../constants";
+import { Card, Button, Spinner, Form } from 'react-bootstrap';
+import { withRouter } from "react-router-dom";
 import { storeNewBook } from "../../../services/BookService";
 class BookCreate extends React.Component {
-
-  state = {
-    isloading: false,
-    name: "",
-    author: "",
-    description: "",
-    originalPrice: "",
-    price: "",
-    quantity: "",
-    ratings: "",
-    status: "",
-    new: "",
-    bestsale: "",
-    toprating: "",
-    image1: "",
-    image2: "",
-    image3: "",
-    errors: {},
-  };
+  constructor() {
+    super();
+    this.state = {
+      isloading: false,
+      name: "",
+      author: "",
+      description: "",
+      originalPrice: "",
+      price: "",
+      quantity: "0",
+      ratings: "",
+      status: "0",
+      new: "",
+      bestsale: "",
+      toprating: "",
+      image1: "",
+      image2: "",
+      image3: "",
+      errors: {},
+    };
+    this.onChangeQuantityStatus = this.onChangeQuantityStatus.bind(this);
+  }
 
   changeInput = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
     });
   };
+
+  onChangeQuantityStatus = (e) => {
+    let quantity = e.target.value;
+    this.setState({
+      [e.target.name]: quantity
+    });
+    if (quantity == 0) {
+      this.setState({
+        status: "0"
+      });
+    } else if(quantity > 0) {
+      this.setState({
+        status: "1"
+      });
+    } else {
+      this.setState({
+        status: "2"
+      });
+    }
+  }
 
   submitForm = async (e) => {
     e.preventDefault();
@@ -116,6 +137,9 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.description && (
+                    <p className="text-danger">{this.state.errors.description[0]}</p>
+                  )}
                 </div>
               </div>
 
@@ -131,8 +155,8 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
-                  {this.state.errors && this.state.errors.name && (
-                    <p className="text-danger">{this.state.errors.name[0]}</p>
+                  {this.state.errors && this.state.errors.originalPrice && (
+                    <p className="text-danger">{this.state.errors.originalPrice[0]}</p>
                   )}
                 </div>
                 <div className="col-4">
@@ -146,42 +170,46 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
-                  {this.state.errors && this.state.errors.name && (
-                    <p className="text-danger">{this.state.errors.name[0]}</p>
+                  {this.state.errors && this.state.errors.price && (
+                    <p className="text-danger">{this.state.errors.price[0]}</p>
                   )}
                 </div>
+                <div className="col-4">
+                  <Form.Group>
+                    <Form.Label>Số lượng</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="Nhập số lượng sách trong kho"
+                      value={this.state.quantity}
+                      name="quantity"
+                      onChange={this.onChangeQuantityStatus}
+                    />
+                  </Form.Group>
+                  {this.state.errors && this.state.errors.quantity && (
+                    <p className="text-danger">{this.state.errors.quantity[0]}</p>
+                  )}
+                </div>
+              </div>
+              <div className="row">
                 <div className="col-4">
                   <Form.Group controlId="status">
                     <Form.Label>Tình trạng</Form.Label>
                     <Form.Control as="select"
                       value={this.state.status}
                       name="status"
-                      onChange={(e) => this.changeInput(e)}
+                      //onChange={(e) => this.changeInput(e)}
+                      onChange={this.onChangeQuantityStatus}
                     >
                       <option>Chọn</option>
-                      <option value="1">Hiện có</option>
                       <option value="0">Hết hàng</option>
+                      <option value="1">Hiện có</option>
                       <option value="2">Ngừng bán</option>
                     </Form.Control>
                   </Form.Group>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-4">
-                  <Form.Group controlId="quantity">
-                    <Form.Label>Số lượng</Form.Label>
-                    <Form.Control
-                      type="number"
-                      placeholder="Nhập số lượng sách"
-                      value={this.state.quantity}
-                      name="quantity"
-                      onChange={(e) => this.changeInput(e)}
-                    />
-                  </Form.Group>
-                </div>
-                {this.state.errors && this.state.errors.name && (
-                  <p className="text-danger">{this.state.errors.name[0]}</p>
+                  {this.state.errors && this.state.errors.status && (
+                  <p className="text-danger">{this.state.errors.status[0]}</p>
                 )}
+                </div>                
                 <div className="col-4">
                   <Form.Group controlId="ratings">
                     <Form.Label>Ratings</Form.Label>
@@ -193,8 +221,8 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
-                  {this.state.errors && this.state.errors.name && (
-                    <p className="text-danger">{this.state.errors.name[0]}</p>
+                  {this.state.errors && this.state.errors.ratings && (
+                    <p className="text-danger">{this.state.errors.ratings[0]}</p>
                   )}
                 </div>
                 <div className="col-4">
@@ -208,6 +236,9 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.author && (
+                    <p className="text-danger">{this.state.errors.author[0]}</p>
+                  )}
                 </div>
 
               </div>
@@ -223,6 +254,9 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.image1 && (
+                    <p className="text-danger">{this.state.errors.image1[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="image2">
@@ -235,6 +269,9 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.image2 && (
+                    <p className="text-danger">{this.state.errors.image2[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="image3">
@@ -247,6 +284,9 @@ class BookCreate extends React.Component {
                       onChange={(e) => this.changeInput(e)}
                     />
                   </Form.Group>
+                  {this.state.errors && this.state.errors.image3 && (
+                    <p className="text-danger">{this.state.errors.image3[0]}</p>
+                  )}
                 </div>
               </div>
               <div className="row">
@@ -263,6 +303,9 @@ class BookCreate extends React.Component {
                       <option value="0">Sai</option>
                     </Form.Control>
                   </Form.Group>
+                  {this.state.errors && this.state.errors.new && (
+                    <p className="text-danger">{this.state.errors.new[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="bestsale">
@@ -277,6 +320,9 @@ class BookCreate extends React.Component {
                       <option value="0">Sai</option>
                     </Form.Control>
                   </Form.Group>
+                  {this.state.errors && this.state.errors.bestsale && (
+                    <p className="text-danger">{this.state.errors.bestsale[0]}</p>
+                  )}
                 </div>
                 <div className="col-4">
                   <Form.Group controlId="toprating">
@@ -291,6 +337,9 @@ class BookCreate extends React.Component {
                       <option value="0">Sai</option>
                     </Form.Control>
                   </Form.Group>
+                  {this.state.errors && this.state.errors.toprating && (
+                    <p className="text-danger">{this.state.errors.toprating[0]}</p>
+                  )}
                 </div>
               </div>
               {this.state.errors && this.state.errors.description && (
@@ -309,7 +358,7 @@ class BookCreate extends React.Component {
               {
                 !this.state.isloading && (
                   <Button variant="primary" type="submit">
-                    Lưu
+                    Tạo mới
                   </Button>
                 )
               }

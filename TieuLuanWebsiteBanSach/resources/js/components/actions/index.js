@@ -15,3 +15,10 @@ export const searchProduct =(keywords_submit) =>{
         keywords_submit: keywords_submit
     }
 }
+
+export const searchBook =(search) =>{
+    return {
+        type: types.SEARCH_BOOK,
+        search: search
+    }
+}

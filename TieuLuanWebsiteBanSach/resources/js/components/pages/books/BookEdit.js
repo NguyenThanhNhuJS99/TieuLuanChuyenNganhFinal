@@ -364,7 +364,7 @@ class BookEdit extends React.Component {
               {
                 !this.state.isloading && (
                   <Button variant="primary" type="submit">
-                    Lưu
+                    Cập nhật
                   </Button>
                 )
               }

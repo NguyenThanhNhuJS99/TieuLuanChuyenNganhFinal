@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Col, Row, Button, FormGroup, FormLabel, FormControl, Form } from "react-bootstrap";
+import { Container, Col, Row, Button, FormGroup, FormLabel, FormControl, Form, Dropdown } from "react-bootstrap";
 import CheckoutItem from "./CheckoutItem";
 import Axios from "axios";
 import NoCheckoutItems from './NoCheckoutItems';
@@ -148,7 +148,6 @@ class ShowCheckout extends React.Component {
         }
     }
     handleMuaHang = async () => {
-        // process the order
         this.setState(() => ({ isLoading: true }));
         await this.finalPriceOrder();
 
@@ -175,7 +174,6 @@ class ShowCheckout extends React.Component {
             };
             const response = Axios.post("http://127.0.0.1:8000/api/order/store", postBody)
                 .then((res) => {
-                    //this.getOrderItem();
                     const cartItemData = {
                         order_code: this.state.random,
                     };
@@ -193,7 +191,7 @@ class ShowCheckout extends React.Component {
                         phone: this.state.phone,
                         feeship: this.state.cus_feeship,
                         total: this.state.tongTien,
-                        order_code: this.state.random,
+                        order_code: this.state.random
                     }
                     Axios.post('http://127.0.0.1:8000/send-mail', emailData);
                     window.location.href = res.data.url_one_pay;
@@ -368,12 +366,16 @@ class ShowCheckout extends React.Component {
                                         <div className="checkout-address-row__default-label">
                                             Mặc định
                                         </div>
-                                        <Link
-                                            to={`${PUBLIC_URL}changeinfocheckout`} 
-                                            className="btn btn-outline-info ml-3"
-                                        >
-                                            Thay đổi thông tin giao hàng
-                                        </Link>
+                                        <Dropdown className="ml-5">
+                                            <Dropdown.Toggle variant="outline-info" id="dropdown-basic" style={{ fontSize: 0.875 + 'rem' }}>
+                                                THAY ĐỔI
+                                            </Dropdown.Toggle>
+
+                                            <Dropdown.Menu>
+                                                <Dropdown.Item href={`${PUBLIC_URL}change-default-address`}>Thiết lập địa chỉ</Dropdown.Item>
+                                                <Dropdown.Item href={`${PUBLIC_URL}changeinfocheckout`}>Thay đổi thông tin giao hàng</Dropdown.Item>
+                                            </Dropdown.Menu>
+                                        </Dropdown>
                                     </div>
                                 </div>
                             </div>
@@ -394,8 +396,6 @@ class ShowCheckout extends React.Component {
                                                 placeholder="Lưu ý cho Người bán..."
                                                 value={this.state.note}
                                                 onChange={this.onNoteChange} />
-                                        </div>
-                                        <div>
                                         </div>
                                     </div>
                                 </div>
@@ -443,6 +443,7 @@ class ShowCheckout extends React.Component {
                                         value={this.state.paymentMethod}
                                         name="paymentMethod"
                                         id="paymentMethod"
+                                        size="20"
                                         onChange={this.onPaymentMethodChange}
                                         onClick={this.handleOrderCode.bind(this)}
                                     >

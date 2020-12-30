@@ -91,6 +91,7 @@ class CustomerPurchase extends Component {
                         key={index}
                         proPurchaseID={product.product_id}
                         order_code={product.order_code}
+                        order_status={product.status}
                         img={product.product_image}
                         name={product.product_name}
                         price={product.product_price}
@@ -106,6 +107,7 @@ class CustomerPurchase extends Component {
                         key={index}
                         proPurchaseID={product.product_id}
                         order_code={product.order_code}
+                        order_status={product.status}
                         img={product.product_image}
                         name={product.product_name}
                         price={product.product_price}
@@ -121,6 +123,7 @@ class CustomerPurchase extends Component {
                         key={index}
                         proPurchaseID={product.product_id}
                         order_code={product.order_code}
+                        order_status={product.status}
                         img={product.product_image}
                         name={product.product_name}
                         price={product.product_price}
@@ -136,6 +139,7 @@ class CustomerPurchase extends Component {
                         key={index}
                         proPurchaseID={product.product_id}
                         order_code={product.order_code}
+                        order_status={product.status}
                         img={product.product_image}
                         name={product.product_name}
                         price={product.product_price}
@@ -151,6 +155,7 @@ class CustomerPurchase extends Component {
                         key={index}
                         proPurchaseID={product.product_id}
                         order_code={product.order_code}
+                        order_status={product.status}
                         img={product.product_image}
                         name={product.product_name}
                         price={product.product_price}
@@ -166,6 +171,7 @@ class CustomerPurchase extends Component {
                         key={index}
                         proPurchaseID={product.product_id}
                         order_code={product.order_code}
+                        order_status={product.status}
                         img={product.product_image}
                         name={product.product_name}
                         price={product.product_price}

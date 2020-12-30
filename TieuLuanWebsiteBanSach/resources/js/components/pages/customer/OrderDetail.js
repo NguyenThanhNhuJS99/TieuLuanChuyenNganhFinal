@@ -16,6 +16,7 @@ class OrderDetail extends Component {
             order: {},
             order_details: [],
             couponDetail: {},
+            status: '',
             name: '',
             phone: '',
             coupon_code: '',
@@ -23,6 +24,7 @@ class OrderDetail extends Component {
             city: '',
             province: '',
             wards: '',
+            paymentMethod: '',
             totalCart: '',
         }
     }
@@ -44,6 +46,8 @@ class OrderDetail extends Component {
                 this.setState({
                     order: response.data.order,
                     order_details: response.data.order_details,
+                    status: response.data.order[0].status,
+                    paymentMethod: response.data.order[0].paymentMethod,
                     coupon_code: response.data.order[0].coupon_code
                 });
                 console.log("coupon_code", this.state.coupon_code)
@@ -111,8 +115,43 @@ class OrderDetail extends Component {
                             <div className="order-detail-header__action-container">
                                 <div className="order-detail-header__button-wrapper-container between-xs middle-xs order-detail-header__button-wrapper-container--last">
                                     <div className="order-detail-header__text-info-wrapper">
-                                        <div className="purchase-text-info-wrapper"><span className="purchase-text-info"><span>Đơn hàng này đã hoàn thành.
-                                    </span></span>
+                                        <div className="purchase-text-info-wrapper">
+                                            {this.state.status === 0 && (
+                                                <>
+                                                    <span className="purchase-text-info">
+                                                        <span>
+                                                            Đơn hàng này đang chờ xác nhận.
+                                                        </span>
+                                                    </span>
+                                                </>
+                                            )}
+                                            {this.state.status === 1 && (
+                                                <>
+                                                    <span className="purchase-text-info">
+                                                        <span>
+                                                            Đơn hàng này đang chờ lấy hàng.
+                                                        </span>
+                                                    </span>
+                                                </>
+                                            )}
+                                            {this.state.status === 2 && (
+                                                <>
+                                                    <span className="purchase-text-info">
+                                                        <span>
+                                                            Đơn hàng này đang được giao.
+                                                        </span>
+                                                    </span>
+                                                </>
+                                            )}
+                                            {this.state.status === 3 && (
+                                                <>
+                                                    <span className="purchase-text-info">
+                                                        <span>
+                                                            Đơn hàng này đã hoàn thành.
+                                                        </span>
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -203,9 +242,20 @@ class OrderDetail extends Component {
                                     <div className="payment-detail__item__description-inner">
                                         <div className="payment-detail__item__icon shopee-guarantee-icon payment-detail__shopee-guarantee-icon"> </div>Phương thức Thanh toán</div>
                                 </div>
-                                <div className="payment-detail__item__value">
-                                    <div className="payment-detail__item__value-text"><span className="payment-detail__payment-method-value">Thanh toán khi nhận hàng</span></div>
-                                </div>
+                                {this.state.paymentMethod === 1 && (
+                                    <>
+                                        <div className="payment-detail__item__value">
+                                            <div className="payment-detail__item__value-text"><span className="payment-detail__payment-method-value">Thanh toán OnePay</span></div>
+                                        </div>
+                                    </>
+                                )}
+                                {this.state.paymentMethod === 0 && (
+                                    <>
+                                        <div className="payment-detail__item__value">
+                                            <div className="payment-detail__item__value-text"><span className="payment-detail__payment-method-value">Thanh toán khi nhận hàng</span></div>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                         <div></div>

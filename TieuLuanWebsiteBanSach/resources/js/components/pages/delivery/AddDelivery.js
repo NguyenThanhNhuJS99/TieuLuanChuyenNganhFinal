@@ -251,7 +251,7 @@ class AddDelivery extends React.Component {
                         Thêm phí vận chuyển
                 </button>
                 </form>
-                <h2 className="mt-4">Danh sách phí vận chuyển của các tỉnh thành</h2>
+                <h2 className="mt-4">Danh sách phí vận chuyển của các tỉnh thành <i style={{fontSize: 12 + "px"}}>(*Click vào số tiền phí vận chuyển để cập nhật giá trị phí vận chuyển)</i></h2>
                 <div id="load_delivery">
 
                 </div>

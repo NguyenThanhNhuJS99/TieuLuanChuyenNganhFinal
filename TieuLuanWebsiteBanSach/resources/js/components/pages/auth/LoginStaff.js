@@ -70,7 +70,7 @@ class Login extends React.Component {
   render() {
     return (
       <>
-        <div className="header-part">
+        <div className="header-part mt-4">
           <div className="text-center">
             <h2>Đăng nhập tài khoản Nhân viên</h2>
           </div>
@@ -101,7 +101,7 @@ class Login extends React.Component {
                     <Form.Control
                       required
                       type="email"
-                      placeholder="Enter Email Address"
+                      placeholder="Nhập địa chỉ Email"
                       value={this.state.email}
                       name="email"
                       onChange={(e) => this.changeInput(e)}
@@ -117,11 +117,11 @@ class Login extends React.Component {
                   </Form.Group>
 
                   <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Mật khẩu</Form.Label>
                     <Form.Control
                       required
                       type="password"
-                      placeholder="Enter Password"
+                      placeholder="Nhập mật khẩu"
                       value={this.state.password}
                       name="password"
                       onChange={(e) => this.changeInput(e)}
@@ -133,7 +133,7 @@ class Login extends React.Component {
                       </p>
                     )}
                     <Form.Control.Feedback type="invalid">
-                      Please give password
+                      Nhập mật khẩu
                     </Form.Control.Feedback>
                   </Form.Group>
 
@@ -142,13 +142,13 @@ class Login extends React.Component {
                       <Spinner animation="border" role="status">
                         <span className="sr-only">Loading...</span>
                       </Spinner>{" "}
-                      Signing In...
+                      Đăng nhập...
                     </Button>
                   )}
 
                   {!this.state.isLoading && (
                     <Button variant="success" type="submit" block>
-                      Sign In
+                      Đăng nhập
                     </Button>
                   )}
                 </Card.Body>

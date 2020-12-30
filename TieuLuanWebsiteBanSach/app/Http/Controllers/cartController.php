@@ -19,6 +19,7 @@ class cartController extends Controller
             'price' => $data->price,
             'quantity' => $qty,
             'attributes' => array(
+                'quantityAvailable' => $data->quantity,
                 'image' => $data->image1
             )
         ]);

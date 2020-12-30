@@ -3,9 +3,10 @@ import Table from "react-bootstrap/Table";
 import React, { Component } from "react";
 import { Alert, Button, Nav, Row } from "react-bootstrap";
 import { PUBLIC_URL } from "../../constants";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "./../actions/index";
+
 const CustomLink = ({ lable, to, activeOnlyOnExact }) => {
     return (
         <Route
@@ -28,6 +29,7 @@ const CustomLink = ({ lable, to, activeOnlyOnExact }) => {
         />
     );
 };
+
 var trangChu = [
     {
         lable: "Trang Chủ",
@@ -35,15 +37,19 @@ var trangChu = [
         exact: false
     },
 ]
+
+var quanly = [
+    {
+        lable: "Mã giảm giá",
+        to: "/shopbansach/coupon",
+        exact: false
+    }
+]
+
 var nhanvien = [
     {
         lable: "Thể loại sách",
         to: "/shopbansach/categories",
-        exact: false
-    },
-    {
-        lable: "Mã giảm giá",
-        to: "/shopbansach/coupon",
         exact: false
     },
     {
@@ -57,6 +63,7 @@ var nhanvien = [
         exact: false
     },
 ]
+
 var itemsMenu = [
     {
         lable: "Tin Tức",
@@ -99,20 +106,7 @@ class Header extends Component {
         this.getTotalCart();
         this.getListCategory();
     }
-    // componentWillMount() {
-    //     const getLoginData = localStorage.getItem("loginData");
-    //     if (getLoginData != null) {
-    //         const data = JSON.parse(getLoginData);
-    //         if (data.access_token !== null) {
-    //             this.setState({
 
-    //             });
-    //         }
-    //         else {
-    //             console.log("Quản lý chưa đăng nhập!");
-    //         }
-    //     }
-    // }
     getListCategory = () => {
         this.setState({ isloading: true });
         Axios.get(`http://127.0.0.1:8000/api/categories/`
@@ -131,20 +125,8 @@ class Header extends Component {
     }
     onSearch = (e) => {
         e.preventDefault();
-        const searchData = {
-            keywords_submit: this.state.keywords_submit,
-        }
-        Axios.post('/api/tim-kiem', searchData)
-            .then(res => {
-                this.setState({
-                    alert_message: "success",
-                })
-                //window.location.href = 'http://127.0.0.1:8000/shopbansach/search-page'
 
-            }).catch(error => {
-                this.setState({ alert_message: "error" });
-            })
-        this.props.onSearchProduct(this.state.keywords_submit);
+        this.props.onSearch(this.state.keywords_submit);
     }
     handleSearchChange = (e) => {
         let keywords_submit = e.target.value;
@@ -194,6 +176,7 @@ class Header extends Component {
             this.cartlist,
             this.totalCart
         );
+        this.props.onSearch('aaa');
     };
     giamSoLuongSach = async id => {
         Axios.put(`http://127.0.0.1:8000/giam-so-luong/${id}`).then(res => {
@@ -247,12 +230,19 @@ class Header extends Component {
             localStorage.removeItem("loginData");
             window.location.href = PUBLIC_URL + "login";
         };
+        const logoutStaff = () => {
+            localStorage.removeItem("loginStaffData");
+            window.location.href = PUBLIC_URL + "login-staff";
+        };
         const logoutCus = () => {
             localStorage.removeItem("loginCustomerData");
             window.location.href = PUBLIC_URL + "login-checkout";
         };
-        const getLoginCustomerData = localStorage.getItem("loginCustomerData");
+
         const getLoginData = localStorage.getItem("loginData");
+        const getLoginStaffData = localStorage.getItem("loginStaffData");
+        const getLoginCustomerData = localStorage.getItem("loginCustomerData");
+        
         var listCategory = this.state.categoryList.map((category, index) => {
             return <li>
                 <Link key={index} to={`${PUBLIC_URL}categoryproducts/${category.id}`}>{category.name}</Link>
@@ -269,7 +259,7 @@ class Header extends Component {
                         <div className="content-top-menu">
                             <div className="box-icon-top title-welcome">
 
-                                {!this.props.authData.isLoggedIn && !this.props.authCusData.isCusLoggedIn && (
+                                {!this.props.authData.isLoggedIn && !this.props.authStaffData.isStaffLoggedIn && !this.props.authCusData.isCusLoggedIn && (
                                     <>
                                         <Row>
                                             <Link to={`${PUBLIC_URL}login-checkout`}>
@@ -291,13 +281,30 @@ class Header extends Component {
                                         </Row>
                                     </>
                                 )}
+                                {this.props.authStaffData.isStaffLoggedIn && (
+                                    <>
+                                        <Row>
+                                            <Nav.Link>Chào mừng Nhân viên {this.props.authStaffData.staff.name} đã đến với thế giới sách</Nav.Link>
+                                            <Nav.Link onClick={() => logoutStaff()}>
+                                                <Nav.Item className="text-dark ml-2 ">Đăng xuất</Nav.Item>
+                                            </Nav.Link>
+                                        </Row>
+                                    </>
+                                )}
                                 {this.props.authCusData.isCusLoggedIn && (
                                     <>
                                         <Row>
-                                            <Nav.Link>Chào mừng {this.props.authCusData.customer.name} đã đến với thế giới sách</Nav.Link>
-                                            <Nav.Link onClick={() => logoutCus()}>
-                                                <Nav.Item className="text-dark ml-lg-auto">Đăng xuất</Nav.Item>
-                                            </Nav.Link>
+                                            <li class="main-sub">
+                                                <Nav.Link>{this.props.authCusData.customer.name}</Nav.Link>
+                                                <ul class="sub-menu">
+                                                    <li><Link to={`${PUBLIC_URL}account-info`}>Tài khoản của tôi</Link></li>
+                                                    <li><Link to={`${PUBLIC_URL}customer-purchase`}>Đơn hàng</Link></li>
+                                                    <li><Link onClick={() => logoutCus()}>
+                                                            Đăng xuất
+                                                        </Link>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                         </Row>
                                     </>
                                 )}
@@ -325,8 +332,11 @@ class Header extends Component {
                                     <button
                                         type="submit"
                                         className="btn-search"
+                                        onClick={this.onSearch}
                                     >
-                                        <i className="fas fa-search"></i>
+                                        <Link to="/shopbansach/search-page">
+                                            <i className="fas fa-search"></i>
+                                        </Link>
                                     </button>
                                 </form>
                             </div>
@@ -551,6 +561,12 @@ class Header extends Component {
                             </li>
                             {getLoginData !== null && (
                                 <>
+                                    {this.showMenu(quanly)}
+                                    {this.showMenu(nhanvien)}
+                                </>
+                            )}
+                            {getLoginStaffData !== null && (
+                                <>
                                     {this.showMenu(nhanvien)}
                                 </>
                             )}
@@ -580,7 +596,7 @@ class Header extends Component {
 
 const mapStateToProps = state => {
     return {
-        products: state.products
+        products: state.products,
     };
 };
 const mapDispatchToProps = (dispatch, props) => {
@@ -588,9 +604,8 @@ const mapDispatchToProps = (dispatch, props) => {
         onAddNewProduct: (total, cartlist, totalCart) => {
             dispatch(actions.addProduct(total, cartlist, totalCart));
         },
-
-        onSearchProduct: (keywords_submit) => {
-            dispatch(actions.searchProduct(keywords_submit));
+        onSearch: (text) => {
+            dispatch(actions.searchBook(text));
         }
     };
 };

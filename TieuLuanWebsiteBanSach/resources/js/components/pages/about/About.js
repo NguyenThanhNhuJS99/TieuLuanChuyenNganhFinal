@@ -3,9 +3,10 @@ import Process from '../../layouts/Process';
 import BoxContact from '../news/BoxContact';
 import AboutUs from './AboutUs';
 import Welcome from '../../layouts/Welcome';
-
+import { connect } from "react-redux";
 class About extends Component {
     render() {
+        console.log("test state: ",this.props.searchBook.search)
         return (
             <div>
                 <Welcome></Welcome>
@@ -16,5 +17,9 @@ class About extends Component {
         );
     }
 }
-
-export default About;
+const mapStateToProps = state => {
+    return {
+        searchBook: state.searchBook
+    };
+};
+export default connect(mapStateToProps, null)(About);

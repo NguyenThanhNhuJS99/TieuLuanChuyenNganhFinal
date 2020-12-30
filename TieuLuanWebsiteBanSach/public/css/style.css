@@ -28,6 +28,39 @@ a:hover {
     height: 44px;
 }
 
+#page-numbers {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+  
+#page-numbers > li {
+    color: rgb(62, 140, 204);
+    user-select: none;
+    cursor: pointer;
+    margin: 0 3px;
+    padding: 0 5px;
+    border: 1px solid rgb(62, 140, 204);
+    text-align: center;
+    border-radius: 2px;
+}
+  
+#page-numbers > li:not(.active):hover {
+    background: rgb(62, 140, 204);
+    color: white;
+}
+  
+#page-numbers > li.active {
+    border-color: grey;
+    color: white;
+    background: grey;
+    cursor: default;
+}
+
 .mainWebsite {
     overflow: hidden;
 }
@@ -228,7 +261,7 @@ header .box-logo-search .box-search-cart .box-cart i {
     height: 50px;
 }
 
-header .mainmenu ul li ul.sub-menu {
+header li ul.sub-menu {
     display: none;
     background-color: #ffffff;
     position: absolute;
@@ -236,15 +269,22 @@ header .mainmenu ul li ul.sub-menu {
     margin: 0px;
     left: 0px;
 }
-
-.mainmenu ul .main-sub:hover>.sub-menu {
+header .content-top-menu li ul.sub-menu {
+    left: inherit;
+    right: 0;
+    border: 1px solid #888888;
+}
+.content-top-menu .main-sub{
+    list-style: none;
+    line-height: 25px;
+}
+header .main-sub:hover>.sub-menu {
     display: block;
-    animation: cd 0.4s ease-in-out;
+    animation: cd1 0.4s ease-in-out;
 }
 
-.mainmenu ul li ul li {
+header ul li ul li, .content-top-menu ul li{
     text-transform: uppercase;
-    color: #fff000;
     line-height: 30px;
     width: 280px;
     font-weight: 600;
@@ -253,14 +293,16 @@ header .mainmenu ul li ul.sub-menu {
     float: none;
     text-align: left;
 }
-
-.mainmenu ul li ul li:last-child {
+.content-top-menu ul li {
+    width: 150px;
+}
+header ul li ul li:last-child, .content-top-menu ul li:last-child {
     border-bottom: none;
 }
 
-.mainmenu ul li ul li a {
+header ul li ul li a, .content-top-menu ul li a {
     line-height: 30px;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 500;
 }
 
@@ -385,26 +427,12 @@ header .mainmenu ul li ul.sub-menu {
     padding-bottom: 20px;
 }
 
-.imgWelcome {
-    animation: cd 4s infinite;
-}
+
 
 .logoB {
     animation: zoom-in 1s infinite;
 }
 
-@keyframes cd {
-
-    0%,
-    100% {
-        transform: rotateY(0);
-    }
-
-    30%,
-    60% {
-        transform: rotateY(360deg);
-    }
-}
 
 @keyframes zoom-in {
 
@@ -1660,6 +1688,430 @@ footer .imgfooter {
 
 /* ---------------- End Page Detail ------------- */
 
+/* ---------------- Account Information ------------- */
+
+.h25IfI {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+    min-height: 100%;
+}
+
+.my-account-section, .my-account-section__header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.my-account-section {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 0 30px 20px;
+    background: #fff;
+    overflow: visible;
+}
+.my-account-section, .my-account-section__header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.my-account-section {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 0 30px 20px;
+    background: #fff;
+    overflow: visible;
+}
+
+.my-account-section__header {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    padding: 22px 0;
+    height: 80px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.my-account-section, .my-account-section__header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.my-account-section__header {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    padding: 22px 0;
+    height: 80px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.my-account-section, .my-account-section__header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.my-account-section__header-left {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.my-account-section__header-left {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.my-account-section__header-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    color: #333;
+    text-transform: capitalize;
+}
+
+.my-account-section__header-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    color: #333;
+    text-transform: capitalize;
+}
+
+.my-account-section__header-subtitle {
+    font-size: .875rem;
+    line-height: 1.0625rem;
+    color: #555;
+    margin-top: 3px;
+}
+.my-account-section__header-subtitle {
+    font-size: .875rem;
+    line-height: 1.0625rem;
+    color: #555;
+    margin-top: 3px;
+}
+
+.my-account-profile {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -moz-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    padding-top: 30px;
+}
+
+.my-account-profile__left {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding-right: 50px;
+}
+
+.my-account-profile .input-with-label {
+    margin-bottom: 30px;
+}
+
+.input-with-label {
+    margin-bottom: 30px;
+}
+
+.input-with-label__wrapper {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -moz-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.input-with-label__label {
+    width: 20%;
+    text-align: right;
+    color: rgba(85,85,85,.8);
+    text-transform: capitalize;
+    overflow: hidden;
+}
+
+label {
+    cursor: default;
+}
+
+.input-with-label__content, .input-with-label__error, .input-with-label__message {
+    width: 80%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 1.25rem;
+}
+
+.my-account__inline-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.my-account__input-text {
+    font-size: 14px;
+    color: #333;
+}
+
+.input-with-validator {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #fff;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid rgba(0,0,0,.14);
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    box-shadow: inset 0 2px 0 0 rgba(0,0,0,.02);
+    color: #222;
+    height: 40px;
+    padding: 10px;
+    -webkit-transition: border-color .1s ease;
+    transition: border-color .1s ease;
+}
+
+.input-with-validator input {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    font-size: 14px;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+input {
+    line-height: normal;
+}
+._2AC_Jd, ._2AC_Jd .shopee-dropdown {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+._2AC_Jd {
+    width: 100%;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+._2AC_Jd .shopee-dropdown {
+    width: 32%;
+}
+._2AC_Jd, ._2AC_Jd .shopee-dropdown {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.shopee-dropdown {
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+._2AC_Jd .shopee-dropdown__entry {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.shopee-dropdown--has-selected .shopee-dropdown__entry--selected {
+    color: rgba(0,0,0,.8);
+}
+.shopee-dropdown__entry--selected {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 1px solid rgba(0,0,0,.09);
+    border-radius: 2px;
+    height: 2.5rem;
+    background: #fff;
+    color: #bbb;
+}
+.shopee-dropdown__entry {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 0 .9375rem;
+}
+.shopee-dropdown__entry .shopee-svg-icon {
+    margin-left: .3125rem;
+    font-size: .75rem;
+}
+svg:not(:root) {
+    overflow: hidden;
+}
+.shopee-svg-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    position: relative;
+}
+.my-account-page__submit {
+    margin-bottom: 60px;
+    padding-left: calc(20% + 20px);
+}
+.my-account-profile__change-button {
+    text-transform: capitalize;
+    font-weight: 400;
+    text-decoration: underline;
+}
+
+.my-account__no-background-button {
+    border: none;
+    outline: none;
+    background: none;
+    color: #05a;
+    font-size: 13px;
+    text-transform: capitalize;
+}
+
+.address-card__button-group, .address-card__buttons {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.address-card__buttons {
+    width: 13.75rem;
+    height: 100%;
+    -webkit-flex-shrink: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -moz-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.address-card__button-group {
+    margin: 8px 0;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -moz-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+.bacc-secondary-action-btn {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-transform: capitalize;
+    padding: 7px 0;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #555;
+    margin-right: 20px;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+/* ---------------- End Page Account Information ------------- */
+
 /* ---------------- Order ------------- */
 
 .checkout-address-selection {
@@ -1831,7 +2283,7 @@ svg:not(:root) {
 }
 
 .Nabchf {
-    color: #f6a700;
+    color:#00AFF0;
 }
 
 ._2wZvga {
@@ -4689,7 +5141,7 @@ svg:not(:root) {
     }
 }
 
-@keyframes cd {
+@keyframes cd1 {
     0% {
         opacity: 0;
     }

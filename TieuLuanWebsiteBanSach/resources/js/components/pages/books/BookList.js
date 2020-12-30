@@ -1,10 +1,9 @@
 import React from 'react'
-import { Card, Button, Badge, Spinner, Image } from 'react-bootstrap';
+import { Card, Badge } from 'react-bootstrap';
 import { updateBook, deleteBook } from "../../../services/BookService";
 
 import { Link } from "react-router-dom";
 import { PUBLIC_URL } from "../../../constants";
-import BookEdit from "../books/BookEdit";
 class BookList extends React.Component {
     state = {
         book: {},
@@ -84,21 +83,32 @@ class BookList extends React.Component {
                                     <p>
                                         {book.status === 1 && (
                                             <span>
-                                                Tên sách: {book.name}{" "}
+                                                <strong>Tên sách: {book.name}</strong>{" "}
                                                 <Badge variant="primary">{book.books_count}</Badge>
                                             </span>
                                         )}
                                     </p>
                                 </div>
                                 <div className="float-right">
-                                    <button
-                                        className={`btn btn-outline-${book.status === 1 ? "info" : "success"
-                                            } btn-sm`}
-                                        onClick={() => this.toggleCompleteStatus(book)}
-                                    >
-                                        {book.status === 1 && <span> ✓ Hiện có</span>}
-                                        {book.status === 0 && <span> Hết hàng</span>}
-                                    </button>
+                                    {book.quantity !== 0 && (
+                                        <>
+                                            <button
+                                                className={`btn btn-outline-info btn-sm`}
+                                            >
+                                                <span> ✓ Hiện có</span>
+                                            </button>
+                                        </>
+                                    )}
+
+                                    {book.quantity === 0 && (
+                                        <>
+                                            <button
+                                                className={`btn btn-outline-danger btn-sm`}
+                                            >
+                                                <span> Hết hàng</span>
+                                            </button>
+                                        </>
+                                    )}
 
                                     <Link
                                         to={`${PUBLIC_URL}books/view/${book.bookId}`}
@@ -113,19 +123,15 @@ class BookList extends React.Component {
                                     >
                                         Cập nhật
                                     </Link>
-
-                                    <button
-                                        className="btn btn-outline-danger btn-sm ml-2"
-                                        onClick={() => this.deleteBook(book.bookId)}
-                                    >
-                                        Xóa
-                                    </button>
                                 </div>
                             </div>
                             <div className="clearfix"></div>
                             {this.props.isDetailsView && (
                                 <Card.Text>
-                                    Giá tiền: {book.price} VNĐ
+                                    Tác giả: {book.author} <br />
+                                    Giá tiền: {book.price} VNĐ <br />
+                                    Số lượng sách trong kho: {book.quantity} quyển sách <br />
+                                    Số lượng sách bán được: {book.sold} quyển sách
                                 </Card.Text>
                             )}
                         </Card.Body>

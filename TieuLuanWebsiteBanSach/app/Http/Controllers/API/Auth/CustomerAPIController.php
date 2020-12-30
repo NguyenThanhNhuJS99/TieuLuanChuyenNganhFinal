@@ -76,7 +76,52 @@ class CustomerAPIController extends Controller
         //$search_product = Book::where('name','like','%'.$keywords.'%')->get();
 
         return $search_product;
-     }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $customer = $this->customerRepository->findById($id);
+        if (is_null($customer)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Customer Not found',
+                'data' => null,
+            ]);
+        }
+
+        $formData = $request->all();
+        $validator = \Validator::make($formData, [
+            'name' => 'required',
+            'email' => 'required',
+            'city' => 'required',
+            'province' => 'required',
+            'wards' => 'required',
+            'address' => 'required',
+            'phone' => 'required'
+        ], [
+            'name.required' => 'Please give name',
+            'email.required' => 'Please give email',
+            'city.required' => 'Please give city',
+            'province.required' => 'Please give province',
+            'wards.required' => 'Please give wards',
+            'address.required' => 'Please give address',
+            'phone.required' => 'Please give phone',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->getMessageBag()->first(),
+                'errors' => $validator->getMessageBag(),
+            ]);
+        }
+
+        $customer = $this->customerRepository->edit($request, $id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Customer Updated',
+            'data'    => $customer
+        ]);
+    }
 
     public function login(Request $request)
     {
