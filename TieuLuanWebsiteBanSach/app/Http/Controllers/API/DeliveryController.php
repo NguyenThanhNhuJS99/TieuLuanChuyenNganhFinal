@@ -120,21 +120,17 @@ class DeliveryController extends Controller
             if($feeship){
                 $count_feeship = $feeship->count();
                 if($count_feeship>0){
-                     foreach($feeship as $key => $fee){
+                    foreach($feeship as $key => $fee){
                         Session::put('fee',$fee->fee_feeship);
                         Session::save();
-                    }
+					}
+					return $fee->fee_feeship;
                 }else{ 
                     Session::put('fee',25000);
-                    Session::save();
+					Session::save();
+					return 25000;
                 }
             }
 		}
-		return response()->json([
-            'success' => true,
-            'message' => 'FeeShip',
-            'feeship'    => $fee->fee_feeship
-        ]);
-		//echo Session::get('fee');
     }
 }

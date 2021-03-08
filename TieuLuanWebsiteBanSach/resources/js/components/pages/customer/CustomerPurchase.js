@@ -38,7 +38,7 @@ class CustomerPurchase extends Component {
             Axios.get(`/api/get-ordercode-cus-order/${this.state.cus_id}`)
             .then(res => {
                 this.setState({
-                    customerOrderList: res.data.order_details,
+                    customerOrderList: res.data.order_details_cus,
                     orderList: res.data.order,
                 });
             });

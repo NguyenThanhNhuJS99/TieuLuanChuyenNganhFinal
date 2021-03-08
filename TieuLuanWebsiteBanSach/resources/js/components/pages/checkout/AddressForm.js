@@ -82,7 +82,6 @@ class AddressForm extends React.Component {
             this.setState({
                 cities: res.data,
             });
-            console.log(this.state.cities);
         });
     };
 
@@ -194,9 +193,11 @@ class AddressForm extends React.Component {
                 this.setState({
                     feeship: res.data
                 });
-                console.log("feeship", this.state.feeship);
             })
             .catch((error) => {
+                this.setState({
+                    feeship: 25000
+                });
                 console.log(error.res);
             });
     }
@@ -295,7 +296,6 @@ class AddressForm extends React.Component {
                         primary={true}
                         onClick={this.handleNextAddress}
                         style={{ marginRight: 12 }}
-                        name="calculate_order"
                     />
 
                 </div>

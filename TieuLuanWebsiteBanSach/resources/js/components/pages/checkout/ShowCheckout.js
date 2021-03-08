@@ -187,7 +187,7 @@ class ShowCheckout extends React.Component {
                         city: this.state.city,
                         province: this.state.province,
                         wards: this.state.wards,
-                        address: this.state.address,
+                        address: this.state.cus_address,
                         phone: this.state.phone,
                         feeship: this.state.cus_feeship,
                         total: this.state.tongTien,

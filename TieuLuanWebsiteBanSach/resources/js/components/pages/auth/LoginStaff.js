@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Button, Spinner, Form, Alert } from "react-bootstrap";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { PUBLIC_URL } from "../../../constants";
 import { loginStaff } from "../../../services/StaffAuthService";
 
@@ -14,7 +14,7 @@ class Login extends React.Component {
     validated: false,
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   changeInput = (e) => {
     this.setState({
@@ -111,9 +111,6 @@ class Login extends React.Component {
                         {this.state.errors.email[0]}
                       </p>
                     )}
-                    <Form.Control.Feedback type="invalid">
-                      Nhập địa chỉ Email
-                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group controlId="password">
@@ -132,9 +129,6 @@ class Login extends React.Component {
                         {this.state.errors.password[0]}
                       </p>
                     )}
-                    <Form.Control.Feedback type="invalid">
-                      Nhập mật khẩu
-                    </Form.Control.Feedback>
                   </Form.Group>
 
                   {this.state.isLoading && (
@@ -146,11 +140,24 @@ class Login extends React.Component {
                     </Button>
                   )}
 
-                  {!this.state.isLoading && (
-                    <Button variant="success" type="submit" block>
-                      Đăng nhập
-                    </Button>
-                  )}
+                  <div className="row mt-4 mb-2">
+                    <div className="col-md-6 col-12">
+                      {!this.state.isLoading && (
+                        <Button variant="success" type="submit" block>
+                          Đăng nhập
+                        </Button>
+                      )}
+                    </div>
+                    <div className="col-md-6 col-12">
+                      {!this.state.isLoading && (
+                        <Link to={`${PUBLIC_URL}register-staff`}>
+                          <Button variant="info" type="submit" block>
+                            Đăng ký tài khoản
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
                 </Card.Body>
               </Card>
             </div>
